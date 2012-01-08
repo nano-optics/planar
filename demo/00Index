@@ -1,0 +1,14 @@
+bragg_stack   Reflectivity of a Bragg stack
+field_enhancement   comparison of the calculation of near field enhancement outside of a thin metal film with Fresnel reflection and transmission coefficients
+LFIEF_distance   Local field enhancement factors for a dipole near or inside a multilayer
+
+dipole_integrand   Visualization of the integrand(k0,q) for dipole emission near semi-infinite air/metal interface
+EM_enhancements   Integrated electromagnetic radiative and total decay rates for a dipole near a semi-infinite air/metal interface
+integrated_fluorescence   Integrated decay rates and efficiency for a dipole near a semi-infinite air/metal interface
+
+fluorescence_pattern   radiation pattern of a dipole near a dielectric/(metal)/dielectric interface
+kretschmann_fluo_distance   Fluorescence enhancement vs distance in the Kretschmann configuration
+ 
+kretschmann_angle_scan   Reflectivity against internal incident angle for the Kretschmann configuration, at fixed wavelength
+dispersion_kretschmann   Plot the dispersion curve of planar SPP on a thin metal film in the Kretschmann configuration the internal angle is varied artificially from 0 to 90 degrees
+dispersion_symmetric    Plot the dispersion curve of coupled-SPPs on a thin free standing metal film the internal angle is varied from 0 to 90 degrees

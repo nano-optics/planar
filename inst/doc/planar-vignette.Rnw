@@ -1,0 +1,265 @@
+\documentclass[12pt, a4paper]{article}
+
+\title{Dipole emission near a planar multilayer stack}
+\author{Baptiste Augui\'e}    
+\date{\today}
+\usepackage{siunitx}
+\usepackage{amsmath,amssymb}% AMS standards    
+\usepackage[utf8]{inputenc}
+\SweaveOpts{pdf=TRUE, echo=FALSE, fig=FALSE, eps=FALSE, cache=FALSE, tidy=T}
+% \VignetteIndexEntry{planar}
+\bibliographystyle{alpha}
+
+\begin{document}
+
+\setkeys{Gin}{width=0.6\textwidth}
+
+\newcommand{\dq}{\text{d}q} 
+\newcommand{\du}{\text{d}u} 
+
+\maketitle
+\begin{abstract}
+The \texttt{planar} package solves the electromagnetic problem of dipole emission near a planar multilayer stack. It comprises two sets of functions; i) to compute the effective Fresnel reflection coefficient of a multilayer structure; ii) to evaluate the modified dipolar field as an integral over plane waves reflected at the interface.
+\end{abstract}
+
+<<setup,cache=FALSE>>=
+library(planar)
+library(ggplot2)
+library(lattice)
+library(gridExtra)
+theme_set(theme_minimal())
+pal1 <- grey(seq(0,1,leng=100))
+## ls("package:cda")
+options(demo.ask=FALSE)
+@
+
+<<dielectric_functions>>=
+wvl <- seq(200, 1000,by=2)
+gold <- planar:::epsAu(wvl)
+silver <- planar:::epsAg(wvl)
+@ 
+
+\section{Fresnel coefficients}
+
+The functions \texttt{recursive.fresnel} and \texttt{multilayer} both
+compute the Fresnel coefficients for a multilayer stack, using two
+different methods (recursive application of Fresnel coefficients for a
+layer; and transfer matrix, respectively).
+
+\subsection{Multilayer optics}
+
+<<sbragg_stack, cache=TRUE>>=
+demo(bragg_stack, echo=FALSE)
+@
+\begin{figure}[!ht]
+\centering
+<<bragg_stack, fig=TRUE>>=
+print(p)
+@
+\caption{\texttt{demo(bragg\_stack)} from the planar package. Reflectivity of a Bragg stack with varying number of layers. Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters the structure is a stack of lambda/4 layers of indices nH and nL on a glass substrate with increasing number of layers, the reflectivity stop-band becomes stronger.}
+\label{fig:braggstack}
+\end{figure}
+
+
+<<sfield_enhancement, cache=TRUE>>=
+demo(field_enhancement, echo=FALSE)
+@
+\begin{figure}[!ht]
+\centering
+<<field_enhancement, fig=TRUE>>=
+print(p)
+@
+\caption{\texttt{demo(field\_enhancement)} from the planar package. Comparison of the calculation of near field enhancement outside of a thin metal film with Fresnel reflection and transmission coefficients.}
+\label{fig:fieldenhancement}
+\end{figure}
+
+<<sLFIEF_distance, cache=TRUE>>=
+demo(LFIEF_distance,  echo=FALSE)
+@
+
+\begin{figure}[!ht]
+\centering
+<<LFIEF_distance, fig=TRUE>>=
+print(p)
+@
+\caption{\texttt{demo(LFIEF\_distance)} from the planar package. Local field enhancement factors for a dipole near or inside a multilayer. Note that the field and its derivative are continuous across all interfaces.}
+\label{fig:LFIEFdistance}
+\end{figure}
+
+\pagebreak
+\subsection{Kretschmann configuration -- planar surface plasmon-polaritons}
+
+First, we look at the reflectivity of a thin metal film excited in the
+Kretschmann configuration.
+<<skretschmann_angle_scan, cache=TRUE>>=
+demo(kretschmann_angle_scan,echo=FALSE)
+@
+
+\begin{figure}[!ht]
+\centering
+<<kretschmann_angle_scan, fig=TRUE>>=
+print(p)
+@ 
+\caption{Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between glass ($n=1.5$) and air. The SPP is excited at the metal/air interface. By changing the incident angle, the normalised in-plane wavevector $q$ varies from $0$ (normal incidence) to $1$ (grazing internal angle).}
+\label{fig:kretschmann_angle_scan}
+\end{figure}
+
+In the same configuration, SPPs may be excited for a wide range of
+frequencies. The dispersion of the surface mode may be observed as a
+high reflectivity trace when plotted as a function of incident
+in-plane wavevector and energy.
+
+<<sdispersion_kretschmann, cache=TRUE>>=
+demo(dispersion_kretschmann,  echo=FALSE)
+@ 
+\begin{figure}[!ht]
+\centering
+<<dispersion_kretschmann, fig=TRUE>>=
+print(p)
+@ 
+\caption{Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between semi-infinite glass ($n=1.5$) and air. The dispersion of the SPP mode appears as a dark curve following the equation $k_\text{spp} = k_0 \sqrt{\frac{\varepsilon_\text{metal}\varepsilon_\text{air} }{\varepsilon_\text{metal}+\varepsilon_\text{air} }}$}
+\label{fig:dispersion_kretschmann}
+\end{figure}
+
+Free-space radiation cannot directly couple to SPP modes due to a
+momentum mismatch. Using evanescent illumination, in-plane wavevectors
+of arbitrarily large value may be obtained and allow the mapping of
+the coupled-SPPs dispersion in a symmetric configuration.
+<<sdispersion_symmetric,  cache=TRUE>>=
+demo(dispersion_symmetric, echo=FALSE)
+@
+
+\begin{figure}[!ht]
+\centering
+<<dispersion_symmetric,fig=TRUE>>=
+print(p)
+@
+\caption{Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between semi-infinite glass ($n=1.5$) on either side. Coupled SPPs are excited when the normalized in-plane wavevector $q$ is greater than 1. Note that values of $|r|^2> 1$ are not unphysical, as no power is transferred by evanescent waves.}
+\label{fig:dispersion_symmetric}
+\end{figure}
+
+\clearpage
+
+\section{Decay rates}
+
+From \cite{RE09} (p. 571), and \cite{NH06} (pp. 335--360), the total decay rate for a dipole perpendicular to the interface is
+
+\begin{equation}
+  M^\perp_\text{tot} = 1 + \frac 3 2 \int_0^\infty \Re\left\{ \frac{q^3}{\sqrt{1 - q^2}} r^p (q) \exp\left(2 i k_1 d\sqrt{1 - q^2} \right)\right\}\dq 
+  \label{eq:Mptot1}
+\end{equation}
+
+The integrand diverges as $q\to 1$, it is therefore advantageous to perform the substitution $u:=\sqrt{1 - q^2}$. In order to maintain a real path of integration, the integral is first split into a radiative region ($0\leq q\leq 1$, $u:=\sqrt{1 - q^2}\geq 0$), and an evanescent region ($1\leq q\leq \infty$, $-i u:=\sqrt{q^2 - 1}\geq 0$). After some algebraic manipulation, we obtain,
+\begin{equation}
+  M^\perp_\text{tot} = 1 + \frac 3 2 \left(I_1 + I_2\right)
+  \label{eq:Mptot2}
+\end{equation}
+where
+\begin{equation}
+  \begin{split}
+I_1 + I_2 =& \int_0^1 \left[1 - u^2\right]\cdot\Re\left\{ r^p (\sqrt{1 - u^2}) \exp\left(2 id k_1 u\right)\right\}\du \\ & +\int_0^\infty \left[1 + u^2\right]\cdot\exp\left(-2d k_1  u\right)\cdot\Im\left\{ r^p (\sqrt{1 + u^2}) \right\}\du 
+  \end{split}
+  \label{eq:MptotI12}
+\end{equation}
+
+Similarly, for the parallel dipole
+\begin{equation}
+  M^\parallel_\text{tot} = 1 + \frac 3 4 \int_0^\infty \Re\left\{ \left[ \frac{r^s(q)}{\sqrt{1 - q^2}} - r^p (q) \sqrt{1 - q^2}\right] \cdot q\cdot\exp\left(2 i k_1 d\sqrt{1 - q^2} \right)\right\}\dq  \label{eq:Mstot1}
+\end{equation}
+which can be rewritten as,
+\begin{equation}
+  M^\parallel_\text{tot} = 1 + \frac 3 4 \left(I^\parallel_1 + I^\parallel_2\right)
+  \label{eq:Mstot2}
+\end{equation}
+where
+\begin{equation}
+  \begin{split}
+I^\parallel_1 + I^\parallel_2 =& \int_0^1 \Re\left\{\left[r^s (\sqrt{1 - u^2})  - u^2\cdot r^p (\sqrt{1 - u^2}) \right] \exp\left(2 id k_1 u\right)\right\}\du \\ & 
++\int_0^\infty \exp\left(-2d k_1  u\right)\cdot \Im\left\{r^s (\sqrt{1 + u^2}) + u^2\cdot r^p (\sqrt{1 + u^2}) \right\}\du 
+  \end{split}
+  \label{eq:MstotI12}
+\end{equation}
+
+<<sdipole_integrand, cache=TRUE>>=
+demo(dipole_integrand, echo=FALSE)
+@
+\begin{figure}[!ht]
+\centering
+<<dipole_integrand_map, fig=TRUE>>=
+print(p)
+@
+\caption{Integrand in the resonance region of the total decay rate enhancement factor $M_\text{tot}$ for a dipole situated \SI{5}{nm} above a metal interface.}
+\label{fig:dipole_integrand}
+\end{figure}
+
+
+\begin{figure}[!ht]
+\centering
+<<dipole_integrand_slices,fig=TRUE>>=
+print(p2)
+@
+\caption{Integrand of the total decay rate enhancement factor $M_\text{tot}$ for a dipole situated \SI{5}{nm} above a metal interface, for several emission wavelengths.}
+\label{fig:dipole_integrand2}
+\end{figure}
+
+<<sEM_enhancements, cache=TRUE>>=
+demo(EM_enhancements, echo=FALSE)
+@
+\begin{figure}[!ht]
+\centering
+<<EM_enhancements,fig=TRUE>>=
+print(p)
+@
+\caption{Total and radiative decay rate enhancements for a dipole near a metal interface. Reproducing Fig. 6.1, p. 304 from Principles of Surface-Enhanced Raman Spectroscopy. A dipole is placed near a semi-infinite air/metal interface with orientation either parallel or perpendicular to the interface the total decay rates peak at the wavelength of excitation of planar SPPs epsilon=-1 at the interface (loss channel). The radiative decay rate in the upper medium has a trough at the wavelength where $\varepsilon=0$ ($Dn=0$, by continuity $En=0$).}
+\label{fig:EM_enhancements}
+\end{figure}
+
+<<sintegrated_fluorescence,  cache=TRUE>>=
+demo(integrated_fluorescence, echo=FALSE)
+@
+\begin{figure}[!ht]
+\centering
+<<integrated_fluorescence,fig=TRUE>>=
+print(p)
+@
+\caption{Integrated decay rates and efficiency for a dipole near a semi-infinite air/metal interface
+ for gold and silver, varying the wavelength and the dipole-interface distance.}
+\label{fig:integrated_fluorescence}
+\end{figure}
+
+
+<<skretschmann_fluo_distance, cache=TRUE>>=
+demo(kretschmann_fluo_distance, echo=FALSE)
+@ 
+            
+
+\begin{figure}[!ht]
+\centering
+<<kretschmann_fluo_distance,fig=TRUE>>=
+print(p)
+@
+\caption{Fluorescence enhancement vs distance in the Kretschmann configuration.}
+\label{fig:kretschmann_fluo_distance}
+\end{figure}
+
+
+\subsection{Angular pattern of dipole emission}
+By virtue of reciprocity, the local field intensity enhancement factor also represent the probability of emission of a dipole in a particular direction. 
+
+
+<<sfluorescence_pattern,  cache=TRUE>>=
+demo(fluorescence_pattern, echo=FALSE)
+@
+\begin{figure}[!ht]
+\centering
+<<fluorescence_pattern,fig=TRUE>>=
+grid.arrange(p1, p2, p3, p4, ncol=2)
+@
+\caption{Radiation pattern of a dipole near a dielectric/(metal)/dielectric interface parallel and perpendicular orientations, p- and s- polarisations.}
+\label{fig:fluorescence_pattern}
+\end{figure}
+
+\bibliography{refs}
+
+\end{document}
+

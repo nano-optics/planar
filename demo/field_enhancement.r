@@ -2,6 +2,7 @@
 ## with Fresnel reflection and transmission coefficients
 
 library(planar)
+require(reshape2)
 
 wvl <- seq(200, 1000,by=2)*1e-3
 gold <- epsAu(wvl*1e3)

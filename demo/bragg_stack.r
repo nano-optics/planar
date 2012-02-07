@@ -5,6 +5,8 @@
 
 library(planar)
 library(ggplot2)
+require(reshape2)
+require(plyr)
 
 makeStack <- function(n = 3, lambda=seq(200, 1000),
                       lambda0 = 460, thickness = lambda0/4, nH=2.3, nL=1.38, nS=1.52,

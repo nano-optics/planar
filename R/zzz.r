@@ -1,6 +1,6 @@
 
 planar <- new( "Module" )
- .onLoad <- function(pkgname, libname){
-     loadRcppModules(direct=FALSE)
- }
 
+.onLoad <- function(libname, pkgname) {
+     loadRcppModules(direct=FALSE)
+}

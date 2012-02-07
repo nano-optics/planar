@@ -2,6 +2,8 @@
 
 library(planar)
 library(ggplot2)
+require(reshape2)
+require(plyr)
 
 ## ## parsons example
 m <- field.profile(lambda=560, theta=0,polarisation='p', intensity=FALSE, 
@@ -26,13 +28,13 @@ limits <- ddply(m, .(L1), summarize, xmin=min(x), xmax=max(x), ymin=-Inf, ymax=I
 p <-
   ggplot(m) +
   facet_grid(variable~., scales="free")+
-  geom_rect(aes(xmin=xmin, ymin=ymin, xmax=xmax,ymax=ymax, fill=L1), data=limits, alpha=0.2) +
-  geom_path(aes(x, value, colour=L1)) +
+  geom_rect(aes(xmin=xmin, ymin=ymin, xmax=xmax, ymax=ymax, fill=factor(L1)), data=limits, alpha=0.2) +
+  geom_path(aes(x, value, colour=factor(L1))) +
   scale_x_continuous("x /nm",expand=c(0,0)) +
   scale_y_continuous("LFIEF",expand=c(0,0)) +
   geom_hline(yintercept=0) +
-  scale_colour_brewer(pal="Set1", legend=FALSE)+
-  scale_fill_brewer(legend=FALSE, pal="Pastel1") +
+  scale_colour_brewer("", palette="Set1")+
+  scale_fill_brewer("", palette="Pastel1") +
   theme_minimal()
 
 

@@ -3,6 +3,8 @@
 
 library(planar)
 library(ggplot2)
+require(reshape2)
+require(plyr)
 
 wvl <- 632.8
 silver <- epsAg(wvl)
@@ -36,7 +38,7 @@ ggplot(m) +
              data=data.frame(x=tir),
              linetype=2,color="grey50") +
   geom_path(aes(angle, value, color=variable)) +
-  labs(colour="material") + scale_color_brewer(pal="Set1")+
+  labs(colour="material") + scale_color_brewer(palette="Set1")+
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), limits=c(0,90),
                      breaks=sort(c(seq(0,90,by=15), round(tir,1)))) +

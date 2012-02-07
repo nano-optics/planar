@@ -2,6 +2,7 @@
 ## the internal angle is varied artificially from 0 to 90 degrees
 
 library(planar)
+require(reshape2)
 library(lattice)
 
 wvl <- seq(200, 1000,by=2)*1e-3

@@ -8,6 +8,8 @@ library(planar)
 library(ggplot2)
 library(lattice)
 library(gridExtra)
+require(reshape2)
+require(plyr)
 
 wvl <- seq(200, 1000,by=2)*1e-3
 silver <- epsAg(wvl*1e3)

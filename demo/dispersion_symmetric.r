@@ -1,6 +1,7 @@
 ## Plot the dispersion curve of coupled-SPPs on a thin free standing metal film
 ## the internal angle is varied from 0 to 90 degrees
 library(planar)
+require(reshape2)
 library(lattice)
 
 wvl <- seq(200, 1000,by=2)

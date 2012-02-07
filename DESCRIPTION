@@ -7,22 +7,40 @@ Type: Package
 LazyLoad: yes
 Author: baptiste Auguie
 Description: Solves the electromagnetic problem of reflection and
-        transmission at a multilayer planar interface. Also computes
-        the decay rates for a dipolar emitter near a multilayer
-        structure.
+    transmission at a multilayer planar interface. Also computes
+    the decay rates for a dipolar emitter near a multilayer
+    structure.
 SystemRequirements: GNU make
-Version: 1.0
+Version: 1.1
 BuildVignettes: false
 Date: 2011-07-27
-Depends: methods, Rcpp (>= 0.9.5), RcppArmadillo (>= 0.2.3), statmod,
-        cubature
-Suggests: ggplot2, Hmisc, dielectric, gridExtra, lattice
+Depends:
+    methods,
+    reshape2,
+    Rcpp (>= 0.9.5),
+    RcppArmadillo (>= 0.2.3),
+    statmod,
+    cubature
+Suggests:
+    ggplot2,
+    plyr,
+    Hmisc,
+    dielectric,
+    gridExtra,
+    lattice
 RcppModules: planar
 Encoding: UTF-8
-Collate: 'dipole-GL.r' 'dipole-integrand.r' 'dipole.r' 'epsilon.r'
-        'multilayer.r' 'planar-package.r' 'radiationGrob.r' 'raman.r'
-        'recursive.fresnel.r' 'themes.r' 'transmission.fresnel.r'
-        'utils.r' 'zzz.r'
-Packaged: 2011-07-27 03:17:00 UTC; auguieba
-Repository: CRAN
-Date/Publication: 2011-07-27 05:36:30
+Collate:
+    'dipole-GL.r'
+    'dipole-integrand.r'
+    'dipole.r'
+    'epsilon.r'
+    'multilayer.r'
+    'planar-package.r'
+    'radiationGrob.r'
+    'raman.r'
+    'recursive.fresnel.r'
+    'themes.r'
+    'transmission.fresnel.r'
+    'utils.r'
+    'zzz.r'

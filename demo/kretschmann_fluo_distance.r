@@ -1,6 +1,7 @@
 ## Fluorescence enhancement vs distance in the Kretschmann configuration
 
 library(planar)
+require(reshape2)
 library(ggplot2)
 
 ## from left to right

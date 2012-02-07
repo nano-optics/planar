@@ -2,6 +2,7 @@
 ## parallel and perpendicular orientations, p- and s- polarisations
 
 library(planar)
+require(reshape2)
 library(ggplot2)
 
 ## from left to right
@@ -85,8 +86,8 @@ plot.pattern <- function(m, spp=TRUE, log=TRUE, ...){
                                   geom_path(aes(theta, value, group=interaction(id, variable),
                                                 colour=factor(id), linetype=variable)) +
                                                   scale_x_continuous(breaks=seq(0,360,by=45), minor_breaks=seq(0,360,by=15), labels=my.labels, expand=c(0,0))+
-  scale_fill_brewer(palette="Pastel1", legend=FALSE)+
-  scale_colour_brewer(palette="Set1", legend=FALSE)+
+  scale_fill_brewer(palette="Pastel1", guide="none")+
+  scale_colour_brewer(palette="Set1", guide="none")+
   theme_minimal() +
   labs(x="", y="", linetype="orientation") +
   opts(legend.position="top", legend.direction="horizontal", ...)

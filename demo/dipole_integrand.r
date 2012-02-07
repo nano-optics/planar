@@ -4,6 +4,7 @@
 
 library(planar)
 library(ggplot2)
+require(reshape2)
 library(lattice)
 
 wvl <- seq(200, 1000,by=2)
@@ -55,7 +56,7 @@ p2 <- ggplot(all) + facet_grid(variable~.)+
   geom_path(aes(q, value, color=factor(wavelength))) +
   coord_cartesian(ylim=c(-60, 120))+
   scale_y_continuous(breaks=seq(-50, 120, by=50 ))+
-  scale_x_log10(formatter=) + labs(y="", colour=expression(lambda/nm))+
+  scale_x_log10() + labs(y="", colour=expression(lambda/nm))+
   theme_minimal()
 
 p2

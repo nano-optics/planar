@@ -273,7 +273,7 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 field.profile <- function(lambda=500, theta=0, polarisation='p',
                           thickness = c(0, 20, 140, 20, 0), dmax=200,  res=1e3,
-                          epsilon=list(1^2, -12 + (0 + (0+1i)), 1.38^2, -12 + (0 + (0+1i)), 1.46^2), ...){
+                          epsilon=list(1^2, -12 + 1i, 1.38^2, -12 + 1i, 1.46^2), ...){
 
   d <- seq(0, max(c(dmax,thickness)), length=res)
   

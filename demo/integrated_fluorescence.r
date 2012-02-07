@@ -4,7 +4,9 @@
 library(planar)
 library(ggplot2)
 library(lattice)
+require(reshape2)
 library(gridExtra)
+require(plyr)
 
 wvl <- seq(250, 750, by=250) 
 wvl <- 632.8

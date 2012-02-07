@@ -6,6 +6,7 @@
 ##' @param base_family font family
 ##' @return theme (list)
 ##' @author baptiste Auguié
+##' @export
 ##' 
 theme_minimal <- 
 function (base_size = 12, base_family = "") 

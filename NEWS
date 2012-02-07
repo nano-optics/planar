@@ -1,0 +1,11 @@
+planar 1.2 (2012-02-07) 
+
+* fixed bugs for ggplot2-0.9.0
+
+planar 1.1	(2011-07-30)
+
+* revert to plain ascii text
+
+planar 1.0	(27-Jul-2011)
+
+* Initial CRAN release

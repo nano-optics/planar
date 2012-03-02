@@ -11,7 +11,7 @@
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
 ##' @param polarisation [character] switch between p- and s- polarisation
 ##' @return fresnel coefficients and field profiles
-##' @author baptiste Auguié
+##' @author baptiste Auguie
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")

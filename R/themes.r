@@ -5,7 +5,7 @@
 ##' @param base_size font size
 ##' @param base_family font family
 ##' @return theme (list)
-##' @author baptiste Auguié
+##' @author baptiste Auguie
 ##' @export
 ##' 
 theme_minimal <- 

@@ -22,7 +22,7 @@ radiationGrob <- function(theta, r, start=pi, log=TRUE){
   g <- linesGrob(x,y, default.units = "native")
   g2 <- linesGrob(range(x), 0*range(y), gp=gpar(col="red"),
                   default.units = "native")
-  gTree(children=gList(g, g2), vp=dataViewport(xD=x, yD=y))
+  gTree(children=gList(g, g2), vp=dataViewport(xData=x, yData=y))
 }
 
 grid.radiation <- function(...)

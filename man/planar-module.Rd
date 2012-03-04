@@ -1,5 +1,4 @@
-\name{planar}
-\alias{planar}
+\name{planar-module}
 \title{
 	Rcpp module: planar
 }

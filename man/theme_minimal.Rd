@@ -19,6 +19,6 @@
   bare-bones theme for ggplot2
 }
 \author{
-  baptiste Auguié
+  baptiste Auguie
 }
 

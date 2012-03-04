@@ -41,6 +41,6 @@ library(planar)
 demo(package="planar")
 }
 \author{
-  baptiste Auguié
+  baptiste Auguie
 }
 

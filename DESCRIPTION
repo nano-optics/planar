@@ -11,7 +11,7 @@ Description: Solves the electromagnetic problem of reflection and
     the decay rates for a dipolar emitter near a multilayer
     structure.
 SystemRequirements: GNU make
-Version: 1.2
+Version: 1.2.1
 BuildVignettes: false
 Date: 2011-07-27
 Depends:

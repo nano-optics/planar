@@ -59,40 +59,38 @@ angular.pattern <- function(d=1,
 
 
 plot.pattern <- function(m, spp=TRUE, log=TRUE, ...){
-
-  my.labels <- c(45, 0, 45, 90, 45, 0, 45, 90,-90)
   
-  ## m$results$value[m$results$value <= 2] <- 2
-  ## print(range(m$results$value))
+  my.labels <- seq(0, 360, by=45)
+    
   spp <- if(spp)   geom_path(aes(x=x,y=y, group=id),
                              data=data.frame(x=rep(90 + m$spp.angle *c(-1,1), each=2),
                                id=rep(1:2, each=2),
                                y=rep(range(m$results$value)), 2),
                              colour="grey", linetype=3) else NULL
-
+  
   pp <- 
-    ggplot(m$results) + coord_polar(start=pi/2)+ xlim(0,360) +
-      spp +
-        geom_path(aes(x=x,y=y, group=id),
-                  data=data.frame(x=rep(90 + m$critical.angle *c(-1,1), each=2),
-                    id=rep(1:2, each=2),
-                    y=rep(range(m$results$value)), 2),
+    ggplot(m$results) + coord_polar(start=0)+  spp +
+      geom_path(aes(x=x,y=y, group=id), data=data.frame(x=rep(90 + m$critical.angle *c(-1,1), each=2),
+                                          id=rep(1:2, each=2), y=rep(range(m$results$value)), 2),
                 colour="grey", linetype=2) +  
-                  geom_path(aes(x=x,y=y, group=id),
-                            data=data.frame(x=c(180, 180, 360, 360), id=rep(1:2, each=2),
-                              y=rep(range(m$results$value), 2)),
-                            colour="grey", linetype=1, size=2) +  
-                              geom_polygon(aes(theta, value, group=interaction(id, variable), fill=factor(id)), alpha=0.1) +
-                                  geom_path(aes(theta, value, group=interaction(id, variable),
-                                                colour=factor(id), linetype=variable)) +
-                                                  scale_x_continuous(breaks=seq(0,360,by=45), minor_breaks=seq(0,360,by=15), labels=my.labels, expand=c(0,0))+
-  scale_fill_brewer(palette="Pastel1", guide="none")+
-  scale_colour_brewer(palette="Set1", guide="none")+
-  theme_minimal() +
-  labs(x="", y="", linetype="orientation") +
+      geom_path(aes(x=x,y=y, group=id),
+                data=data.frame(x=c(180, 180, 360, 360), id=rep(1:2, each=2),
+                  y=rep(range(m$results$value), 2)),
+                colour="grey", linetype=1, size=2) +  
+                  geom_polygon(aes(theta, value, group=interaction(id, variable), fill=factor(id)), alpha=0.1) +
+                    geom_path(aes(theta, value, group=interaction(id, variable),
+                                  colour=factor(id), linetype=variable)) +
+                                                  scale_x_continuous(limits=c(0, 360),
+                                                                     breaks=seq(0, 360, by=45), labels=my.labels,
+                                                                     minor_breaks=seq(0,360,by=15), expand=c(0,0))+
+                                                                       scale_fill_brewer(palette="Pastel1", guide="none")+
+                                                                         scale_colour_brewer(palette="Set1", guide="none")+
+                                                                           theme_minimal() +
+                                                                             labs(x="", y="", linetype="orientation") +
   opts(legend.position="top", legend.direction="horizontal", ...)
-
- if(log) pp + scale_y_log10() else pp
+  
+  if(log) pp + scale_y_log10() else pp
+  
 }
 
 library(gridExtra)

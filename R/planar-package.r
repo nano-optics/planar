@@ -3,7 +3,7 @@
 ##' \tabular{ll}{
 ##' Package: \tab planar\cr
 ##' Type: \tab Package\cr
-##' Version: \tab 1.0\cr
+##' Version: \tab 1.2.1\cr
 ##' Date: \tab 2011-01-31\cr
 ##' License: \tab GPL (>= 2)\cr
 ##' LazyLoad: \tab false\cr
@@ -20,7 +20,9 @@
 ##' @author baptiste Auguie \email{baptiste.auguie@@gmail.com}
 ##' @references
 ##' Etchegoin, P. Le Ru, E., Principles of Surface-Enhanced Raman Spectroscopy, Elsevier, Amsterdam (2009).
-##' L. Novotny, E. Hecht, Principles of Nano-optics Cambridge University Press, 2006 
+##' 
+##' L. Novotny, E. Hecht, Principles of Nano-optics Cambridge University Press, 2006
+##' 
 ##' H. Raether. Surface Plasmons on Smooth and Rough Surfaces and on Gratings. Springer, 1988.
 ##' @keywords packagelibrary
 ##' 

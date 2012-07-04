@@ -4,7 +4,7 @@ field_profile_multilayer   Local field enhancement factors for a dipole near or 
 
 dipole_integrand   Visualization of the integrand(k0,q) for dipole emission near semi-infinite air/metal interface
 integrated_decay_rates   Integrated electromagnetic radiative and total decay rates for a dipole near a semi-infinite air/metal interface
-integrated_fluorescence   Integrated decay rates and efficiency for a dipole near a semi-infinite air/metal interface
+decay_rates   Integrated decay rates and efficiency for a dipole near a semi-infinite air/metal interface
 
 LFIEF_angular_pattern_dummy   Radiation pattern of a dipole in a vacuum
 LFIEF_angular_pattern_kretschmann   Radiation pattern of a dipole near a dielectric / metal/ dielectric multilayer

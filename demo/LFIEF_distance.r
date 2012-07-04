@@ -1,41 +1,66 @@
-## Local field enhancement factors for a dipole near or inside a multilayer
+## comparison of the calculation of near field enhancement outside of a thin metal film
+## with Fresnel reflection and transmission coefficients
 
 library(planar)
-library(ggplot2)
 require(reshape2)
-require(plyr)
 
-## ## parsons example
-m <- field.profile(lambda=560, theta=0,polarisation='p', intensity=FALSE, 
-                          thickness = c(0, 20, 140, 20, 0), dmax=200, res=1e3,
-                          epsilon=list(1.0^2, -12+1i, 1.38^2, -12+1i, 1.46^2))
+wvl <- seq(200, 1000,by=2)*1e-3
+gold <- epsAu(wvl*1e3)
 
+classify <- function(d, id=NULL, vars=NULL, ...){
 
-## ## two layers example
-## m <- field.profile(lambda=500, theta=0,polarisation='p',
-##                           thickness = c(0, 0), dmax=30, 
-##                           epsilon=list(1.0^2, -12+1i))
+  m <- melt(d, id.vars=id, ...)
 
+  id.variables <- list()
+  for (ii in seq_along(vars)){
+    id.variables[[ii]] <- rep(vars[[ii]], each=nrow(d))
+  }
+  names(id.variables) <- names(vars)
 
-## ## two interfaces example
-## m <- field.profile(lambda=100, theta=0*pi/180,polarisation='p',
-##                           thickness = c(0, 10, 0), dmax=30, res=1000,
-##                           epsilon=list(1.0^2, -12+1i, 1.2^2))
+  data.frame(m, id.variables)
+}
 
+field.outside <- function(d=1, theta = seq(0,pi/2-0.001,length=500),
+                          epsilon=list(incident = 1.0^2, gold$epsilon[1], 1.5^2),
+                          thickness=c(0, 45, 0),
+                          wavelength=633, polarisation="p", ...){
 
-limits <- ddply(m, .(L1), summarize, xmin=min(x), xmax=max(x), ymin=-Inf, ymax=Inf)
+ res <- multilayer(wavelength, theta=theta, epsilon=epsilon, d=rep(d,length(thickness)),
+                   thickness=thickness, polarisation=polarisation, ...)
 
-p <-
-  ggplot(m) +
-  facet_grid(variable~., scales="free")+
-  geom_rect(aes(xmin=xmin, ymin=ymin, xmax=xmax, ymax=ymax, fill=factor(L1)), data=limits, alpha=0.2) +
-  geom_path(aes(x, value, colour=factor(L1))) +
-  scale_x_continuous("x /nm",expand=c(0,0)) +
-  scale_y_continuous("LFIEF",expand=c(0,0)) +
-  geom_hline(yintercept=0) +
-  scale_colour_brewer("", palette="Set1")+
-  scale_fill_brewer("", palette="Pastel1") +
-  theme_minimal()
+ n <- length(epsilon)
+ sinl <- sin(theta)
+ sinr <- sqrt(epsilon[[1]]) / sqrt(epsilon[[n]]) * sinl
 
+ k0 <- 2*pi/wavelength
+ kx <- k0*sqrt(epsilon[[1]]) * sinl
+ kzl <- sqrt(epsilon[[1]] * k0^2 - kx^2+0i)
+ kzr <- sqrt(epsilon[[n]] * k0^2 - kx^2+0i)
+ 
+ pol.fac1 <- if(polarisation == "p") epsilon[[1]] / epsilon[[n]]  else 1
+ pol.fac2 <- if(polarisation == "p") sinl^2  else 1
+ pol.fac3 <- if(polarisation == "p") sinr^2  else 1
+ 
+ left <- pol.fac2 * Mod(exp(-1i*d* kzl) + res$reflection * exp(1i*d* kzl))^2
+ right <- pol.fac3 * Mod(res$transmission * exp(1i*(d)* kzr))^2
+ 
+ left2 <- if(polarisation == "p") res$Ml.perp[[1]][,1] else res$Ml.par[[1]][,1]
+ right2 <- if(polarisation == "p") res$Mr.perp[[2]][,2]  else res$Mr.par[[2]][,2] 
+ d <- data.frame(theta=theta*180/pi,
+                 left=left, right=right*pol.fac1,
+                 left2 = left2, right2 = right2)
 
-p
+ classify(d, id="theta", vars=list(side = rep(c("left", "right"), 2),
+                           model = rep(c("matrix","fresnel"), each=2)))
+ 
+}
+
+test <- field.outside(10, thickness=c(0, 50, 0), polarisation="s",
+                      epsilon=list(incident = 1.45^2, gold$epsilon[1], 1.0^2))
+
+p <- 
+ggplot(test) + 
+  geom_path(aes(theta, value, colour=side, linetype=model), size=1.2)
+
+print(p)
+

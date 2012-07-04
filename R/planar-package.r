@@ -1,14 +1,5 @@
 ##' Multilayer optics
 ##'
-##' \tabular{ll}{
-##' Package: \tab planar\cr
-##' Type: \tab Package\cr
-##' Version: \tab 1.2.1\cr
-##' Date: \tab 2011-01-31\cr
-##' License: \tab GPL (>= 2)\cr
-##' LazyLoad: \tab false\cr
-##' }
-##'
 ##' R/c++ implementation of the dipole emission near a planar multilayer stack
 ##' 
 ##' @name planar-package

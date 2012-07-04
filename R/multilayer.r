@@ -9,13 +9,13 @@
 ##' @param q [vector] normalised incident in-plane wavevector
 ##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(lambda)
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
-##' @param d vector of distances
+##' @param d vector of distances where LFIEF are evaluated from each interface
 ##' @param polarisation [character] switch between p- and s- polarisation
-##' @param intensity [logical] return field or intensity
 ##' @return fresnel coefficients and field profiles
 ##' @author baptiste Auguie
 ##' @references
 ##' Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
+##' 
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 ##' @examples
 ##' library(planar)
@@ -23,8 +23,8 @@
 multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
                        theta = NULL, q = sin(theta),
                        epsilon = list(incident=1.5^2, 1.33),
-                       thickness = c(0, 0), d=rep(1, length(thickness)),
-                       polarisation = c('p', 's'), intensity=TRUE){
+                       thickness = c(0, 0), d = 1,
+                       polarisation = c('p', 's')){
 
   ## checks
   stopifnot(thickness[1]==0L, thickness[length(thickness)]==0L)
@@ -268,8 +268,10 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' @param ... further args passed to multilayer 
 ##' @return long format data.frame with positions and LFEF (para and perp)
 ##' @author baptiste Auguie
+##' @family helping_functions
 ##' @references
 ##' Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
+##' 
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 field.profile <- function(lambda=500, theta=0, polarisation='p',
                           thickness = c(0, 20, 140, 20, 0), dmax=200,  res=1e3,
@@ -291,8 +293,23 @@ all <- c(list(data.frame(x = res$dist[[1]],
                               M.par=res$Ml.par[[1]],
                               M.perp=res$Ml.perp[[1]])), all)
 
-names(all) <- paste("layer", seq_along(res$dist))
-melt(all, id=1)
+  names(all) <- paste("layer", seq_along(res$dist))
+  melt(all, id=1)
+}
+
+##' invert the description of a multilayer to simulate the opposite direction of incidence
+##'
+##' inverts list of epsilon and thickness of layers
+##' @title invert_incidence
+##' @param p list
+##' @return list
+##' @export
+##' @family helping_functions
+##' @author Baptiste Auguie
+invert_incidence <- function(p){
+  p[["epsilon"]] <- rev(p[["epsilon"]])
+  p[["thickness"]] <- rev(p[["thickness"]])
+  p
 }
 
 ##' Multilayer Fresnel coefficients

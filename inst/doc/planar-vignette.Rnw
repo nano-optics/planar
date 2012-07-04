@@ -12,7 +12,7 @@
 
 \begin{document}
 
-\setkeys{Gin}{width=0.6\textwidth}
+\setkeys{Gin}{width=\textwidth}
 
 \newcommand{\dq}{\text{d}q} 
 \newcommand{\du}{\text{d}u} 
@@ -44,10 +44,10 @@ silver <- planar:::epsAg(wvl)
 The functions \texttt{recursive.fresnel} and \texttt{multilayer} both
 compute the Fresnel coefficients for a multilayer stack, using two
 different methods (recursive application of Fresnel coefficients for a
-layer; and transfer matrix, respectively).
-
+layer; and transfer matrix, respectively). \texttt{multilayer} is more versatile in that it also returns the fields and enhancement factors. \texttt{recursive.fresnel},  on the other hand, is more robust for some calculations involving lossless layers. Both functions are complemented by a faster implementation in \texttt{C++}, though the output is not as comprehensive.
+%
 \subsection{Multilayer optics}
-
+%
 <<sbragg_stack, cache=TRUE>>=
 demo(bragg_stack, echo=FALSE)
 @
@@ -56,33 +56,32 @@ demo(bragg_stack, echo=FALSE)
 <<bragg_stack, fig=TRUE>>=
 print(p)
 @
-\caption{\texttt{demo(bragg\_stack)} from the planar package. Reflectivity of a Bragg stack with varying number of layers. Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters the structure is a stack of lambda/4 layers of indices nH and nL on a glass substrate with increasing number of layers, the reflectivity stop-band becomes stronger.}
+\caption{\texttt{demo(bragg\_stack)}. Reflectivity of a Bragg stack with varying number of layers. Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters the structure is a stack of lambda/4 layers of indices nH and nL on a glass substrate with increasing number of layers, the reflectivity stop-band becomes stronger.}
 \label{fig:braggstack}
 \end{figure}
 
-
 <<sfield_enhancement, cache=TRUE>>=
-demo(field_enhancement, echo=FALSE)
+demo(LFIEF_distance, echo=FALSE)
 @
 \begin{figure}[!ht]
 \centering
 <<field_enhancement, fig=TRUE>>=
 print(p)
 @
-\caption{\texttt{demo(field\_enhancement)} from the planar package. Comparison of the calculation of near field enhancement outside of a thin metal film with Fresnel reflection and transmission coefficients.}
+\caption{\texttt{demo(LFIEF\_distance)}. Comparison of the near field enhancement outside of a thin metal film, calculated with i) the transfer matrix method of \texttt{multilayer}; ii) Fresnel reflection and transmission coefficients.}
 \label{fig:fieldenhancement}
 \end{figure}
 
 <<sLFIEF_distance, cache=TRUE>>=
-demo(LFIEF_distance,  echo=FALSE)
+demo(field_profile_multilayer,  echo=FALSE)
 @
 
 \begin{figure}[!ht]
 \centering
-<<LFIEF_distance, fig=TRUE>>=
+<<field_profile_multilayer, fig=TRUE>>=
 print(p)
 @
-\caption{\texttt{demo(LFIEF\_distance)} from the planar package. Local field enhancement factors for a dipole near or inside a multilayer. Note that the field and its derivative are continuous across all interfaces.}
+\caption{\texttt{demo(field\_profile\_multilayer)}. Local field enhancement factors for a dipole near or inside a multilayer. Note that the field and its derivative are continuous across all interfaces.}
 \label{fig:LFIEFdistance}
 \end{figure}
 
@@ -100,7 +99,7 @@ demo(kretschmann_angle_scan,echo=FALSE)
 <<kretschmann_angle_scan, fig=TRUE>>=
 print(p)
 @ 
-\caption{Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between glass ($n=1.5$) and air. The SPP is excited at the metal/air interface. By changing the incident angle, the normalised in-plane wavevector $q$ varies from $0$ (normal incidence) to $1$ (grazing internal angle).}
+\caption{\texttt{demo(kretschmann\_angle\_scan)}. Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between glass ($n=1.5$) and air. The SPP is excited at the metal/air interface. By changing the incident angle, the normalised in-plane wavevector $q$ varies from $0$ (normal incidence) to $1$ (grazing internal angle).}
 \label{fig:kretschmann_angle_scan}
 \end{figure}
 
@@ -117,7 +116,7 @@ demo(dispersion_kretschmann,  echo=FALSE)
 <<dispersion_kretschmann, fig=TRUE>>=
 print(p)
 @ 
-\caption{Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between semi-infinite glass ($n=1.5$) and air. The dispersion of the SPP mode appears as a dark curve following the equation $k_\text{spp} = k_0 \sqrt{\frac{\varepsilon_\text{metal}\varepsilon_\text{air} }{\varepsilon_\text{metal}+\varepsilon_\text{air} }}$}
+\caption{\texttt{demo(dispersion\_kretschmann)}. Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between semi-infinite glass ($n=1.5$) and air. The dispersion of the SPP mode appears as a dark curve following the equation $k_\text{spp} = k_0 \sqrt{\frac{\varepsilon_\text{metal}\varepsilon_\text{air} }{\varepsilon_\text{metal}+\varepsilon_\text{air} }}$}
 \label{fig:dispersion_kretschmann}
 \end{figure}
 
@@ -125,6 +124,7 @@ Free-space radiation cannot directly couple to SPP modes due to a
 momentum mismatch. Using evanescent illumination, in-plane wavevectors
 of arbitrarily large value may be obtained and allow the mapping of
 the coupled-SPPs dispersion in a symmetric configuration.
+
 <<sdispersion_symmetric,  cache=TRUE>>=
 demo(dispersion_symmetric, echo=FALSE)
 @
@@ -134,7 +134,7 @@ demo(dispersion_symmetric, echo=FALSE)
 <<dispersion_symmetric,fig=TRUE>>=
 print(p)
 @
-\caption{Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between semi-infinite glass ($n=1.5$) on either side. Coupled SPPs are excited when the normalized in-plane wavevector $q$ is greater than 1. Note that values of $|r|^2> 1$ are not unphysical, as no power is transferred by evanescent waves.}
+\caption{\texttt{demo(dispersion\_symmetric)}.Reflectivity of a thin metal film, \SI{50}{nm} thick, sandwiched between semi-infinite glass ($n=1.5$) on either side. Coupled SPPs are excited when the normalized in-plane wavevector $q$ is greater than 1. Note that values of $|r|^2> 1$ are not unphysical, as no power is transferred by evanescent waves.}
 \label{fig:dispersion_symmetric}
 \end{figure}
 
@@ -188,7 +188,7 @@ demo(dipole_integrand, echo=FALSE)
 <<dipole_integrand_map, fig=TRUE>>=
 print(p)
 @
-\caption{Integrand in the resonance region of the total decay rate enhancement factor $M_\text{tot}$ for a dipole situated \SI{5}{nm} above a metal interface.}
+\caption{\texttt{demo(dipole\_integrand)}. Integrand in the resonance region of the total decay rate enhancement factor $M_\text{tot}$ for a dipole situated \SI{5}{nm} above a metal interface.}
 \label{fig:dipole_integrand}
 \end{figure}
 
@@ -203,42 +203,40 @@ print(p2)
 \end{figure}
 
 <<sEM_enhancements, cache=TRUE>>=
-demo(EM_enhancements, echo=FALSE)
+demo(decay_rates, echo=FALSE)
 @
 \begin{figure}[!ht]
 \centering
 <<EM_enhancements,fig=TRUE>>=
 print(p)
 @
-\caption{Total and radiative decay rate enhancements for a dipole near a metal interface. Reproducing Fig. 6.1, p. 304 from Principles of Surface-Enhanced Raman Spectroscopy. A dipole is placed near a semi-infinite air/metal interface with orientation either parallel or perpendicular to the interface the total decay rates peak at the wavelength of excitation of planar SPPs epsilon=-1 at the interface (loss channel). The radiative decay rate in the upper medium has a trough at the wavelength where $\varepsilon=0$ ($Dn=0$, by continuity $En=0$).}
+\caption{\texttt{demo(decay\_rates)}. Total and radiative decay rate enhancements for a dipole near a metal interface. Reproducing Fig. 6.1, p. 304 from Principles of Surface-Enhanced Raman Spectroscopy. A dipole is placed near a semi-infinite air/metal interface with orientation either parallel or perpendicular to the interface the total decay rates peak at the wavelength of excitation of planar SPPs epsilon=-1 at the interface (loss channel). The radiative decay rate in the upper medium has a trough at the wavelength where $\varepsilon=0$ ($Dn=0$, by continuity $En=0$).}
 \label{fig:EM_enhancements}
 \end{figure}
 
 <<sintegrated_fluorescence,  cache=TRUE>>=
-demo(integrated_fluorescence, echo=FALSE)
+demo(integrated_decay_rates, echo=FALSE)
 @
 \begin{figure}[!ht]
 \centering
 <<integrated_fluorescence,fig=TRUE>>=
 print(p)
 @
-\caption{Integrated decay rates and efficiency for a dipole near a semi-infinite air/metal interface
- for gold and silver, varying the wavelength and the dipole-interface distance.}
+\caption{\texttt{demo(integrated\_decay\_rates)}. Integrated decay rates and efficiency for a dipole near a semi-infinite air/metal interface for gold and silver, varying the wavelength and the dipole-interface distance.}
 \label{fig:integrated_fluorescence}
 \end{figure}
 
 
 <<skretschmann_fluo_distance, cache=TRUE>>=
-demo(kretschmann_fluo_distance, echo=FALSE)
+demo(decay_fluo_distance, echo=FALSE)
 @ 
             
-
 \begin{figure}[!ht]
 \centering
 <<kretschmann_fluo_distance,fig=TRUE>>=
 print(p)
 @
-\caption{Fluorescence enhancement vs distance in the Kretschmann configuration.}
+\caption{\texttt{demo(decay\_fluo\_distance)}. Fluorescence decay rates vs distance in the Kretschmann configuration.}
 \label{fig:kretschmann_fluo_distance}
 \end{figure}
 
@@ -246,16 +244,27 @@ print(p)
 \subsection{Angular pattern of dipole emission}
 By virtue of reciprocity, the local field intensity enhancement factor also represent the probability of emission of a dipole in a particular direction. 
 
-
-<<sfluorescence_pattern,  cache=TRUE>>=
-demo(fluorescence_pattern, echo=FALSE)
+<<sLFIEF_angular_pattern_dummy,  cache=TRUE>>=
+demo(LFIEF_angular_pattern_dummy, echo=FALSE)
 @
 \begin{figure}[!ht]
 \centering
-<<fluorescence_pattern,fig=TRUE>>=
-grid.arrange(p1, p2, p3, p4, ncol=2)
+<<LFIEF_angular_pattern_dummy,fig=TRUE>>=
+print(p)
 @
-\caption{Radiation pattern of a dipole near a dielectric/(metal)/dielectric interface parallel and perpendicular orientations, p- and s- polarisations.}
+\caption{\texttt{demo(LFIEF\_angular\_pattern\_dummy)}. Radiation pattern of a dipole in a vacuum (dummy interface, parallel and perpendicular orientation, p-polarisation).}
+\label{fig:fluorescence_pattern}
+\end{figure}
+
+<<sLFIEF_angular_pattern_kretschmann,  cache=TRUE>>=
+demo(LFIEF_angular_pattern_kretschmann, echo=FALSE)
+@
+\begin{figure}[!ht]
+\centering
+<<LFIEF_angular_pattern_kretschmann, fig=TRUE>>=
+print(p)
+@
+\caption{\texttt{demo(LFIEF\_angular\_pattern\_kretschmann)}. Radiation pattern of a dipole near a dielectric / metal/ dielectric multilayer, p-polarisation.}
 \label{fig:fluorescence_pattern}
 \end{figure}
 

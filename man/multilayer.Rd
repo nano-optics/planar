@@ -5,8 +5,7 @@
   multilayer(lambda = NULL, k0 = 2 * pi/lambda,
     theta = NULL, q = sin(theta),
     epsilon = list(incident = 1.5^2, 1.33),
-    thickness = c(0, 0), d = rep(1, length(thickness)),
-    polarisation = c("p", "s"), intensity = TRUE)
+    thickness = c(0, 0), d = 1, polarisation = c("p", "s"))
 }
 \arguments{
   \item{lambda}{[vector] wavelength in nm}
@@ -24,12 +23,11 @@
   \item{thickness}{vector of N+2 layer thicknesses, first
   and last are dummy}
 
-  \item{d}{vector of distances}
+  \item{d}{vector of distances where LFIEF are evaluated
+  from each interface}
 
   \item{polarisation}{[character] switch between p- and s-
   polarisation}
-
-  \item{intensity}{[logical] return field or intensity}
 }
 \value{
   fresnel coefficients and field profiles
@@ -49,7 +47,9 @@ demo(package="planar")
 }
 \references{
   Principles of surface-enhanced Raman spectroscopy and
-  related plasmonic effects Eric C. Le Ru and Pablo G.
-  Etchegoin, published by Elsevier, Amsterdam (2009).
+  related plasmonic effects
+
+  Eric C. Le Ru and Pablo G. Etchegoin, published by
+  Elsevier, Amsterdam (2009).
 }
 

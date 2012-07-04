@@ -1,3 +1,9 @@
+
+
+planar 1.2.2 (2012-07-05)
+
+* fixed demos, vignette, and misc code arguments
+
 planar 1.2.1 (2012-05-15) 
 
 * fixed bugs for ggplot2-0.9.1

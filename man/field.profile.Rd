@@ -47,6 +47,6 @@
   Elsevier, Amsterdam (2009).
 }
 \seealso{
-  Other helping_functions: \code{\link{invert_incidence}}
+  Other helping_functions: \code{\link{invert_stack}}
 }
 

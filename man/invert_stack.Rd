@@ -1,8 +1,8 @@
-\name{invert_incidence}
-\alias{invert_incidence}
-\title{invert_incidence}
+\name{invert_stack}
+\alias{invert_stack}
+\title{invert_stack}
 \usage{
-  invert_incidence(p)
+  invert_stack(p)
 }
 \arguments{
   \item{p}{list}

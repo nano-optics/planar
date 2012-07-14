@@ -6,7 +6,7 @@ require(reshape2)
 library(ggplot2)
 
 ## from left to right
-## incident glass | metal | water
+## incident water | metal | glass
 
 params <- list(lambda=632.8,
                nPrism = 1.5,
@@ -22,7 +22,7 @@ back <- list(lambda = params$lambda,
              polarisation = 'p')
 
 
-front <- revert_incidence(back)
+front <- invert_stack(back)
 
 ## actual simulation
 M.front <- do.call(multilayer, front)

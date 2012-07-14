@@ -20,13 +20,7 @@ back <- list(lambda = params$lambda,
              d = 1,
              polarisation = 'p')
 
-revert_incidence <- function(p){
-  p[["epsilon"]] <- rev(p[["epsilon"]])
-  p[["thickness"]] <- rev(p[["thickness"]])
-  p
-}
-
-front <- revert_incidence(back)
+front <- invert_stack(back)
 
 ## actual simulation
 M.front <- do.call(multilayer, front)

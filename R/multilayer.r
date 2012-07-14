@@ -300,13 +300,13 @@ all <- c(list(data.frame(x = res$dist[[1]],
 ##' invert the description of a multilayer to simulate the opposite direction of incidence
 ##'
 ##' inverts list of epsilon and thickness of layers
-##' @title invert_incidence
+##' @title invert_stack
 ##' @param p list
 ##' @return list
 ##' @export
 ##' @family helping_functions
 ##' @author Baptiste Auguie
-invert_incidence <- function(p){
+invert_stack <- function(p){
   p[["epsilon"]] <- rev(p[["epsilon"]])
   p[["thickness"]] <- rev(p[["thickness"]])
   p

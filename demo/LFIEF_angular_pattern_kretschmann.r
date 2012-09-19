@@ -12,7 +12,7 @@ params <- list(lambda=632.8,
                nPrism = 1.5,
                nWater = 1.0,
                metal = epsAg(632.8)$epsilon,
-               theta = seq(-90, 90, length=300) * pi/180)
+               theta = seq(-90, 90, length=300)[-c(1, 300)] * pi/180)
 
 back <- list(lambda = params$lambda,
              theta = params$theta, 
@@ -50,11 +50,13 @@ ggplot(m, aes(theta, value, group=variable:side)) +
   geom_path(aes(linetype=variable), alpha=0.5)  +
   scale_x_continuous(breaks = seq(0, 360, by = 45),
                      limits = c(0, 360), expand = c(0, 0)) +
-  scale_y_log10(lim=c(1e-4, 200)) +
+  ## scale_y_log10(lim=c(1e-4, 200)) +
+  scale_y_log10() +
   coord_polar() +
   annotate("segment", x=360, xend=360, y=0, yend=1, colour="orange", size=2) +
   annotate("segment", x=180, xend=180, y=0, yend=1, colour="orange", size=2) +
   scale_fill_brewer(palette = "Pastel1") +
-  labs(x = "angle / degrees", y = "LFIEF", fill = "side", linetype = "dipole")
-
+  labs(x = "angle / degrees", y = "LFIEF", fill = "side", linetype = "dipole") +
+  theme()
 p
+

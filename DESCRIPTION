@@ -1,6 +1,5 @@
 Package: planar
 Maintainer: baptiste Auguie <baptiste.auguie@gmail.com>
-License: GPL (>= 2)
 Title: Multilayer optics
 LinkingTo: Rcpp, RcppArmadillo
 Type: Package

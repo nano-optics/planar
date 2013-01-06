@@ -5,15 +5,17 @@ Title: Multilayer optics
 LinkingTo: Rcpp, RcppArmadillo
 Type: Package
 LazyLoad: yes
-Author: baptiste Auguie
+Authors@R: person("Baptiste", "Auguie",
+    email = "baptiste.auguie@gmail.com", role = c("aut", "cre"),
+    comment = "Some functions ported from the original Matlab SPLAC code by E.C. Le Ru and P. G. Etchegoin (see Refs.)")
+License: GPL-3
 Description: Solves the electromagnetic problem of reflection and
-    transmission at a multilayer planar interface. Also computes
-    the decay rates for a dipolar emitter near a multilayer
-    structure.
+    transmission of a plane wave or a Gaussian beam, at a multilayer planar interface.
+Also computed are the decay rates and emission profile for a dipolar emitter near a multilayer structure.
 SystemRequirements: GNU make
-Version: 1.2.4
+Version: 1.2.5
 BuildVignettes: false
-Date: 2012-09-20
+Date: 2013-01-06
 Depends:
     methods,
     reshape2,

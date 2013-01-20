@@ -1,16 +1,18 @@
-\name{dipole.integrand}
-\alias{dipole.integrand}
-\title{dipole.integrand}
+\name{integrand_nr3}
+\alias{integrand_nr3}
+\title{integrand_nr3}
 \usage{
-  dipole.integrand(d = 10, q, lambda,
+  integrand_nr3(d = 10, u, ucut, lambda,
     epsilon = list(incident = 1.5^2, 1^2),
     thickness = c(0, 0))
 }
 \arguments{
   \item{d}{distance in nm}
 
-  \item{q}{normalised in-plane wavevector in [0, infty) OR
-  sqrt(1-q^2) if change.variable}
+  \item{u}{transformed normalised in-plane wavevector
+  sqrt(q^2 - 1)}
+
+  \item{ucut}{limit of the integral}
 
   \item{lambda}{wavelength in nm}
 
@@ -23,7 +25,7 @@
 }
 \details{
   Integrand of the dipole decay rates near a multilayer
-  interface
+  interface. Transformed part III from u=ucut to infinity
 }
 \author{
   baptiste Auguie

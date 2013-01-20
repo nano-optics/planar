@@ -1,8 +1,8 @@
-\name{multilayer2}
-\alias{multilayer2}
-\title{multilayer2}
+\name{recursive_fresnel}
+\alias{recursive_fresnel}
+\title{recursive_fresnel}
 \usage{
-  multilayer2(lambda = NULL, k0 = 2 * pi/lambda,
+  recursive_fresnel(lambda = NULL, k0 = 2 * pi/lambda,
     theta = NULL, q = sin(theta),
     epsilon = list(incident = 1.5^2, 1.33),
     thickness = c(0, 0), polarisation = c("p", "s"))
@@ -33,7 +33,8 @@
   Multilayer Fresnel coefficients
 }
 \details{
-  solves the EM problem of a multilayered interface
+  computes the reflection coefficient of a multilayered
+  interface
 }
 \examples{
 library(planar)

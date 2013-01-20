@@ -1,7 +1,7 @@
 ##' Multilayer Fresnel coefficients
 ##'
 ##' computes the reflection coefficient of a multilayered interface
-##' @title recursive.fresnel
+##' @title recursive_fresnel
 ##' @export
 ##' @param lambda [vector] wavelength in nm
 ##' @param k0 [vector] wavevector in nm^-1
@@ -15,7 +15,7 @@
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-recursive.fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
+recursive_fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
                        theta = NULL, q = sin(theta),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0),
@@ -101,7 +101,7 @@ recursive.fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' Multilayer Fresnel coefficients
 ##'
 ##' computes the reflection coefficient of a multilayered interface
-##' @title recursive.fresnel2
+##' @title recursive_fresnelcpp
 ##' @export
 ##' @param lambda [vector] wavelength in nm
 ##' @param k0 [vector] wavevector in nm^-1
@@ -115,7 +115,7 @@ recursive.fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-recursive.fresnel2 <- function(lambda = NULL, k0 = 2*pi/lambda,
+recursive_fresnelcpp <- function(lambda = NULL, k0 = 2*pi/lambda,
                        theta = NULL, q = sin(theta),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0),

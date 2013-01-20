@@ -1,8 +1,8 @@
-\name{recursive.fresnel}
-\alias{recursive.fresnel}
-\title{recursive.fresnel}
+\name{recursive_fresnelcpp}
+\alias{recursive_fresnelcpp}
+\title{recursive_fresnelcpp}
 \usage{
-  recursive.fresnel(lambda = NULL, k0 = 2 * pi/lambda,
+  recursive_fresnelcpp(lambda = NULL, k0 = 2 * pi/lambda,
     theta = NULL, q = sin(theta),
     epsilon = list(incident = 1.5^2, 1.33),
     thickness = c(0, 0), polarisation = c("p", "s"))

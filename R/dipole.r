@@ -1,8 +1,12 @@
+## Calculates Mrad and Mtot for a dipole near a multilayer, using the angular decomposition of the dipole field into plane waves
+## Mrad is done in one step, but the integration for Mtot is divided in 3 regions
+## thus we define 4 different integrands
+
 
 ##' Dipole decay rates near a multilayer interface
 ##'
 ##' Integrand of the radiative dipole decay rates near a multilayer interface. 
-##' @title integrand.rad
+##' @title integrand_rad
 ##' @export
 ##' @param d distance in nm
 ##' @param theta angle in radians
@@ -10,11 +14,11 @@
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @author baptiste Auguie
-integrand.rad <- function(d=10, theta, lambda,
+integrand_rad <- function(d = 10, theta, lambda,
                        epsilon = list(incident=1.5^2, 1.0^2),
                        thickness = c(0, 0)){
 
-  ## integrand1 is for 0 < q < 1, i.e. 0 < u < 1
+  ## for 0 < q < 1, i.e. 0 < u < 1
   
   ## define constants
   k0 <- 2*pi/lambda
@@ -26,13 +30,13 @@ integrand.rad <- function(d=10, theta, lambda,
   cost <- cos(theta)
   sint <- sin(theta)
   
-  rp <- recursive.fresnel2(lambda=lambda,
+  rp <- recursive_fresnelcpp(lambda=lambda,
                            q = sint,
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive.fresnel2(lambda=lambda,
+  rs <- recursive_fresnelcpp(lambda=lambda,
                            q = sint,
                            epsilon=epsilon,
                            thickness=thickness,
@@ -56,7 +60,7 @@ integrand.rad <- function(d=10, theta, lambda,
 ##'
 ##' Integrand of the dipole decay rates near a multilayer interface. Transformed part I (radiative)
 ##' from u=0 to 1
-##' @title integrand1
+##' @title integrand_nr1
 ##' @export
 ##' @param d distance in nm
 ##' @param u transformed normalised in-plane wavevector sqrt(1-q^2)
@@ -64,7 +68,7 @@ integrand.rad <- function(d=10, theta, lambda,
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @author baptiste Auguie
-integrand1 <- function(d=10, u, lambda,
+integrand_nr1 <- function(d=10, u, lambda,
                        epsilon = list(incident=1.5^2, 1.0^2),
                        thickness = c(0, 0)){
 
@@ -77,13 +81,13 @@ integrand1 <- function(d=10, u, lambda,
   Nlambda <- length(k0)
   Nq <- length(u)
   
-  rp <- recursive.fresnel2(lambda=lambda,
+  rp <- recursive_fresnelcpp(lambda=lambda,
                            q = sqrt(1 - u^2),
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive.fresnel2(lambda=lambda,
+  rs <- recursive_fresnelcpp(lambda=lambda,
                            q = sqrt(1 - u^2),
                            epsilon=epsilon,
                            thickness=thickness,
@@ -101,7 +105,7 @@ integrand1 <- function(d=10, u, lambda,
 ##'
 ##' Integrand of the dipole decay rates near a multilayer interface. Transformed part II
 ##' from u=0 to ucut
-##' @title integrand2
+##' @title integrand_nr2
 ##' @export
 ##' @param d distance in nm
 ##' @param u transformed normalised in-plane wavevector sqrt(q^2 - 1)
@@ -109,7 +113,7 @@ integrand1 <- function(d=10, u, lambda,
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @author baptiste Auguie
-integrand2 <- function(d=10, u, lambda,
+integrand_nr2 <- function(d=10, u, lambda,
                        epsilon = list(incident=1.5^2, 1.0^2),
                        thickness = c(0, 0)){
 
@@ -122,13 +126,13 @@ integrand2 <- function(d=10, u, lambda,
   Nlambda <- length(k0)
   Nq <- length(u)
   
-  rp <- recursive.fresnel2(lambda=lambda,
+  rp <- recursive_fresnelcpp(lambda=lambda,
                            q = sqrt(1 + u^2),
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive.fresnel2(lambda=lambda,
+  rs <- recursive_fresnelcpp(lambda=lambda,
                            q = sqrt(1 + u^2),
                            epsilon=epsilon,
                            thickness=thickness,
@@ -149,7 +153,7 @@ integrand2 <- function(d=10, u, lambda,
 ##'
 ##' Integrand of the dipole decay rates near a multilayer interface. Transformed part III
 ##' from u=ucut to infinity
-##' @title integrand3
+##' @title integrand_nr3
 ##' @export
 ##' @param d distance in nm
 ##' @param u transformed normalised in-plane wavevector sqrt(q^2 - 1)
@@ -158,7 +162,7 @@ integrand2 <- function(d=10, u, lambda,
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @author baptiste Auguie
-integrand3 <- function(d=10, u, ucut, lambda,
+integrand_nr3 <- function(d=10, u, ucut, lambda,
                        epsilon = list(incident=1.5^2, 1.0^2),
                        thickness = c(0, 0)){
 
@@ -181,13 +185,13 @@ integrand3 <- function(d=10, u, ucut, lambda,
   Jac <-  matrix(1 / (1 - u)^2, Nlambda, Nq, byrow=TRUE)
   
   
-  rp <- recursive.fresnel2(lambda=lambda,
+  rp <- recursive_fresnelcpp(lambda=lambda,
                            q = sqrt(1 + t^2),
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive.fresnel2(lambda=lambda,
+  rs <- recursive_fresnelcpp(lambda=lambda,
                            q = sqrt(1 + t^2),
                            epsilon=epsilon,
                            thickness=thickness,
@@ -250,14 +254,13 @@ dipole <- function(d=1,
   }
   
   ## integration from 0 to 1 for the transformed radiative bit
-
-  fun1 <- Curry(integrand1, d=d, lambda=lambda,
-                         epsilon=epsilon, thickness=thickness)
   
-  in1 <- adaptIntegrate(fun1, lowerLimit = 0,
+  in1 <- adaptIntegrate(integrand_nr1, lowerLimit = 0,
                         upperLimit = 1,
                         fDim = 2*Nlambda, tol=rel.err,
-                        maxEval = Nquadrature1)
+                        maxEval = Nquadrature1, 
+                        d=d, lambda=lambda,
+                        epsilon=epsilon, thickness=thickness)
 
   integral1.perp <- in1$integral[seq(1,Nlambda)]
   integral1.par <- in1$integral[seq(Nlambda+1,2*Nlambda)]
@@ -266,13 +269,12 @@ dipole <- function(d=1,
   
   ucut <- sqrt(qcut^2 - 1)
   
-  fun2 <- Curry(integrand2, d=d, lambda=lambda,
-                         epsilon=epsilon, thickness=thickness)
-  
-  in2 <- adaptIntegrate(fun2, lowerLimit = 0,
+  in2 <- adaptIntegrate(integrand_nr2, lowerLimit = 0,
                         upperLimit = ucut,
                         fDim = 2*Nlambda, tol=rel.err,
-                        maxEval = Nquadrature2)
+                        maxEval = Nquadrature2,
+                        d=d, lambda=lambda,
+                        epsilon=epsilon, thickness=thickness)
 
   integral2.perp <- in2$integral[seq(1,Nlambda)]
   integral2.par <- in2$integral[seq(Nlambda+1,2*Nlambda)]
@@ -280,26 +282,24 @@ dipole <- function(d=1,
   ## integration from ucut to Inf
   ## integrand performing a change of variable mapping u in [ucut, infty) -> t in [0,1]
   
-  fun3 <- Curry(integrand3, ucut=ucut, d=d, lambda=lambda,
-                         epsilon=epsilon, thickness=thickness)
-  
-  in3 <- adaptIntegrate(fun3, lowerLimit = 0,
+  in3 <- adaptIntegrate(integrand_nr3, lowerLimit = 0,
                         upperLimit = 1,
                         fDim = 2*Nlambda, tol=rel.err,
-                        maxEval = Nquadrature3)
+                        maxEval = Nquadrature3, 
+                        ucut=ucut, d=d, lambda=lambda,
+                        epsilon=epsilon, thickness=thickness)
 
   integral3.perp <- in3$integral[seq(1,Nlambda)]
   integral3.par <- in3$integral[seq(Nlambda+1,2*Nlambda)]
   
   ## Mrad
-
-  fun4 <- Curry(integrand.rad, d=d, lambda=lambda,
-                         epsilon=epsilon, thickness=thickness)
   
-  in4 <- adaptIntegrate(fun4, lowerLimit = 0,
+  in4 <- adaptIntegrate(integrand_rad, lowerLimit = 0,
                         upperLimit = pi/2,
                         fDim = 2*Nlambda, tol=rel.err,
-                        maxEval = Nquadrature1)
+                        maxEval = Nquadrature1, 
+                        d=d, lambda=lambda,
+                        epsilon=epsilon, thickness=thickness)
   
   Mrad.perp <- in4$integral[seq(1,Nlambda)]
   Mrad.par <- in4$integral[seq(Nlambda+1,2*Nlambda)]
@@ -309,7 +309,7 @@ dipole <- function(d=1,
                    in3$functionEvaluations,
                    in4$functionEvaluations)
   if(show.messages)
-    print(c("integration points=", paste(round(evaluations,2))))
+    message(c("integration points=", paste(round(evaluations,2))))
   
   list(results= 
        data.frame(wavelength=lambda,
@@ -317,7 +317,7 @@ dipole <- function(d=1,
                   Mtot.par = 1 + 3/4*(integral1.par + integral2.par + integral3.par),
                   Mrad.perp = 3/4 * Mrad.perp, Mrad.par = 3/8 * Mrad.par) ,
        errors = list(in1$error, in2$error, in3$error, in4$error),
-       evaluations= evaluations)
+       evaluations = evaluations)
 
 }
 

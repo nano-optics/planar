@@ -4,13 +4,14 @@ Title: Multilayer optics
 LinkingTo: Rcpp, RcppArmadillo
 Type: Package
 LazyLoad: yes
-Authors@R: person("Baptiste", "Auguie",
-    email = "baptiste.auguie@gmail.com", role = c("aut", "cre"),
-    comment = "Some functions ported from the original Matlab SPLAC code by E.C. Le Ru and P. G. Etchegoin (see Refs.)")
+Authors@R: person("Baptiste", "Auguie", email = "baptiste.auguie@gmail.com",
+    role = c("aut", "cre"), comment = "Some functions ported from the original
+    Matlab SPLAC code by E.C. Le Ru and P. G. Etchegoin (see Refs.)")
 License: GPL-3
-Description: Solves the electromagnetic problem of reflection and
-    transmission of a plane wave or a Gaussian beam, at a multilayer planar interface.
-Also computed are the decay rates and emission profile for a dipolar emitter near a multilayer structure.
+Description: Solves the electromagnetic problem of reflection and transmission
+    of a plane wave or a Gaussian beam, at a multilayer planar interface. Also
+    computed are the decay rates and emission profile for a dipolar emitter
+    near a multilayer structure.
 SystemRequirements: GNU make
 Version: 1.2.5
 BuildVignettes: false
@@ -22,27 +23,22 @@ Depends:
     RcppArmadillo (>= 0.2.3),
     statmod,
     cubature,
-    grid
+    dielectric
 Suggests:
     ggplot2,
     plyr,
     Hmisc,
-    dielectric,
+    grid,
     gridExtra,
     lattice
-RcppModules: planar
+RcppModules: planar, gaussian
 Encoding: UTF-8
 Collate:
-    'dipole-GL.r'
-    'dipole-integrand.r'
     'dipole.r'
-    'epsilon.r'
     'multilayer.r'
     'planar-package.r'
-    'radiationGrob.r'
     'raman.r'
-    'recursive.fresnel.r'
-    'themes.r'
-    'transmission.fresnel.r'
     'utils.r'
     'zzz.r'
+    'recursive_fresnel.r'
+    'transmission.r'

@@ -162,8 +162,6 @@ dipole.direct <- function(d=1,
   integral3.perp <- rowSums(in3$integrand.p*weights3)
   integral3.par <- rowSums(in3$integrand.s*weights3)
   
-  ## data.frame(wavelength=lambda, Mtot.par= 1 + 3/2*(integral1 + integral2 + integral3))
-  
   data.frame(wavelength=lambda,
              Mtot.perp = 1 + 3/2*(integral1.perp + integral2.perp + integral3.perp),
              Mtot.par = 1 + 3/4*(integral1.par + integral2.par + integral3.par) )

@@ -21,6 +21,6 @@
   Baptiste Auguie
 }
 \seealso{
-  Other helping_functions: \code{\link{field.profile}}
+  Other helping_functions: \code{\link{field_profile}}
 }
 

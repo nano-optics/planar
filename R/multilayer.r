@@ -255,8 +255,8 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 
 ##' field profile in a ML stack
 ##'
-##' runs multilayer and returns the LFEF as a function of distance inside and outside of the structure
-##' @title field.profile
+##' runs multilayer and returns the LFIEF as a function of distance inside and outside of the structure
+##' @title field_profile
 ##' @export
 ##' @param lambda wavelength
 ##' @param theta angle
@@ -273,7 +273,7 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
 ##' 
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
-field.profile <- function(lambda=500, theta=0, polarisation='p',
+field_profile <- function(lambda=500, theta=0, polarisation='p',
                           thickness = c(0, 20, 140, 20, 0), dmax=200,  res=1e3,
                           epsilon=list(1^2, -12 , 1.38^2, -12 , 1.46^2), ...){
 
@@ -329,7 +329,7 @@ invert_stack <- function(p){
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-multilayer2 <- function(lambda = NULL, k0 = 2*pi/lambda,
+multilayercpp <- function(lambda = NULL, k0 = 2*pi/lambda,
                        theta = NULL, q = sin(theta),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0),

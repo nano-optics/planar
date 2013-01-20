@@ -1,8 +1,8 @@
-\name{integrand2}
-\alias{integrand2}
-\title{integrand2}
+\name{integrand_nr1}
+\alias{integrand_nr1}
+\title{integrand_nr1}
 \usage{
-  integrand2(d = 10, u, lambda,
+  integrand_nr1(d = 10, u, lambda,
     epsilon = list(incident = 1.5^2, 1^2),
     thickness = c(0, 0))
 }
@@ -10,7 +10,7 @@
   \item{d}{distance in nm}
 
   \item{u}{transformed normalised in-plane wavevector
-  sqrt(q^2 - 1)}
+  sqrt(1-q^2)}
 
   \item{lambda}{wavelength in nm}
 
@@ -23,7 +23,7 @@
 }
 \details{
   Integrand of the dipole decay rates near a multilayer
-  interface. Transformed part II from u=0 to ucut
+  interface. Transformed part I (radiative) from u=0 to 1
 }
 \author{
   baptiste Auguie

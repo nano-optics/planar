@@ -1,8 +1,8 @@
-\name{field.profile}
-\alias{field.profile}
-\title{field.profile}
+\name{field_profile}
+\alias{field_profile}
+\title{field_profile}
 \usage{
-  field.profile(lambda = 500, theta = 0,
+  field_profile(lambda = 500, theta = 0,
     polarisation = "p", thickness = c(0, 20, 140, 20, 0),
     dmax = 200, res = 1000,
     epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2), ...)
@@ -33,7 +33,7 @@
   field profile in a ML stack
 }
 \details{
-  runs multilayer and returns the LFEF as a function of
+  runs multilayer and returns the LFIEF as a function of
   distance inside and outside of the structure
 }
 \author{

@@ -1,0 +1,58 @@
+The Kretschmann configuration consists of a thin metal film, typically 50nm of gold or silver, deposited on top of a high-index prism (n=1.5 for glass). Light incident from the prism side undergoes total internal reflection (TIR) above ~45 degrees (internal angle). The evanescent field associated with TIR penetrates the metal and may couple to surface plasmon-polaritons supported at the air/metal interface.
+
+Here we model the optical properties of such a system, starting with the angular variation of the reflectivity.
+
+### Reflectivity against internal incident angle for the Kretschmann configuration, at fixed wavelength
+
+```{r , echo=FALSE,results='hide'}
+opts_chunk$set(fig.path="kretschmann/",
+               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
+library(ggplot2)
+theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
+```
+
+#### Setting up
+
+```{r , results='hide'}
+library(planar)
+library(ggplot2)
+require(reshape2)
+require(plyr)
+
+wvl <- 632.8
+gold <- epsAu(wvl)
+```
+
+#### Modelling the reflectivity
+
+```{r}
+results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, 1.0),
+                                lambda=gold$wavelength, thickness=c(0, 50, 0),
+                                theta=seq(0, pi/2, length=2e3), polarisation='p')
+str(results)
+```
+
+#### Plotting the results
+
+```{r reflectivity,fig.width=10}
+m <- melt(data.frame(results), id="theta", meas=c("R"))
+
+tir <- asin(1/1.5) * 180/pi
+ 
+ggplot(m) +
+  geom_vline(aes(xintercept=x),
+             data=data.frame(x=tir),
+             linetype=2,color="grey50") +
+  geom_path(aes(theta*180/pi, value, color=variable)) +
+  labs(colour="material") + scale_color_brewer(palette="Set1")+
+  scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
+  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
+                     breaks=seq(0,90, by=15)) 
+  
+```
+
+#### Position of the reflectivity minimum
+
+```{r,results='markup'}
+ddply(m, .(variable), summarize, spp = theta[which.min(value)] * 180/pi)
+```

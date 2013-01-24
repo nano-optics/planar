@@ -60,6 +60,9 @@ cx_colvec incident_field(const double psi)
     return (E);
   }
 
+// TODO
+// include in main function, but take out the calculation of fresnel coefficients with an external
+// routine, to switch between single / multiple interfaces
 cx_colvec evanescent_field(const cx_colvec& ei2p, const colvec& ki2p, const cx_colvec& ko2p, \
                           const cx_double ni, const cx_double no)
   {

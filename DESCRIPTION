@@ -37,7 +37,6 @@ Collate:
     'dipole.r'
     'multilayer.r'
     'planar-package.r'
-    'raman.r'
     'utils.r'
     'zzz.r'
     'recursive_fresnel.r'

@@ -13,6 +13,15 @@ classify <- function(d, id=NULL, vars=NULL, ...){
   data.frame(m, id.variables)
 }
 
+modify_levels <- function(f, modify=list()){
+  f <- factor(f)
+  levs = levels(f)
+  m = match(modify,levs)
+  levs[m] = names(modify)
+  factor(f,labels=levs)
+}
+
+
 Curry <- function (FUN, ...) 
 {
     .orig = list(...)
@@ -31,10 +40,8 @@ Curry <- function (FUN, ...)
 ##' @author Baptiste Auguie
 ##' @examples
 ##' raman.shift(wavelength=200)
-raman_shift <- function(wavelength = 500, shift = 1000, stokes = TRUE){
+raman_shift <- function(wavelength = 632.8, shift = 520, stokes = TRUE){
 
-  lambdaR <- 1 / shift * 1e7
-
-  if(stokes) 1 / (1/lambda - 1/lambdaR) else 1 / (1/lambda + 1/lambdaR)
+  if(stokes) 1 / (1/wavelength - shift * 1e-7) else 1 / (1/wavelength + shift * 1e-7)
 
 }

@@ -5,7 +5,7 @@
   dipole(d = 1, lambda, epsilon = list(incident = 1^2),
     thickness = c(0, 0), qcut = NULL, rel.err = 0.001,
     Nquadrature1 = 1000, Nquadrature2 = 10000,
-    Nquadrature3 = 10000, show.messages = TRUE)
+    Nquadrature3 = 10000, GL = FALSE, show.messages = TRUE)
 }
 \arguments{
   \item{d}{distance in nm}
@@ -16,6 +16,10 @@
 
   \item{thickness}{list of layer thicknesses}
 
+  \item{qcut}{transition between regions 2 and 3}
+
+  \item{rel.err}{relative error}
+
   \item{Nquadrature1}{maximum number of quadrature points
   in radiative region}
 
@@ -25,11 +29,10 @@
   \item{Nquadrature3}{maximum number of quadrature points
   in dipole image region}
 
-  \item{rel.err}{relative error}
+  \item{GL}{logical: use Gauss Legendre quadrature, or
+  cubature::adaptIntegrate}
 
   \item{show.messages}{logical, display progress bar}
-
-  \item{qcut}{transition between regions 2 and 3}
 }
 \description{
   Dipole decay rates near a multilayer interface

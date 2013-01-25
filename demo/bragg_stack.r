@@ -19,15 +19,15 @@ makeStack <- function(n = 3, lambda=seq(200, 1000),
                  lambda=lambda, thickness=thickness.list,
                  theta=angle*pi/180, polarisation='p')
   
-  data.frame(do.call(recursive.fresnel2, params))
+  data.frame(do.call(recursive_fresnelcpp, params))
 }
 
-params <- expand.grid(n=seq(5,9,by=2), angle=seq(0,60, by=30))
+params <- expand.grid(n=seq(5,20,by=2), angle=seq(0,60, by=30))
 all <- mdply(params, makeStack)
 
 p <- 
 ggplot(all)+ facet_grid(angle~.)+
-  geom_path(aes(2*pi/k0, R, colour=factor(n)))+
+  geom_line(aes(2*pi/k0, R, colour=n, group=n))+
   labs(colour="layers") +
   scale_x_continuous("wavelength /nm")+
   scale_y_continuous("Reflectivity", expand=c(0,0), lim=c(0,1))+

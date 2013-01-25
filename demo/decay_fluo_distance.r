@@ -3,6 +3,7 @@
 library(planar)
 require(reshape2)
 library(ggplot2)
+library(dielectric)
 
 ## from left to right
 ## incident glass | metal | water
@@ -30,7 +31,7 @@ fluorescence.enhancement <- function(d=seq(1,10),
 
   ## local field enhancement for the excitation of the fluorophore
 
-  lambdafluo <- raman.shift(lambdaex, shift)
+  lambdafluo <- raman_shift(lambdaex, shift)
 
   epsilon.ex <- if(material == "silver") epsAg(lambdaex)$epsilon else epsAu(lambdaex)$epsilon 
   epsilon.fluo <- if(material == "silver") epsAg(lambdafluo)$epsilon else epsAu(lambdafluo)$epsilon 
@@ -44,35 +45,16 @@ fluorescence.enhancement <- function(d=seq(1,10),
                       thickness = thickness, d=d,
                       epsilon = list(nPrism^2, epsilon.fluo, nWater^2))
 
-  if(GL){
-    
     params <- list(lambda = lambdafluo,
                    epsilon = list(nWater^2, epsilon.fluo, nPrism^2), # reversed order
                    thickness = thickness,
                    Nquadrature1 = Nquadrature1, Nquadrature2 = Nquadrature2,
-                   Nquadrature3 = Nquadrature3, qcut = NULL)
-    
-  Mtot <-   sapply(d, function(.d){
-    dl <- do.call(dipole.GL, c(params, list(d=.d)))
-    dl
-  }, simplify=TRUE)
-    
-  } else {
-    params <- list(lambda = lambdafluo,
-                   epsilon = list(nWater^2, epsilon.fluo, nPrism^2), # reversed order
-                   thickness = thickness,
-                   Nquadrature1 = Nquadrature1, Nquadrature2 = Nquadrature2,
-                   Nquadrature3 = Nquadrature3, qcut = qcut, rel.err=rel.err)
+                   Nquadrature3 = Nquadrature3, qcut = qcut, rel.err=rel.err,  GL=GL)
     
     Mtot <-   sapply(d, function(.d){
       dl <- do.call(dipole, c(params, list(d=.d, show.messages = TRUE)))
-      ## print(dl$evaluations)
-      dl$results
     }, simplify=TRUE)
-    
-  }
-  
-  
+   
   ## incident left -> glass | metal | water
   last <- length(Mex$Mr.perp)
   Mex.perp <-  Mex$Mr.perp[[last]]
@@ -117,28 +99,22 @@ fluorescence.enhancement <- function(d=seq(1,10),
 system.time(
 test <- fluorescence.enhancement(d=seq(1,50, by=1), thetaex=seq(51,53, by=0.1)*pi/180,
                                  Nquadrature1 = 15, Nquadrature2 = 135,
-                                 Nquadrature3 = 135)
+                                 Nquadrature3 = 135, GL=FALSE)
             )
-
-## system.time(
-## test2 <- fluorescence.enhancement(d=seq(1,50, by=1), thetaex=c(53,53)*pi/180, GL=FALSE,
-##                                   Nquadrature1 = 15, Nquadrature2 = 135,
-##                                  Nquadrature3 = 135)
-##             )
 
 
 m2 <- subset(test, !variable %in% c("Mfluo.par", "Mfluo.perp"))
 m2$value[m2$type == "Mtot" ] <- log10(m2$value[m2$type == "Mtot" ])
 
-modify.levels <- function(f, modify=list()){
+modify_levels <- function(f, modify=list()){
   f <- factor(f)
- levs = levels(f)
- m = match(modify,levs)
- levs[m] = names(modify)
- factor(f,labels=levs)
+  levs = levels(f)
+  m = match(modify,levs)
+  levs[m] = names(modify)
+  factor(f,labels=levs)
 }
 
-m2$variable <- modify.levels(m2$variable,
+m2$variable <- modify_levels(m2$variable,
                              list("log.Mtot.perp"="Mtot.perp",
                                   "log.Mtot.par"="Mtot.par"))
 p <- 

@@ -2,7 +2,7 @@
 \alias{raman_shift}
 \title{raman_shift}
 \usage{
-  raman_shift(wavelength = 500, shift = 1000,
+  raman_shift(wavelength = 632.8, shift = 520,
     stokes = TRUE)
 }
 \arguments{

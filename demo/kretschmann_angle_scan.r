@@ -12,20 +12,20 @@ gold <- epsAu(wvl)
 
 ## with Cr layer
 parametersAu <- list(epsilon=list(1.515^2, -1.23 +20.78i, gold$epsilon, 1.0^2),
-                   lambda=gold$wavelength*1e3, thickness=c(0, 2, 50, 0),
+                   lambda=gold$wavelength, thickness=c(0, 2, 50, 0),
                    theta=seq(0,pi/2,length=2e3), polarisation='p')
 
 parametersAu <- list(epsilon=list(1.5^2, gold$epsilon, 1.0),
-                   lambda=gold$wavelength*1e3, thickness=c(0, 50, 0),
+                   lambda=gold$wavelength, thickness=c(0, 50, 0),
                    theta=seq(0,pi/2,length=2e3), polarisation='p')
 
 
 parametersAg <- list(epsilon=list(1.5^2, silver$epsilon, 1.0),
-                   lambda=silver$wavelength*1e3, thickness=c(0, 50, 0),
+                   lambda=silver$wavelength, thickness=c(0, 50, 0),
                    theta=seq(0,pi/2,length=2e3), polarisation='p')
 
-dAu <- do.call(recursive.fresnel2, parametersAu)
-dAg <- do.call(recursive.fresnel2, parametersAg)
+dAu <- do.call(recursive_fresnelcpp, parametersAu)
+dAg <- do.call(recursive_fresnelcpp, parametersAg)
 
 m <- melt(data.frame(angle = parametersAu$theta*180/pi,
                      gold = dAu$R, silver = dAg$R), id="angle")

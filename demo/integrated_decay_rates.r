@@ -9,8 +9,6 @@ library(gridExtra)
 require(plyr)
 
 wvl <- seq(250, 750, by=250) 
-wvl <- 632.8
-
 
 silver <- epsAg(wvl)
 gold <- epsAu(wvl)
@@ -21,15 +19,14 @@ distance <- function(d, material="silver", ...){
   material <- get(material)
   
   params <- list(d=d,
-                 lambda = material$wavelength*1e3,
+                 lambda = material$wavelength,
                  epsilon = list(incident=1.0^2, material$epsilon),
                  thickness = c(0, 0))
   
-  dl <- do.call(dipole, c(params, list(Nquadrature1 = 0, Nquadrature2 = 0,
+  res <- do.call(dipole, c(params, list(Nquadrature1 = 0, Nquadrature2 = 0,
                                         Nquadrature3 = 0, qcut = NULL,
                                        rel.err=1e-2, show.messages=FALSE)))
 
-  res <- dl$results
   res$Q.perp <- res$Mrad.perp / res$Mtot.perp
   res$Q.par <- res$Mrad.par / res$Mtot.par
   
@@ -64,9 +61,9 @@ all <- mdply(params, distance, .progress=progress)
 p <- 
   ggplot(all, aes(d, value, linetype=orientation, color=variable))+
   facet_grid(material~wavelength, scales="free_y") + 
-  geom_path() + labs(colour="variable", y="EM enhancement factor", x="d /nm")+
+  geom_line() + labs(colour="variable", y="EM enhancement factor", x="d /nm")+
   scale_y_log10() +
-  theme_bw() +
-  opts(legend.direction="horizontal", legend.position="bottom")
+  theme_minimal() +
+  theme(legend.direction="horizontal", legend.position="bottom")
 
 p

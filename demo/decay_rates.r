@@ -21,7 +21,7 @@ distance <- function(d, material="silver", ...){
   material <- get(material)
   
   params <- list(d=d,
-                 lambda = material$wavelength*1e3,
+                 lambda = material$wavelength,
                  epsilon = list(incident=1.0^2, material$epsilon),
                  thickness = c(0, 0))
   
@@ -29,7 +29,7 @@ distance <- function(d, material="silver", ...){
                                         Nquadrature3 = 5e3, qcut = NULL, rel.err=1e-3,
                                        show.messages = FALSE)))
   
-  m <- melt(dl$results, id = "wavelength")
+  m <- melt(dl, id = "wavelength")
   ## print(paste(c("evaluations", dl$evaluations), collapse=" "))
   ## print(paste(c("Max rel. error", round(100*max(unlist(dl$errors)),1), "%"), collapse=" "))
   

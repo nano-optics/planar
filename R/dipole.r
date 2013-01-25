@@ -100,7 +100,7 @@ integrand_nr1 <- function(d=10, u, lambda,
                            polarisation="s")$reflection
 
     phase <- exp(2i*d*outer(k1,u))
-    ## print(c(Nlambda, Nq, dim(rp), dim(phase)))
+  
     integrand.p <- Re(matrix(1 - u^2, Nlambda, Nq, byrow=TRUE) * rp * phase)
     integrand.s <- Re(( rs - rp*matrix(u^2, Nlambda, Nq, byrow=TRUE)) * phase)
       
@@ -428,9 +428,10 @@ dipole <- function(d=1,
                      in2$functionEvaluations,
                      in3$functionEvaluations,
                      in4$functionEvaluations)
-    if(show.messages)
-      message(c("integration points=", paste(round(evaluations,2))))
     
+    integration <- sprintf("relative integration errors were: %.3e for I1,  %.3e for I2,  %.3e for I3,  %.3e for I4; with %i, %i, %i, %i respective function evaluations.\n",
+            max(in1$error), max(in2$error), max(in3$error), max(in4$error), 
+            evaluations[1],evaluations[2],evaluations[3],evaluations[4])
   }
   
   
@@ -438,12 +439,11 @@ dipole <- function(d=1,
                   Mtot.perp = 1 + 3/2*(integral1.perp + integral2.perp + integral3.perp),
                   Mtot.par = 1 + 3/4*(integral1.par + integral2.par + integral3.par),
                   Mrad.perp =  Mrad.perp, Mrad.par = Mrad.par)
-  ## if(!GL)
-  ## comment(results) <- sprintf("integration errors were: %.3e for I1,  %.3e for I2,  %.3e for I3,  %.3e for I4;
-  ##                              with %i, %i, %i, %i respective function evaluations.",
-  ##                             in1$error, in2$error, in3$error, in4$error, evaluations)
+  if(!GL && show.messages)
+    message(integration)
+  if(!GL)
+  comment(results) <- integration
 
-  ## invisible(results)
-  results
+  invisible(results)
 }
 

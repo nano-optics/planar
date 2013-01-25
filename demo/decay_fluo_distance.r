@@ -47,7 +47,7 @@ fluorescence.enhancement <- function(d=seq(1,10),
 
     params <- list(lambda = lambdafluo,
                    epsilon = list(nWater^2, epsilon.fluo, nPrism^2), # reversed order
-                   thickness = thickness,
+                   thickness = thickness, 
                    Nquadrature1 = Nquadrature1, Nquadrature2 = Nquadrature2,
                    Nquadrature3 = Nquadrature3, qcut = qcut, rel.err=rel.err,  GL=GL)
     
@@ -99,7 +99,7 @@ fluorescence.enhancement <- function(d=seq(1,10),
 system.time(
 test <- fluorescence.enhancement(d=seq(1,50, by=1), thetaex=seq(51,53, by=0.1)*pi/180,
                                  Nquadrature1 = 15, Nquadrature2 = 135,
-                                 Nquadrature3 = 135, GL=FALSE)
+                                 Nquadrature3 = 135, GL=TRUE)
             )
 
 

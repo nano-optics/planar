@@ -3,20 +3,21 @@
 
 library(planar)
 require(reshape2)
-library(lattice)
 
-wvl <- seq(200, 1000,by=2)*1e-3
-silver <- epsAg(wvl*1e3)
-gold <- epsAu(wvl*1e3)
 
-kretschmannAu <- recursive.fresnel2(lambda=gold$wavelength*1e3,
-                                     theta=seq(0,90, length=500)*pi/180+0i,
+k0 <- seq(1e-4, 3e-2, length=500)
+wvl <- 2*pi/k0
+silver <- epsAg(wvl)
+gold <- epsAu(wvl)
+
+kretschmannAu <- recursive_fresnelcpp(k0=k0,
+                                     q=seq(0,1, length=500),
                                      epsilon=list(1.5^2, gold$epsilon, 1.0),
                                      thickness=c(0, 50, 0),
                                      polarisation='p')
 
-kretschmannAg <- recursive.fresnel2(lambda=silver$wavelength*1e3,
-                                     theta=seq(0,90, length=500)*pi/180+0i,
+kretschmannAg <- recursive_fresnelcpp(k0=k0,
+                                     q=seq(0,1, length=500),
                                      epsilon=list(1.5^2, silver$epsilon, 1.0),
                                      thickness=c(0, 50, 0),
                                      polarisation='p')
@@ -34,18 +35,24 @@ mAg$material <- "Ag"
 
 m <- rbind(mAu,mAg)
 
-pal1 <- grey(seq(0,1,leng=100))
+# library(lattice)
+# pal1 <- grey(seq(0,1,leng=100))
+# p <- levelplot(value~q*k0|material, data=m, panel=panel.levelplot.raster,
+#                interpolate=TRUE, layout=c(1,2),
+#                scales=list(x=list(axs="i", at=seq(0,1,by=0.2)),
+#                  y=list(relation="free")), xlim=c(0,1),
+#                col.regions = colorRampPalette(pal1)(1e3), cut=1e3,
+#                at=seq(0,1,length=1e3),
+#                xlab = expression(q==k[x] / k[1]), ylab=expression(k[0]))
+# 
+# p
 
-p <- levelplot(value~q*k0|material, data=m, panel=panel.levelplot.raster,
-               interpolate=TRUE, layout=c(1,2),
-               scales=list(x=list(axs="i", at=seq(0,1,by=0.2)),
-                 y=list(relation="free")), xlim=c(0,1),
-               col.regions = colorRampPalette(pal1)(1e3), cut=1e3,
-               at=seq(0,1,length=1e3),
-               xlab = expression(q==k[x] / k[1]), ylab=expression(k[0]))
+p <- 
+ggplot(m, aes(q, k0, fill=value)) +
+  facet_wrap(~material, ncol=1) +
+  geom_raster() + labs(fill = "R") +
+  scale_x_continuous(expression(q==k[x] / k[1]), expand=c(0,0))+
+  scale_y_continuous(expression(k[0]/nm^-1), expand=c(0,0))+
+  theme_minimal()
 
 p
-
-
-
-

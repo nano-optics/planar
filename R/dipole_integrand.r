@@ -1,16 +1,17 @@
 
-##' Dipole decay rates near a multilayer interface
+##' Total decay rate of a dipole near a multilayer interface
 ##'
-##' Integrand of the dipole decay rates near a multilayer interface
-##' @title dipole.integrand
+##' Integrand without transformation of variables
+##' @title integrand_mtot
 ##' @export
 ##' @param d distance in nm
 ##' @param q normalised in-plane wavevector in [0, infty) OR sqrt(1-q^2) if change.variable
 ##' @param lambda wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
+##' @family integrands dipole
 ##' @author baptiste Auguie
-dipole.integrand <- function(d=10, q, lambda,
+integrand_mtot <- function(d=10, q, lambda,
                              epsilon = list(incident=1.5^2, 1.0^2),
                              thickness = c(0, 0)){
   
@@ -23,13 +24,13 @@ dipole.integrand <- function(d=10, q, lambda,
   
   u <- sqrt(1 - q^2 + 0i)
   
-  rp <- recursive.fresnel2(lambda=lambda,
+  rp <- recursive_fresnelcpp(lambda=lambda,
                            q = q,
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive.fresnel2(lambda=lambda,
+  rs <- recursive_fresnelcpp(lambda=lambda,
                            q = q,
                            epsilon=epsilon,
                            thickness=thickness,
@@ -46,10 +47,10 @@ dipole.integrand <- function(d=10, q, lambda,
 }
 
 
-##' Dipole decay rates near a multilayer interface
+##' Dipole total decay rate near a multilayer interface
 ##'
-##' dipole decay rates near a multilayer interface
-##' @title dipole.direct
+##' direct application of the textbook formula; performs poorly compared to the transformed version in \code{dipole}
+##' @title dipole_direct
 ##' @export
 ##' @param d distance in nm
 ##' @param lambda wavelength in nm
@@ -60,8 +61,9 @@ dipole.integrand <- function(d=10, q, lambda,
 ##' @param Nquadrature3 quadrature points in dipole image region
 ##' @param qcut transition between regions 2 and 3
 ##' @param qmax maximum q of region 3
+##' @family dipole
 ##' @author baptiste Auguie
-dipole.direct <- function(d=1,
+dipole_direct <- function(d=1,
                    lambda ,
                    epsilon = list(incident=1.0^2),
                    thickness = c(0, 0),
@@ -104,7 +106,7 @@ dipole.direct <- function(d=1,
   qnodes1 <- C1 * GL1$nodes + D1
   qweights1 <- GL1$weights * C1
   
-  in1 <- dipole.integrand(q=qnodes1,
+  in1 <- integrand_mtot(q=qnodes1,
                           d=d, lambda=lambda,
                           epsilon=epsilon, thickness=thickness)
       
@@ -120,7 +122,7 @@ dipole.direct <- function(d=1,
   qnodes2 <- C2 * GL2$nodes + D2
   qweights2 <- GL2$weights * C2
   
-  in2 <- dipole.integrand(q=qnodes2,
+  in2 <- integrand_mtot(q=qnodes2,
                                   d=d, lambda=lambda,
                                   epsilon=epsilon, thickness=thickness)
   
@@ -153,7 +155,7 @@ dipole.direct <- function(d=1,
     
   }
   
-  in3 <- dipole.integrand(q=qnodes3,
+  in3 <- integrand_mtot(q=qnodes3,
                           d=d, lambda=lambda,
                           epsilon=epsilon, thickness=thickness)
       

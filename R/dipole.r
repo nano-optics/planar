@@ -62,7 +62,7 @@ integrand_rad <- function(d = 10, theta, lambda,
 
 ##' Dipole decay rates near a multilayer interface
 ##'
-##' Integrand of the dipole decay rates near a multilayer interface. Transformed part I (radiative)
+##' Integrand of the dipole decay rates near a multilayer interface. Transformed part I1 (radiative)
 ##' from u=0 to 1
 ##' @title integrand_nr1
 ##' @export
@@ -111,7 +111,7 @@ integrand_nr1 <- function(d=10, u, lambda,
 
 ##' Dipole decay rates near a multilayer interface
 ##'
-##' Integrand of the dipole decay rates near a multilayer interface. Transformed part II
+##' Integrand of the dipole decay rates near a multilayer interface. Transformed part I2
 ##' from u=0 to ucut
 ##' @title integrand_nr2
 ##' @export

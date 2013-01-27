@@ -26,13 +26,14 @@
 }
 \details{
   Integrand of the dipole decay rates near a multilayer
-  interface. Transformed part II from u=0 to ucut
+  interface. Transformed part I2 from u=0 to ucut
 }
 \author{
   baptiste Auguie
 }
 \seealso{
-  Other integrands dipole: \code{\link{integrand_nr1}},
-  \code{\link{integrand_nr3}}, \code{\link{integrand_rad}}
+  Other integrands dipole: \code{\link{integrand_mtot}},
+  \code{\link{integrand_nr1}}, \code{\link{integrand_nr3}},
+  \code{\link{integrand_rad}}
 }
 

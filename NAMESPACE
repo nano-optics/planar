@@ -1,5 +1,7 @@
+export(dipole_direct)
 export(dipole)
 export(field_profile)
+export(integrand_mtot)
 export(integrand_nr1)
 export(integrand_nr2)
 export(integrand_nr3)

@@ -1,0 +1,8 @@
+
+ENHANCEMENTS
+
+* calculate both s- and p-polarisation at once in recursive_fresnelcpp
+
+NEW FEATURES
+
+* field profile under gaussian beam illumination (reflection and transmission)

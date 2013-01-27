@@ -1,0 +1,35 @@
+\name{integrand_mtot}
+\alias{integrand_mtot}
+\title{integrand_mtot}
+\usage{
+  integrand_mtot(d = 10, q, lambda,
+    epsilon = list(incident = 1.5^2, 1^2),
+    thickness = c(0, 0))
+}
+\arguments{
+  \item{d}{distance in nm}
+
+  \item{q}{normalised in-plane wavevector in [0, infty) OR
+  sqrt(1-q^2) if change.variable}
+
+  \item{lambda}{wavelength in nm}
+
+  \item{epsilon}{list of dielectric functions}
+
+  \item{thickness}{list of layer thicknesses}
+}
+\description{
+  Total decay rate of a dipole near a multilayer interface
+}
+\details{
+  Integrand without transformation of variables
+}
+\author{
+  baptiste Auguie
+}
+\seealso{
+  Other integrands dipole: \code{\link{integrand_nr1}},
+  \code{\link{integrand_nr2}}, \code{\link{integrand_nr3}},
+  \code{\link{integrand_rad}}
+}
+

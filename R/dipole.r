@@ -238,7 +238,7 @@ integrand_nr3 <- function(d=10, u, ucut, lambda,
 ##' @param Nquadrature2 maximum number of quadrature points in SPPs region
 ##' @param Nquadrature3 maximum number of quadrature points in dipole image region
 ##' @param GL logical: use Gauss Legendre quadrature,  or cubature::adaptIntegrate
-##' @param show.messages logical, display progress bar
+##' @param show.messages logical, display integration info
 ##' @author baptiste Auguie
 dipole <- function(d=1,
                    lambda,

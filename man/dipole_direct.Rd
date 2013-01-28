@@ -5,7 +5,8 @@
   dipole_direct(d = 1, lambda,
     epsilon = list(incident = 1^2), thickness = c(0, 0),
     Nquadrature1 = 50, Nquadrature2 = 200,
-    Nquadrature3 = 50, qcut = NULL, qmax = Inf)
+    Nquadrature3 = 50, qcut = NULL, qmax = Inf,
+    show.messages = TRUE)
 }
 \arguments{
   \item{d}{distance in nm}
@@ -27,6 +28,8 @@
   \item{qcut}{transition between regions 2 and 3}
 
   \item{qmax}{maximum q of region 3}
+
+  \item{show.messages}{logical, display integration info}
 }
 \description{
   Dipole total decay rate near a multilayer interface

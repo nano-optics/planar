@@ -32,7 +32,7 @@
   \item{GL}{logical: use Gauss Legendre quadrature, or
   cubature::adaptIntegrate}
 
-  \item{show.messages}{logical, display progress bar}
+  \item{show.messages}{logical, display integration info}
 }
 \description{
   Dipole decay rates near a multilayer interface

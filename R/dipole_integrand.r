@@ -61,6 +61,7 @@ integrand_mtot <- function(d=10, q, lambda,
 ##' @param Nquadrature3 quadrature points in dipole image region
 ##' @param qcut transition between regions 2 and 3
 ##' @param qmax maximum q of region 3
+##' @param show.messages logical, display integration info
 ##' @family dipole
 ##' @author baptiste Auguie
 dipole_direct <- function(d=1,
@@ -68,7 +69,7 @@ dipole_direct <- function(d=1,
                    epsilon = list(incident=1.0^2),
                    thickness = c(0, 0),
                    Nquadrature1 = 50, Nquadrature2 = 200, Nquadrature3 = 50,
-                   qcut = NULL, qmax = Inf){
+                   qcut = NULL, qmax = Inf, show.messages=TRUE){
    
   require(statmod) # quadrature points in (-1, 1)
 
@@ -96,7 +97,8 @@ dipole_direct <- function(d=1,
       qcut <- max(qcut, max(Re(qspp)))
     }
     
-    print(paste("using qcut=",round(qcut,2)))
+    if(show.messages)
+      message(paste("using qcut=",round(qcut,2)))
     
   }
 
@@ -142,7 +144,8 @@ dipole_direct <- function(d=1,
     qweights3 <- GL3$weights * C3
   
   } else {
-    print("performing a change of variable mapping [qcut, infty) -> [0,1]")
+    if(show.messages)
+      message("performing a change of variable mapping [qcut, infty) -> [0,1]")
     ## change of variables
     ## \int_a^\infty f(x)dx = \int_0^1 f(a + t/(1-t)). 1 / (1-t)^2 dt
     ## as suggested on http://ab-initio.mit.edu/wiki/index.php/Cubature

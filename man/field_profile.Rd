@@ -5,7 +5,8 @@
   field_profile(lambda = 500, theta = 0,
     polarisation = "p", thickness = c(0, 20, 140, 20, 0),
     dmax = 200, res = 1000,
-    epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2), ...)
+    epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2),
+    displacement = FALSE, ...)
 }
 \arguments{
   \item{lambda}{wavelength}
@@ -22,6 +23,9 @@
   \item{epsilon}{list of permittivities}
 
   \item{polarisation}{polarisation}
+
+  \item{displacement}{logical, Mperp corresponds to
+  displacement squared (D=epsilon x E)}
 
   \item{...}{further args passed to multilayer}
 }
@@ -47,6 +51,7 @@
   Elsevier, Amsterdam (2009).
 }
 \seealso{
-  Other helping_functions: \code{\link{invert_stack}}
+  Other helping_functions: \code{\link{classify}},
+  \code{\link{invert_stack}}, \code{\link{modify_levels}}
 }
 

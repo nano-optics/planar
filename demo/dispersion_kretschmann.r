@@ -1,5 +1,4 @@
 ## Plot the dispersion curve of planar SPP on a thin metal film in the Kretschmann configuration
-## the internal angle is varied artificially from 0 to 90 degrees
 
 library(planar)
 require(reshape2)
@@ -34,18 +33,6 @@ mAg <- dispersion(kretschmannAg)
 mAg$material <- "Ag"
 
 m <- rbind(mAu,mAg)
-
-# library(lattice)
-# pal1 <- grey(seq(0,1,leng=100))
-# p <- levelplot(value~q*k0|material, data=m, panel=panel.levelplot.raster,
-#                interpolate=TRUE, layout=c(1,2),
-#                scales=list(x=list(axs="i", at=seq(0,1,by=0.2)),
-#                  y=list(relation="free")), xlim=c(0,1),
-#                col.regions = colorRampPalette(pal1)(1e3), cut=1e3,
-#                at=seq(0,1,length=1e3),
-#                xlab = expression(q==k[x] / k[1]), ylab=expression(k[0]))
-# 
-# p
 
 p <- 
 ggplot(m, aes(q, k0, fill=value)) +

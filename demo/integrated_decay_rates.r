@@ -63,7 +63,6 @@ p <-
   facet_grid(material~wavelength, scales="free_y") + 
   geom_line() + labs(colour="variable", y="EM enhancement factor", x="d /nm")+
   scale_y_log10() +
-  theme_minimal() +
   theme(legend.direction="horizontal", legend.position="bottom")
 
 p

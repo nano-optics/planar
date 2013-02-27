@@ -5,7 +5,7 @@
 ##' @title integrand_mtot
 ##' @export
 ##' @param d distance in nm
-##' @param q normalised in-plane wavevector in [0, infty) OR sqrt(1-q^2) if change.variable
+##' @param q normalised in-plane wavevector in [0, infty) 
 ##' @param lambda wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
@@ -49,7 +49,7 @@ integrand_mtot <- function(d=10, q, lambda,
 
 ##' Dipole total decay rate near a multilayer interface
 ##'
-##' direct application of the textbook formula; performs poorly compared to the transformed version in \code{dipole}
+##' direct application of the textbook formula using integrand_mtot; performs poorly compared to the transformed version in \code{dipole}
 ##' @title dipole_direct
 ##' @export
 ##' @param d distance in nm

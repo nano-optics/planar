@@ -55,8 +55,7 @@ p <-
 ggplot(all, aes(wavelength, value, colour=factor(d), linetype=orientation))+
   facet_grid(variable~material, scales="free_y") + 
   geom_path() + labs(colour="distance /nm", y="EM enhancement factor", x="wavelength /nm")+
-  scale_y_log10() +
-  theme_bw() 
+  scale_y_log10() 
 
 ## p
 p

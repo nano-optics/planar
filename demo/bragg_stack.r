@@ -30,7 +30,6 @@ ggplot(all)+ facet_grid(angle~.)+
   geom_line(aes(2*pi/k0, R, colour=n, group=n))+
   labs(colour="layers") +
   scale_x_continuous("wavelength /nm")+
-  scale_y_continuous("Reflectivity", expand=c(0,0), lim=c(0,1))+
-  theme_minimal() 
+  scale_y_continuous("Reflectivity", expand=c(0,0), lim=c(0,1))
 
 p

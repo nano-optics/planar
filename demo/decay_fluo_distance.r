@@ -106,14 +106,6 @@ test <- fluorescence.enhancement(d=seq(1,50, by=1), thetaex=seq(51,53, by=0.1)*p
 m2 <- subset(test, !variable %in% c("Mfluo.par", "Mfluo.perp"))
 m2$value[m2$type == "Mtot" ] <- log10(m2$value[m2$type == "Mtot" ])
 
-modify_levels <- function(f, modify=list()){
-  f <- factor(f)
-  levs = levels(f)
-  m = match(modify,levs)
-  levs[m] = names(modify)
-  factor(f,labels=levs)
-}
-
 m2$variable <- modify_levels(m2$variable,
                              list("log.Mtot.perp"="Mtot.perp",
                                   "log.Mtot.par"="Mtot.par"))
@@ -122,7 +114,6 @@ qplot(d, value, data=m2, color=thetaex*180/pi, group=thetaex*180/pi, geom="line"
   facet_wrap(~variable,scales="free", ncol=2,as.table=FALSE)+
   scale_x_continuous("distance /nm", expand=c(0,0), lim=c(0, max(test$d)))+
   scale_y_continuous("")+ labs(colour=expression(theta[laser]))+
-  geom_hline(yintercept=0)+
-  theme_minimal()
+  geom_hline(yintercept=0)
 
 p

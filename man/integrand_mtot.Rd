@@ -9,8 +9,7 @@
 \arguments{
   \item{d}{distance in nm}
 
-  \item{q}{normalised in-plane wavevector in [0, infty) OR
-  sqrt(1-q^2) if change.variable}
+  \item{q}{normalised in-plane wavevector in [0, infty)}
 
   \item{lambda}{wavelength in nm}
 

@@ -16,7 +16,7 @@ q <- sort(unique(c(seq(0.2,1, length=500), seq(1,1.2, length=500))))
 
 integrand <- function(d=1, m= "silver", q, ...){
   mat <- get(m)
-  int <- dipole.integrand(d=d, q=q, lambda= mat$wavelength*1e3,
+  int <- integrand_mtot(d=d, q=q, lambda= mat$wavelength*1e3,
                           epsilon = list(incident=1.0^2, mat$epsilon, 1.0^2),
                           thickness = c(0, 50, 0))
 
@@ -43,20 +43,21 @@ p
 
 ## now do slices for a wide view
 
-q <- sort(unique(c(seq(0.5,0.9999, length=500), seq(1.001,1.2, length=500),
+q <- sort(unique(c(seq(0.5,0.9999, length=500), seq(0.99, 1.01,length=500),
+                   seq(1.001,1.2, length=500),
                    seq(1.2,1000, length=1000))))
 
-wvl <- seq(0.2, 0.8, by=0.2)
-silver <- epsAg(wvl*1e3)
+wvl <- seq(200, 1000,by=200)
+silver <- epsAg(wvl)
 all <- integrand(q=q, d=1)
 
 ## str(all)
 
 p2 <- ggplot(all) + facet_grid(variable~.)+
   geom_path(aes(q, value, color=factor(wavelength))) +
-  coord_cartesian(ylim=c(-60, 120))+
-  scale_y_continuous(breaks=seq(-50, 120, by=50 ))+
-  scale_x_log10() + labs(y="", colour=expression(lambda/nm))+
+  #coord_cartesian(ylim=c(-60, 120))+
+ # scale_y_continuous(breaks=seq(-50, 120, by=50 ))+
+  #scale_x_log10() + labs(y="", colour=expression(lambda/nm))+
   theme_minimal()
 
 p2

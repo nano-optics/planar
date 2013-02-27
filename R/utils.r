@@ -1,5 +1,16 @@
 
-## Wide to long format data.frame with new factor variable(s) describing the original columns
+##' relabel factors
+##'
+##' Wide to long format data.frame with new factor variable(s) describing the original columns
+##' @title classify
+##' @param d data.frame
+##' @param id column id
+##' @param vars variables
+##' @param ... passed on to melt
+##' @return data.frame
+##' @export
+##' @family helping_functions
+##' @author Baptiste Auguie
 classify <- function(d, id=NULL, vars=NULL, ...){
 
   m <- melt(d, id.vars=id, ...)
@@ -13,6 +24,15 @@ classify <- function(d, id=NULL, vars=NULL, ...){
   data.frame(m, id.variables)
 }
 
+##' relabel factors
+##'
+##' @title modify_levels
+##' @param f factor
+##' @param modify named list
+##' @return factor
+##' @export
+##' @family helping_functions
+##' @author Baptiste Auguie
 modify_levels <- function(f, modify=list()){
   f <- factor(f)
   levs = levels(f)
@@ -20,7 +40,6 @@ modify_levels <- function(f, modify=list()){
   levs[m] = names(modify)
   factor(f,labels=levs)
 }
-
 
 Curry <- function (FUN, ...) 
 {

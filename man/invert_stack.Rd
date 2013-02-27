@@ -21,6 +21,7 @@
   Baptiste Auguie
 }
 \seealso{
-  Other helping_functions: \code{\link{field_profile}}
+  Other helping_functions: \code{\link{classify}},
+  \code{\link{field_profile}}, \code{\link{modify_levels}}
 }
 

@@ -265,6 +265,7 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' @param res resolution of sampling points
 ##' @param epsilon list of permittivities
 ##' @param polarisation polarisation
+##' @param displacement logical, Mperp corresponds to displacement squared (D=epsilon x E)
 ##' @param ... further args passed to multilayer 
 ##' @return long format data.frame with positions and LFEF (para and perp)
 ##' @author baptiste Auguie
@@ -275,8 +276,8 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 field_profile <- function(lambda=500, theta=0, polarisation='p',
                           thickness = c(0, 20, 140, 20, 0), dmax=200,  res=1e3,
-                          epsilon=list(1^2, -12 , 1.38^2, -12 , 1.46^2), ...){
-
+                          epsilon=list(1^2, -12 , 1.38^2, -12 , 1.46^2), displacement=FALSE, ...){
+  
   d <- seq(0, max(c(dmax,thickness)), length=res)
   
   res <- multilayer(lambda=lambda, theta=theta,
@@ -284,15 +285,18 @@ field_profile <- function(lambda=500, theta=0, polarisation='p',
                     thickness = thickness, d=d,
                     polarisation=polarisation, ...)
   
-all <- lapply(seq(1,length(res$dist) -1), function(lay){
-  data.frame(x = res$dist[[lay+1]], M.par=res$Mr.par[[lay]],
-             M.perp=res$Mr.perp[[lay]])
-})
-
-all <- c(list(data.frame(x = res$dist[[1]],
-                              M.par=res$Ml.par[[1]],
-                              M.perp=res$Ml.perp[[1]])), all)
-
+  #   loop over 2nd to last interface
+  all <- lapply(seq(1,length(res$dist) - 1), function(lay){
+    Mperp <- if(displacement) (Mod(epsilon[[lay+1]]))^2 * res$Mr.perp[[lay]] else res$Mr.perp[[lay]]
+    data.frame(x = res$dist[[lay+1]], M.par=res$Mr.par[[lay]],
+               M.perp=Mperp)
+  })
+  #   combine with first interface
+  Mperp <- if(displacement) (Mod(epsilon[[1]]))^2 * res$Ml.perp[[1]] else res$Ml.perp[[1]]
+  all <- c(list(data.frame(x = res$dist[[1]],
+                           M.par=res$Ml.par[[1]],
+                           M.perp=Mperp)), all)
+  
   names(all) <- paste("layer", seq_along(res$dist))
   melt(all, id=1)
 }

@@ -7,19 +7,6 @@ require(reshape2)
 wvl <- seq(200, 1000,by=2)*1e-3
 gold <- epsAu(wvl*1e3)
 
-classify <- function(d, id=NULL, vars=NULL, ...){
-
-  m <- melt(d, id.vars=id, ...)
-
-  id.variables <- list()
-  for (ii in seq_along(vars)){
-    id.variables[[ii]] <- rep(vars[[ii]], each=nrow(d))
-  }
-  names(id.variables) <- names(vars)
-
-  data.frame(m, id.variables)
-}
-
 field.outside <- function(d=1, theta = seq(0,pi/2-0.001,length=500),
                           epsilon=list(incident = 1.0^2, gold$epsilon[1], 1.5^2),
                           thickness=c(0, 45, 0),
@@ -62,5 +49,5 @@ p <-
 ggplot(test) + 
   geom_path(aes(theta, value, colour=side, linetype=model), size=1.2)
 
-print(p)
+p
 

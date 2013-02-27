@@ -1,0 +1,33 @@
+\name{classify}
+\alias{classify}
+\title{classify}
+\usage{
+  classify(d, id = NULL, vars = NULL, ...)
+}
+\arguments{
+  \item{d}{data.frame}
+
+  \item{id}{column id}
+
+  \item{vars}{variables}
+
+  \item{...}{passed on to melt}
+}
+\value{
+  data.frame
+}
+\description{
+  relabel factors
+}
+\details{
+  Wide to long format data.frame with new factor
+  variable(s) describing the original columns
+}
+\author{
+  Baptiste Auguie
+}
+\seealso{
+  Other helping_functions: \code{\link{field_profile}},
+  \code{\link{invert_stack}}, \code{\link{modify_levels}}
+}
+

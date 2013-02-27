@@ -35,9 +35,9 @@
   Dipole total decay rate near a multilayer interface
 }
 \details{
-  direct application of the textbook formula; performs
-  poorly compared to the transformed version in
-  \code{dipole}
+  direct application of the textbook formula using
+  integrand_mtot; performs poorly compared to the
+  transformed version in \code{dipole}
 }
 \author{
   baptiste Auguie

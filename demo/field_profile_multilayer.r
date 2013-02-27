@@ -5,10 +5,11 @@ library(ggplot2)
 require(reshape2)
 require(plyr)
 
+
 ## SPP example
 m <- field_profile(lambda=633, theta=44*pi/180,polarisation='p',
-                          thickness = c(0, 50, 0), dmax=400, res=2000,
-                          epsilon=list(1.5^2, -12+1i, 1.0^2))
+                          thickness = c(0, 50, 0), dmax=400, res=5000,
+                          epsilon=list(1.5^2, -12+1i, 1.0^2),displacement=TRUE)
 
 
 limits <- ddply(m, .(L1), summarize, xmin=min(x), xmax=max(x), ymin=-Inf, ymax=Inf)

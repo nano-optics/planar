@@ -88,6 +88,9 @@ simulation <- function(lambda = 632.8){
   grid.arrange(p, perm, ncol=2)
 }
 
+simulation()
+
+
 library(animation)
 
 ## saveSWF({

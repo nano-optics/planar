@@ -42,3 +42,4 @@ Collate:
     'recursive_fresnel.r'
     'transmission.r'
     'dipole_integrand.r'
+    'gaussian.r'

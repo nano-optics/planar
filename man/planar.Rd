@@ -1,0 +1,19 @@
+\docType{data}
+\name{planar}
+\alias{planar}
+\title{Rcpp module: planar}
+\description{
+  Exposes C++ functions multilayer and recursive_fresnel
+}
+\details{
+  \itemize{ \item{multilayer}{reflection and transmission
+  of a multilayer using a transfer matrix formalism}
+  \item{recursive_fresnel}{reflection and transmission of a
+  multilayer using recursive application of Fresnel
+  coefficients} }
+}
+\examples{
+show( planar )
+}
+\keyword{datasets}
+

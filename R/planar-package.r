@@ -17,5 +17,33 @@
 ##' H. Raether. Surface Plasmons on Smooth and Rough Surfaces and on Gratings. Springer, 1988.
 ##' @keywords packagelibrary
 ##' 
-function()
-  NULL
+NULL
+
+##' Rcpp module: planar
+##' 
+##' Exposes C++ functions multilayer and recursive_fresnel
+##' @name planar
+##' @docType data
+##' @export
+##' @details
+##' \itemize{
+##'  \item{multilayer}{reflection and transmission of a multilayer using a transfer matrix formalism}
+##'  \item{recursive_fresnel}{reflection and transmission of a multilayer using recursive application of Fresnel coefficients}
+##' }
+##' @examples
+##' show( planar )
+NULL
+
+##' Rcpp module: gaussian
+##' 
+##' Exposes C++ function integrand_gb
+##' @name gaussian
+##' @docType data
+##' @export
+##' @details
+##' \itemize{
+##'  \item{integrand_gb}{integrand for gaussian beam excitation at a planar interface}
+##' }
+##' @examples
+##' show( gaussian )
+NULL

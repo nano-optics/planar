@@ -9,29 +9,34 @@
 ##' @param lambda wavelength
 ##' @param alpha beam incident angle
 ##' @param psi beam polarisation angle
-##' @param gamma beam waist radius
-##' @param np incident medium (prism) refractive index
-##' @param ns outer medium (substrate) refractive index
-##' @return data.frame Electric field (squared modulus) at the xyz position
+##' @param w0 beam waist radius
+##' @param ni incident medium (prism) refractive index
+##' @param no outer medium (substrate) refractive index
+##' @param cutoff radial integration limit
+##' @param maxEval passed to adaptIntegrate
+##' @return data.frame Electric field (squared modulus) at the x, y, z position
 ##' @export
 ##' @family gaussian_beam
 ##' @author Baptiste Auguie
-gaussian_field <- function(x=1, y=1, z=1, 
-                           lambda=500, alpha=pi/2 - 15*pi/180, psi=0, gamma=10, 
-                           np=1.5, ns=1){
-
-k0 <- 2*pi/lambda
-kp <- k0*np
-
-res <- adaptIntegrate(integrand_gb,
-                      lowerLimit=c(-0.4, -0.4)*f, # some function of alpha
-                      upperLimit=c(0.4, 0.4)*f, # some function of alpha
-                      fDim = 6,
-                      maxEval = 200,
-                      r2 = c(x, y, z), kp=kp, psi=0, alpha=alpha,
-                      gamma=gamma, np=np, ns=ns)$integral
-
-E <- complex(real = res[1:3], imag=res[4:6])
-Re(crossprod(E, Conj(E)))
-
+gaussian_field <- function(x=1, y=1, z=1, lambda=500, alpha = 15*pi/180, psi=0, 
+                           w0=1e4, ni=1.5+0i, no=1+0i,
+                           cutoff = min(1, sqrt(3*4)/(w0*Re(2*pi/lambda*ni))),
+                           maxEval = 300){
+  
+  k <- 2*pi/lambda
+  ki <- k*ni
+  res <- adaptIntegrate(gaussian$integrand_gb,
+                        lowerLimit=c(0, 0), # rho in [0,1], theta in [0,2*pi]
+                        upperLimit=c(cutoff, 2*pi), # exp(-3) is tiny
+                        fDim = 6, tol = 1e-04,
+                        maxEval = maxEval,
+                        r2 = c(x, y, z), ki=ki, psi=psi, alpha=alpha,
+                        w0=w0, ni=ni, no=no)$integral
+  
+  E <- complex(real = res[1:3], imag=res[4:6])
+  Re(crossprod(E, Conj(E)))
+  
 }
+
+
+

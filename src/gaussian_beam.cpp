@@ -11,7 +11,7 @@ using namespace RcppArmadillo ;
 using namespace arma ;
 using namespace std;
 
-mat rotation_y(const double alpha)
+arma::mat rotation_y(const double alpha)
   {
     arma::mat Rot(3,3);
     const double ca = cos(alpha), sa = sin(alpha);
@@ -30,7 +30,7 @@ mat rotation_y(const double alpha)
     return (Rot);
   }
 
-mat rotation_z(const double delta)
+arma::mat rotation_z(const double delta)
   {
     arma::mat Rot(3,3);
     const double ca = cos(delta), sa = sin(delta);
@@ -49,9 +49,9 @@ mat rotation_z(const double delta)
     return (Rot);
   }
 
-cx_colvec incident_field(const double psi)
+arma::cx_colvec incident_field(const double psi)
   {
-    cx_colvec E(3);
+   arma::cx_colvec E(3);
 
     E(0) = cos(psi);
     E(1) = sin(psi);
@@ -63,8 +63,9 @@ cx_colvec incident_field(const double psi)
 // TODO
 // include in main function, but take out the calculation of fresnel coefficients with an external
 // routine, to switch between single / multiple interfaces
-cx_colvec evanescent_field(const cx_colvec& ei2p, const colvec& ki2p, const cx_colvec& ko2p, \
-                          const cx_double ni, const cx_double no)
+
+arma::cx_colvec evanescent_field(const cx_colvec& ei2p, const colvec& ki2p, \
+   const cx_colvec& ko2p,  const cx_double ni, const cx_double no)
   {
 
     cx_double i = cx_double(0,1), epsilon = cx_double(2.3e-16,0);
@@ -82,7 +83,8 @@ cx_colvec evanescent_field(const cx_colvec& ei2p, const colvec& ki2p, const cx_c
     return (eo2p);
   }
 
-colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
+// [[Rcpp::export]]
+arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
                      const double psi, const double alpha, const double w0,\
                      const double ni, const double no)
   {
@@ -96,8 +98,6 @@ colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     mat Ry(3, 3), Rz(3, 3), Rzi(3, 3);
 
     // change of variables from polar coordinates
-    // rho = sqrt(ki1(0)*ki1(0) + ki1(1)*ki1(1));
-    // theta = atan2(ki1(1),ki1(0)); // tan^(-1)(ky/kx)
     rho = rt(0); theta = rt(1);
     sx = rho * cos(theta);
     sy = rho * sin(theta);

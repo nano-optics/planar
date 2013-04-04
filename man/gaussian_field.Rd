@@ -3,8 +3,10 @@
 \title{gaussian_field}
 \usage{
   gaussian_field(x = 1, y = 1, z = 1, lambda = 500,
-    alpha = pi/2 - 15 * pi/180, psi = 0, gamma = 10,
-    np = 1.5, ns = 1)
+    alpha = 15 * pi/180, psi = 0, w0 = 10000,
+    ni = 1.5 + (0+0i), no = 1 + (0+0i),
+    cutoff = min(1, sqrt(3 * 4)/(w0 * Re(2 * pi/lambda * ni))),
+    maxEval = 300)
 }
 \arguments{
   \item{x}{position}
@@ -19,15 +21,19 @@
 
   \item{psi}{beam polarisation angle}
 
-  \item{gamma}{beam waist radius}
+  \item{w0}{beam waist radius}
 
-  \item{np}{incident medium (prism) refractive index}
+  \item{ni}{incident medium (prism) refractive index}
 
-  \item{ns}{outer medium (substrate) refractive index}
+  \item{no}{outer medium (substrate) refractive index}
+
+  \item{cutoff}{radial integration limit}
+
+  \item{maxEval}{passed to adaptIntegrate}
 }
 \value{
-  data.frame Electric field (squared modulus) at the xyz
-  position
+  data.frame Electric field (squared modulus) at the x, y,
+  z position
 }
 \description{
   Electric field from the transmission of a gaussian beam

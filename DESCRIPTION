@@ -19,6 +19,7 @@ Date: 2013-01-06
 Depends:
     methods,
     reshape2,
+    plyr,
     Rcpp (>= 0.9.5),
     RcppArmadillo (>= 0.2.3),
     statmod,
@@ -26,7 +27,6 @@ Depends:
     dielectric
 Suggests:
     ggplot2,
-    plyr,
     Hmisc,
     grid,
     gridExtra,

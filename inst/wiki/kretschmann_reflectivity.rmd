@@ -55,7 +55,7 @@ ggplot(m) +
 
 #### Variation of the parameters, and effect on the resonance
 
-We now look at the effect of changing the refractive index of the surrounding medium. First, we wrap the calculation in a function, and loop over this function with a vector of refractive indices.
+We now look at the effect of changing the thickness of the metal layer, from non-existent (single air/glass interface), to an opaque metal film. First, we wrap the calculation in a function, and loop over this function with a vector of film thicknesses.
 
 ```{r loop, fig.width=12}
 

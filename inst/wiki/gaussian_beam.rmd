@@ -1,7 +1,7 @@
 Using the angular spectrum decomposition of a gaussian beam in a bundle of plane waves, the near-field profile is calculated on the transmitted side of an interface illuminated under total internal reflection.
 
 ```{r , echo=FALSE,results='hide'}
-opts_chunk$set(fig.path="sensing/",
+opts_chunk$set(fig.path="gaussian/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
@@ -21,7 +21,8 @@ alpha <- 70*pi/180 # incident angle
 
 ```{r depth}
 xyz <- as.matrix(expand.grid(x=seq(5e3,5e4,length=10), y=0, z=seq(1, 500, length=50)))
-res <- adply(xyz, 1, gaussian_field, lambda=500, w0=w0, ni=1.5+0i, alpha=alpha)
+res <- adply(xyz, 1, gaussian_field, 
+             lambda=500, w0=w0, ni=1.5+0i, alpha=alpha, maxEval=500)
 xyz <- data.frame(xyz, field=res[[2]])
 ggplot(xyz, aes(z, field, colour=x, group=x))+
   geom_line()

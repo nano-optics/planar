@@ -1,8 +1,7 @@
-The Kretschmann configuration is commonly used for _sensing applications_: the sharp resonance associated with the excitation of SPPs at the metal/dielectric interface is strongly sensitive about the refractive index of the dielectric medium. 
-Furthermore, because SPPs are associated with a exponential decay of the electric field in the surrounding medium, the technique provides a surface-sensitive, sub-wavelength, probe.
+Local field enhancement factors for a dipole near or inside a multilayer
 
 ```{r , echo=FALSE,results='hide'}
-opts_chunk$set(fig.path="sensing/",
+opts_chunk$set(fig.path="internalfield/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
@@ -14,78 +13,31 @@ theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 library(planar)
 library(ggplot2)
 require(reshape2)
-library(gridExtra)
 require(plyr)
-
-wvl <- 632.8
-gold <- epsAu(wvl)
 ```
 
-We define a function to model our system with the parameters of interest: a semi-infinite incident medium (glass), a 50nm gold film, a thin layer of varying thickness and refractive index, and a semi-infinite dielectric medium of varying refractive index.
 
 ```{r simulation}
-simulation <- function(thickness = 0, n1 = n2, n2 = 1.0){
-  results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, n1^2, n2^2),
-                                lambda=gold$wavelength, thickness=c(0, 50, thickness, 0),
-                                theta=seq(0, pi/2, length=2e3), polarisation='p')
-  data.frame(results[c("theta", "R")])
-}
-```
-
-### Variation of the bulk medium
-
-```{r loop, fig.width=12}
-
-## loop over parameters
-parameters <- function(res=10) 
-  data.frame(n2 = seq(1.0, 1.5, length=res))
-
-d1 <- mdply(parameters(10), simulation)
-d2 <- mdply(parameters(300), simulation)
-
-p1 <- 
-ggplot(d1) +
-  geom_line(aes(theta*180/pi, R, colour=n2, group=n2)) +
-  scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) +
-  guides(colour=guide_legend())
-
-## colour map
-p2 <- 
-ggplot(d2) +
-  geom_raster(aes(theta*180/pi, n2, fill=R)) +
-  scale_y_continuous("n", expand=c(0,0))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) 
-
-grid.arrange(p1, p2, nrow=1)
+m <- field_profile(lambda=633, theta=44*pi/180,polarisation='p',
+                          thickness = c(0, 50, 0), dmax=400, res=5000,
+                          epsilon=list(1.5^2, -12+1i, 1.0^2),displacement=TRUE)
 ```
 
 
-### Local sensitivity
+```{r plot, fig.width=12}
 
-We now look at the effect of changing the refractive index of a thin layer, of varying thickness.
+limits <- ddply(m, .(L1), summarize, 
+                xmin=min(x), xmax=max(x), ymin=-Inf, ymax=Inf)
 
-
-```{r variation}
-
-## loop over parameters
-parameters <- function(res=10) 
-  expand.grid(thickness = c(10, 50, 100, 400),
-              n1 = seq(1.0, 1.5, length=res))
-
-d1 <- mdply(parameters(10), simulation, n2=1.0)
-
-p1 <- 
-ggplot(d1) + facet_grid(thickness ~ . , scales = "free") + 
-  geom_line(aes(theta*180/pi, R, colour=n1, group=n1)) +
-  scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) +
-  guides(colour=guide_legend()) +
-  theme(panel.margin = unit(1, "lines"))
-
-p1
+  ggplot(m) +
+  facet_grid(variable~., scales="free")+
+  geom_rect(aes(xmin=xmin, ymin=ymin, xmax=xmax, ymax=ymax, fill=factor(L1)),     data=limits, alpha=0.2) +
+  geom_path(aes(x, value, colour=factor(L1))) +
+  scale_x_continuous("x /nm",expand=c(0,0)) +
+  scale_y_continuous("LFIEF",expand=c(0,0)) +
+  geom_hline(yintercept=0) +
+  scale_colour_brewer("", palette="Set1")+
+  scale_fill_brewer("", palette="Pastel1") +
+  theme_minimal()
 
 ```

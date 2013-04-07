@@ -1,63 +1,46 @@
-In this example we define a dimer of nanorods,  model its optical response to linearly polarised light at fixed incidence, and orientation-averaged optical activity.
+Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters
+the structure is a stack of lambda/4 layers of indices nH and nL on a glass substrate with increasing number of layers, the reflectivity stop-band becomes stronger
 
-```{r load,message=FALSE}
-library(cda)
-library(rgl)
+```{r , echo=FALSE,results='hide'}
+opts_chunk$set(fig.path="bragg/",
+               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
+theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 ```
-```{r setup,echo=FALSE}
-knit_hooks$set(rgl = function(before, options, envir) {
-  # if a device was opened before this chunk, close it
-  if (before && rgl.cur() > 0) rgl.close()
-  hook_rgl(before, options, envir)
-})
-rgl_annotate = function(){
-  axes3d( labels = FALSE, tick = FALSE, edges=c("x", "y", "z") )
-axis3d(labels = FALSE, tick = FALSE, 'x',pos=c(NA, 0, 0))
-axis3d(labels = FALSE, tick = FALSE, 'y',pos=c(0, NA, 0))
-axis3d(labels = FALSE, tick = FALSE, 'z',pos=c(0, 0, NA))
-title3d('','','x axis','y axis','z axis')
+
+#### Setting up
+
+```{r , results='hide'}
+library(planar)
+library(ggplot2)
+require(reshape2)
+require(plyr)
+
+makeStack <- function(n = 3, lambda=seq(200, 1000),
+                      lambda0 = 460, thickness = lambda0/4, 
+                      nH=2.3, nL=1.38, nS=1.52,
+                      angle=0){
+
+  epsilon.list <- c(1, rep(c(nL, nH)^2, n), nS)
+  thickness.list <- c(0, rep(thickness/c(nL, nH), n), 0)
+  
+  params <- list(epsilon=as.list(epsilon.list),
+                 lambda=lambda, thickness=thickness.list,
+                 theta=angle*pi/180, polarisation='p')
+  
+  data.frame(do.call(recursive_fresnelcpp, params))
 }
-theme_set(theme_minimal())
 ```
 
-### Manually defining a cluster
-```{r cluster, rgl=TRUE,echo=-12,tidy=FALSE,fig.width=3,fig.height=3,fig.path="basic-"}
+```{r simulation}
 
-# dielectric function
-wvl <- seq(400, 900)
-gold <- epsAu(wvl)
+params <- expand.grid(n=seq(5,20,by=2), angle=seq(0,60, by=30))
+all <- mdply(params, makeStack)
 
-# define a cluster of particles
-cl <- list(r = rbind(c(0, 0, 0),
-                      c(0, 0, 200)),
-            angles = rbind(c(0, 0, 0),
-                           c(pi/4, 0, 0)),
-            sizes = rbind(c(40, 20, 20),
-                          c(40, 20, 20)))
-
-# visualise
-rgl.ellipsoids(cl$r, cl$sizes, cl$angles, col="gold")
-rgl.viewpoint( theta = 0, phi = 20, fov = 70, zoom = 1)
-rgl_annotate()
-
-```
-# calculate extinction, absorption, scattering of linearly polarised light at fixed incidence
-
-```{r linear,echo=TRUE,tidy=FALSE,fig.path="basic-"}
-# calculate extinction spectrum at fixed incidence
-
-linear <- linear_extinction_spectrum(cl, gold)
-ggplot(linear, aes(wavelength, value, color=variable)) + geom_path()
-
-```
-
-# calculate orientation-averaged optical activity
-
-```{r oa,echo=TRUE,tidy=FALSE,fig.path="basic-",fig.width=8}
-circular <- circular_dichroism_spectrum(cl, gold)
-
-ggplot(circular, aes(wavelength, value, color=variable)) + 
-  facet_grid(type~variable, scales="free") + geom_path()
+ggplot(all)+ facet_grid(angle~.)+
+  geom_line(aes(2*pi/k0, R, colour=n, group=n))+
+  labs(colour="layers") +
+  scale_x_continuous("wavelength /nm")+
+  scale_y_continuous("Reflectivity", expand=c(0,0), lim=c(0,1))
 
 ```

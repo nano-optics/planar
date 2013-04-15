@@ -1,44 +1,70 @@
 planar 1.3
 
+USER VISIBLE CHANGES:
+
 * cleanup function names
 
-* depends on dielectric
+* depends on dielectric (0.2.2)
 
-* cleanup wiki and demos
+NEW FUNCTIONALITY:
 
 * added gaussian module for gaussian beam calculations
 
+DOCUMENTATION:
+
+* vignettes using knitr
+
+* cleanup wiki and demos
+
 planar 1.2.5 (2013-01-06)
+
+DOCUMENTATION:
 
 * wiki added
 
 * cleanup demos
 
+INTERNAL CHANGES:
+
 * misc updates to clean up package
+
+USER VISIBLE CHANGES:
 
 * units are in nm
 
 planar 1.2.4 (2012-09-19)
 
+BUG FIX:
+
 * ggplot2 compatibility
 
 planar 1.2.3 (2012-07-14)
+
+BUG FIX:
 
 * fixed demos
 
 planar 1.2.2 (2012-07-05)
 
+BUG FIX:
+
 * fixed demos, vignette, and misc code arguments
 
 planar 1.2.1 (2012-05-15) 
+
+BUG FIX:
 
 * fixed bugs for ggplot2-0.9.1
 
 planar 1.2 (2012-02-07) 
 
+BUG FIX:
+
 * fixed bugs for ggplot2-0.9.0
 
 planar 1.1	(2011-07-30)
+
+BUG FIX:
 
 * revert to plain ascii text
 

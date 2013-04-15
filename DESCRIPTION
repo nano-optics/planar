@@ -13,7 +13,7 @@ Description: Solves the electromagnetic problem of reflection and transmission
     computed are the decay rates and emission profile for a dipolar emitter
     near a multilayer structure.
 SystemRequirements: GNU make
-Version: 1.2.5
+Version: 1.3
 BuildVignettes: false
 Date: 2013-01-06
 Depends:
@@ -30,7 +30,8 @@ Suggests:
     Hmisc,
     grid,
     gridExtra,
-    lattice
+    lattice,
+    knitr
 RcppModules: planar, gaussian
 Encoding: UTF-8
 Collate:

@@ -24,7 +24,7 @@ Depends:
     RcppArmadillo (>= 0.2.3),
     statmod,
     cubature,
-    dielectric
+    dielectric (>=0.2.2)
 Suggests:
     ggplot2,
     Hmisc,

@@ -1,5 +1,5 @@
-Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters
-the structure is a stack of lambda/4 layers of indices nH and nL on a glass substrate with increasing number of layers, the reflectivity stop-band becomes stronger
+Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters.
+The structure is a stack of lambda/4 layers of alternating indices nH (high) and nL (low) on a glass substrate. 
 
 ```{r , echo=FALSE,results='hide'}
 opts_chunk$set(fig.path="bragg/",
@@ -31,6 +31,7 @@ makeStack <- function(n = 3, lambda=seq(200, 1000),
   data.frame(do.call(recursive_fresnelcpp, params))
 }
 ```
+With increasing number of layers, the reflectivity stop-band becomes stronger, with a more rectangular transfer function. Side-bands also develop accordingly, however, with higher and higher frequency.
 
 ```{r simulation}
 

@@ -10,6 +10,7 @@
 ##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(lambda)
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
 ##' @param d vector of distances where LFIEF are evaluated from each interface
+##' @param d vector of distances where LFIEF are evaluated outside the stack
 ##' @param polarisation [character] switch between p- and s- polarisation
 ##' @return fresnel coefficients and field profiles
 ##' @author baptiste Auguie
@@ -23,7 +24,7 @@
 multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
                        theta = NULL, q = sin(theta),
                        epsilon = list(incident=1.5^2, 1.33),
-                       thickness = c(0, 0), d = 1,
+                       thickness = c(0, 0), d = 1, dout=d,
                        polarisation = c('p', 's')){
 
   ## checks
@@ -94,7 +95,7 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
   sampling <- lapply(thickness, function(t) {
     d[d<=t]
   })
-  sampling[[1]] <- sampling[[length(sampling)]] <- d # outside of the stack
+  sampling[[1]] <- sampling[[length(sampling)]] <- dout # outside of the stack
     
   ## enhancement factors, default to 0
   sizes <- lapply(sampling, length)
@@ -109,7 +110,7 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
   interfaces <- cumsum(thickness)[-length(thickness)]
     
   distance <- list()
-  distance[[1]] <- -d
+  distance[[1]] <- -dout
   
   
   #####################
@@ -275,14 +276,15 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' 
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 field_profile <- function(lambda=500, theta=0, polarisation='p',
-                          thickness = c(0, 20, 140, 20, 0), dmax=200,  res=1e3,
+                          thickness = c(0, 20, 140, 20, 0), 
+                          dmax=200,  res=1e3, 
                           epsilon=list(1^2, -12 , 1.38^2, -12 , 1.46^2), displacement=FALSE, ...){
   
-  d <- seq(0, max(c(dmax,thickness)), length=res)
-  
+  d <- seq(0, max(thickness), length=res)
+  dout <- seq(0, dmax, length=res)
   res <- multilayer(lambda=lambda, theta=theta,
                     epsilon=epsilon,
-                    thickness = thickness, d=d,
+                    thickness = thickness, d=d, dout=dout,
                     polarisation=polarisation, ...)
   
   #   loop over 2nd to last interface

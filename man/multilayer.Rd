@@ -5,7 +5,8 @@
   multilayer(lambda = NULL, k0 = 2 * pi/lambda,
     theta = NULL, q = sin(theta),
     epsilon = list(incident = 1.5^2, 1.33),
-    thickness = c(0, 0), d = 1, polarisation = c("p", "s"))
+    thickness = c(0, 0), d = 1, dout = d,
+    polarisation = c("p", "s"))
 }
 \arguments{
   \item{lambda}{[vector] wavelength in nm}
@@ -25,6 +26,9 @@
 
   \item{d}{vector of distances where LFIEF are evaluated
   from each interface}
+
+  \item{d}{vector of distances where LFIEF are evaluated
+  outside the stack}
 
   \item{polarisation}{[character] switch between p- and s-
   polarisation}

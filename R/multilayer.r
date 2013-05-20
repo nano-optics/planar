@@ -10,9 +10,10 @@
 ##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(lambda)
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
 ##' @param d vector of distances where LFIEF are evaluated from each interface
-##' @param d vector of distances where LFIEF are evaluated outside the stack
+##' @param dout vector of distances where LFIEF are evaluated outside the stack
 ##' @param polarisation [character] switch between p- and s- polarisation
 ##' @return fresnel coefficients and field profiles
+##' @param ... unused
 ##' @author baptiste Auguie
 ##' @references
 ##' Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
@@ -24,8 +25,9 @@
 multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
                        theta = NULL, q = sin(theta),
                        epsilon = list(incident=1.5^2, 1.33),
-                       thickness = c(0, 0), d = 1, dout=d,
-                       polarisation = c('p', 's')){
+                       thickness = c(0, 0), 
+                       polarisation = c('p', 's'),
+                       d = 1, dout=d, ...){
 
   ## checks
   stopifnot(thickness[1]==0L, thickness[length(thickness)]==0L)
@@ -244,11 +246,20 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
  
     fields <- list(Eiy.E1y=Eiy.E1y, Epiy.E1y=Epiy.E1y)
   }  # end swich polarisation
-
-
+  
+  # careful: t this was calculated for H fields...
+  impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
+  
+  if(polarisation == 'p') #p 
+    transmission <- transmission * sqrt(impedance.ratio) else
+      transmission <- transmission / sqrt(impedance.ratio) 
+  
+  R <- Mod(reflection)^2
+  Tt <- Mod(transmission)^2
+  
   ## results
   list(k0 = k0, q=q, reflection=reflection, transmission=transmission,
-       R=Mod(reflection)^2, T=Mod(transmission)^2,
+       R=R, T=Tt, A = 1 - R - Tt,
        dist=distance, fields = fields,
        Ml.perp=lapply(Ml.perp, drop), Ml.par=lapply(Ml.par, drop),
        Mr.perp=lapply(Mr.perp, drop), Mr.par=lapply(Mr.par, drop))
@@ -264,6 +275,7 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' @param dmax maximum distance to interface, if > layer thickness
 ##' @param thickness vector of layer thickness
 ##' @param res resolution of sampling points
+##' @param res2 resolution of sampling points outside stack
 ##' @param epsilon list of permittivities
 ##' @param polarisation polarisation
 ##' @param displacement logical, Mperp corresponds to displacement squared (D=epsilon x E)
@@ -277,11 +289,12 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 field_profile <- function(lambda=500, theta=0, polarisation='p',
                           thickness = c(0, 20, 140, 20, 0), 
-                          dmax=200,  res=1e3, 
-                          epsilon=list(1^2, -12 , 1.38^2, -12 , 1.46^2), displacement=FALSE, ...){
+                          dmax=200,  res=1e3, res2=res/10,
+                          epsilon=list(1^2, -12 , 1.38^2, -12 , 1.46^2), 
+                          displacement=FALSE, ...){
   
   d <- seq(0, max(thickness), length=res)
-  dout <- seq(0, dmax, length=res)
+  dout <- seq(0, dmax, length=res2)
   res <- multilayer(lambda=lambda, theta=theta,
                     epsilon=epsilon,
                     thickness = thickness, d=d, dout=dout,
@@ -321,7 +334,7 @@ invert_stack <- function(p){
 ##' Multilayer Fresnel coefficients
 ##'
 ##' solves the EM problem of a multilayered interface
-##' @title multilayer2
+##' @title multilayercpp
 ##' @export
 ##' @param lambda [vector] wavelength in nm
 ##' @param k0 [vector] wavevector in nm^-1
@@ -330,6 +343,7 @@ invert_stack <- function(p){
 ##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(lambda)
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
 ##' @param polarisation [character] switch between p- and s- polarisation
+##' @param ... unused
 ##' @return fresnel coefficients and field profiles
 ##' @author baptiste Auguie
 ##' @examples
@@ -339,18 +353,20 @@ multilayercpp <- function(lambda = NULL, k0 = 2*pi/lambda,
                        theta = NULL, q = sin(theta),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0),
-                       polarisation = c('p', 's')){
+                       polarisation = c('p', 's'), ...){
 
   
   kx <- outer(k0*sqrt(epsilon[[1]]), q) # kx = q*k0
   epsilon = do.call(cbind, epsilon)
   polarisation = if(polarisation == "p") 0L else 1L
-
+  
+  Nlayer <- length(thickness)
+  
   ## checks
   stopifnot(thickness[1]==0L,
-            thickness[length(thickness)]==0L)
+            thickness[Nlayer]==0L)
   
-  stopifnot(length(thickness) == ncol(epsilon),
+  stopifnot(Nlayer == ncol(epsilon),
             nrow(epsilon) == length(k0),
             nrow(kx) == length(k0),
             ncol(kx) == length(q))
@@ -359,7 +375,25 @@ multilayercpp <- function(lambda = NULL, k0 = 2*pi/lambda,
   res <- planar$multilayer(as.vector(k0), as.matrix(kx), as.matrix(epsilon),
                            as.vector(thickness), as.integer(polarisation))
   
-  list(k0 = k0, theta=theta, q=q, reflection=drop(res$reflection), transmission=drop(res$transmission),
-       R=Mod(drop(res$reflection))^2, T=Mod(drop(res$transmission))^2)
+  
+  
+  trans <- drop(res$transmission)
+  refl <- drop(res$reflection)
+  
+  # careful: t this was calculated for H fields...
+  impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
+  
+  if(polarisation == 0L) #p 
+    trans <- trans * sqrt(impedance.ratio) else
+      trans <- trans / sqrt(impedance.ratio) 
+  
+  R <- Mod(refl)^2
+  Tt <- Mod(trans)^2
+  
+  A <- 1 - R - Tt
+  
+  list(k0 = k0, theta=theta, q=q, 
+       reflection=refl, transmission=trans,
+       R=R, T=Tt, A=A)
 }
 

@@ -89,13 +89,23 @@ recursive_fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
     }
   }
   
- 
+  impedance.ratio <- sqrt(epsilon[[1]]) / sqrt(epsilon[[Nlayer]])
+
+  trans <- t.tmp[,,1] 
+  refl <- r.tmp[,,1]
+  
+  if(polarisation == 'p') 
+    trans <- trans * sqrt(impedance.ratio) else
+      trans <- trans / sqrt(impedance.ratio) 
+  
+  R <- Mod(refl)^2
+  Tt <- Mod(trans)^2
   
   list(wavelength=lambda, k0=k0, q=q,
-       reflection=r.tmp[,,1], transmission=t.tmp[,,1],
-       R=Mod(r.tmp[,,1])^2, T=Mod(t.tmp[,,1])^2)
-  
-  
+       reflection=refl, 
+       transmission=trans, 
+       R=R, T=Tt, A = 1 - R - Tt)
+   
 }
 
 ##' Multilayer Fresnel coefficients
@@ -123,21 +133,26 @@ recursive_fresnelcpp <- function(lambda = NULL, k0 = 2*pi/lambda,
   
   kx <- outer(k0*sqrt(epsilon[[1]]), q) # kx = q*k0
   epsilon = do.call(cbind, epsilon)
+  
+  Nlayer <- length(thickness)
+  
   ## case pure scalars
   if(nrow(epsilon) == 1L)
-    epsilon <- matrix(epsilon, nrow=length(k0), ncol=length(thickness), byrow=TRUE)
+    epsilon <- matrix(epsilon, nrow=length(k0), ncol=Nlayer, byrow=TRUE)
   
   polarisation = if(polarisation == "p") 0L else 1L
 
   ## checks
   stopifnot(thickness[1]==0L,
-            thickness[length(thickness)]==0L)
+            thickness[Nlayer]==0L)
   
-  stopifnot(length(thickness) == ncol(epsilon),
+  
+  stopifnot(Nlayer == ncol(epsilon),
             nrow(epsilon) == length(k0),
             nrow(kx) == length(k0),
             ncol(kx) == length(q))
-
+  
+  
   ## call the C++ function
   res <- planar$recursive_fresnel(as.vector(k0),
                                   as.matrix(kx),
@@ -145,9 +160,20 @@ recursive_fresnelcpp <- function(lambda = NULL, k0 = 2*pi/lambda,
                                   as.vector(thickness),
                                   as.integer(polarisation))
   
+  trans <- drop(res$transmission)
+  refl <- drop(res$reflection)
+  
+  impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
+  
+  if(polarisation == 0L) #p 
+    trans <- trans * sqrt(impedance.ratio) else
+      trans <- trans / sqrt(impedance.ratio) 
+  
+  R <- Mod(refl)^2
+  Tt <- Mod(trans)^2
+  
   list(k0 = k0, theta=theta, q=q,
-       reflection=drop(res$reflection), 
-       transmission=drop(res$transmission), 
-       R=Mod(drop(res$reflection))^2,
-       T=Mod(drop(res$transmission))^2)
+       reflection=refl, 
+       transmission=trans, 
+       R=R, T=Tt, A = 1 - R - Tt)
 }

@@ -4,7 +4,7 @@
 \usage{
   field_profile(lambda = 500, theta = 0,
     polarisation = "p", thickness = c(0, 20, 140, 20, 0),
-    dmax = 200, res = 1000,
+    dmax = 200, res = 1000, res2 = res/10,
     epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2),
     displacement = FALSE, ...)
 }
@@ -19,6 +19,8 @@
   \item{thickness}{vector of layer thickness}
 
   \item{res}{resolution of sampling points}
+
+  \item{res2}{resolution of sampling points outside stack}
 
   \item{epsilon}{list of permittivities}
 

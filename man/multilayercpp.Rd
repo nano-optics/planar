@@ -1,11 +1,11 @@
 \name{multilayercpp}
 \alias{multilayercpp}
-\title{multilayer2}
+\title{multilayercpp}
 \usage{
   multilayercpp(lambda = NULL, k0 = 2 * pi/lambda,
     theta = NULL, q = sin(theta),
     epsilon = list(incident = 1.5^2, 1.33),
-    thickness = c(0, 0), polarisation = c("p", "s"))
+    thickness = c(0, 0), polarisation = c("p", "s"), ...)
 }
 \arguments{
   \item{lambda}{[vector] wavelength in nm}
@@ -25,6 +25,8 @@
 
   \item{polarisation}{[character] switch between p- and s-
   polarisation}
+
+  \item{...}{unused}
 }
 \value{
   fresnel coefficients and field profiles

@@ -1,0 +1,26 @@
+## SCARY normalisation factors when impedance mismatch between incident and outgoing media
+## this seems to work now
+
+library(planar)
+stackp <- list(epsilon=list(1.0, rep(1,2), 1.5),
+               lambda=c(500, 550), 
+               thickness=c(0, 200, 0),
+               theta=0*pi/180, polarisation='p')
+
+stacks <- modifyList(stackp, list(polarisation="s"))
+
+simul <- function(stack){
+  
+  res <- data.frame(do.call(multilayer, stack)[1:6])
+  #   res <- data.frame(do.call(multilayercpp, stack))
+  #   res <- data.frame(do.call(recursive_fresnelcpp, stack))
+  res$T2 <- 1 - res$R
+  res
+}
+
+test <- simul(stackp)
+test2 <- simul(stacks)
+
+with(test, matplot(k0, cbind(T,T2, test2$T), t="p",col=1))
+# with(test, points(k0, T2, t="p"))
+with(test2, points(k0, T, t="p",col="red", pch="+"))

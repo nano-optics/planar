@@ -6,3 +6,13 @@ ENHANCEMENTS
 NEW FEATURES
 
 * field profile under gaussian beam illumination (reflection and transmission)
+
+CLEANUP
+
+* variable names consistency (lambda, theta)
+
+* simplify demos
+
+* check the derivation of fresnel coeffs for T, turn doc into vignette
+
+* write up the matrix transfer method

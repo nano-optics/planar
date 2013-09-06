@@ -258,7 +258,8 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
   Tt <- Mod(transmission)^2
   
   ## results
-  list(k0 = k0, q=q, reflection=reflection, transmission=transmission,
+  list(wavelength=lambda, k0 = k0, theta=theta, q=q, 
+       reflection=reflection, transmission=transmission,
        R=R, T=Tt, A = 1 - R - Tt,
        dist=distance, fields = fields,
        Ml.perp=lapply(Ml.perp, drop), Ml.par=lapply(Ml.par, drop),
@@ -392,7 +393,7 @@ multilayercpp <- function(lambda = NULL, k0 = 2*pi/lambda,
   
   A <- 1 - R - Tt
   
-  list(k0 = k0, theta=theta, q=q, 
+  list(wavelength=lambda, k0 = k0, theta=theta, q=q, 
        reflection=refl, transmission=trans,
        R=R, T=Tt, A=A)
 }

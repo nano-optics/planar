@@ -2,9 +2,14 @@
 ## this seems to work now
 
 library(planar)
-stackp <- list(epsilon=list(1.0, rep(1,2), 1.5),
+stackp <- list(epsilon=list(1.2, rep(1,2), 1.5),
                lambda=c(500, 550), 
                thickness=c(0, 200, 0),
+               theta=0*pi/180, polarisation='p')
+
+stackp <- list(epsilon=list(1.5^2, (0.2+1i)^2, 1.3^2),
+               lambda=c(500), 
+               thickness=c(0, 50, 0),
                theta=0*pi/180, polarisation='p')
 
 stacks <- modifyList(stackp, list(polarisation="s"))

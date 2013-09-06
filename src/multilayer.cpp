@@ -177,7 +177,7 @@ Rcpp::List recursive_fresnel(const arma::colvec& k0,			\
 
   arma::cx_cube rsingle = 0*arma::ones<arma::cx_cube>(Nlambda, Ntheta, Nsurface), tsingle=rsingle;
   arma::cx_cube phase1 = arma::ones<arma::cx_cube>(Nlambda, Ntheta, Nlayer), phase2 = phase1;
-  arma::cx_mat a = arma::cx_mat(Nlambda, Ntheta), b=a;
+  arma::cx_mat a = arma::cx_mat(Nlambda, Ntheta), b=a, r=a, t=a;
 
   // loop over interfaces
   for (ii = 0; ii < Nsurface; ii++){
@@ -200,30 +200,28 @@ Rcpp::List recursive_fresnel(const arma::colvec& k0,			\
     phase1.slice(ii) =  exp(arma::cx_double(0,1)*thickness(ii)*kiz.slice(ii));
    
  }
-  // now recursion, r.tmp is the combined reflection
-  // {r12, 23, ...}, then {r13, r24, ...}
-  // finally {r1N}
-  // starting from rsingle
 
-  arma::cx_cube r = rsingle;
-  arma::cx_cube t = tsingle;
+  // now recursion, r.tmp is the combined reflection from last layer
+  // r_{N-1,N}, then r_{N-2,N}, ... finally r_{1N}
+  // starting from last rsingle
 
-  int jj=0;
-  for (ii = 1; ii < Nsurface; ii++){
-    for (jj = 0; jj < Nlayer - ii - 1; jj++){
-      // cout << "ii=" << ii << ",jj=" << jj << "\n";
-      r.slice(jj)  = (rsingle.slice(jj) + r.slice(jj+1)%phase2.slice(jj+1) ) / \
-  	             (1 + rsingle.slice(jj)%r.slice(jj+1)%phase2.slice(jj+1));
-      t.slice(jj)  = (tsingle.slice(jj) % t.slice(jj+1)%phase1.slice(jj+1) ) / \
-  	             (1 + rsingle.slice(jj)%r.slice(jj+1)%phase2.slice(jj+1));
-    }
+  r = rsingle.slice(Nsurface - 1);
+  t =  tsingle.slice(Nsurface - 1);
+
+  for (ii = Nsurface - 2; ii >= 0; ii--){
+    //    std::cout << "ii=" << ii << "\n";
+      r = (rsingle.slice(ii) + r % phase2.slice(ii+1) ) / \
+  	  (1 + rsingle.slice(ii) % r % phase2.slice(ii+1));
+      t = (tsingle.slice(ii) % t % phase1.slice(ii+1) ) / \
+  	  (1 + rsingle.slice(ii) % r % phase2.slice(ii+1));
   }
+  
   
   
 
   return List::create( 
-		      _["reflection"]  = r.slice(0),
-		      _["transmission"]  = t.slice(0)
+		      _["reflection"]  = r,
+		      _["transmission"]  = t
  ) ;
 
 }

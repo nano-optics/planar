@@ -1,14 +1,11 @@
-
 \documentclass[a4paper,11pt]{article}
 
 \usepackage{graphicx}
 \usepackage{hyperref}         
 \usepackage[english,UKenglish]{babel}
-\usepackage{sistyle}
-\usepackage{enumitem}
 
 \usepackage{amsmath,amssymb}% AMS standards
-\usepackage[adobe-utopia]{mathdesign}
+%\usepackage[adobe-utopia]{mathdesign}
 \usepackage{fontspec,xltxtra,xunicode}
 
 \defaultfontfeatures{Mapping=tex-text}
@@ -16,11 +13,11 @@
 \renewcommand{\rmdefault}{Minion Pro}
 \setmainfont[Mapping=tex-text,Numbers=Lowercase]{Minion Pro}
 \setromanfont[Mapping=tex-text]{Minion Pro}
-\setsansfont[Mapping=tex-text,Scale=MatchLowercase, Color=6C6C6C]{Myriad Pro}
+\setsansfont[Mapping=tex-text,Scale=MatchLowercase]{Myriad Pro}
 \setmonofont[Scale=MatchLowercase]{Andale Mono}
 
-\newcommand{\mtdefault}{\rmdefault}
-\usepackage[medium,sf]{titlesec}   
+%\newcommand{\mtdefault}{\rmdefault}
+\usepackage[compact]{titlesec}  
 \hbadness=10000
 \hfuzz=50pt
 \setcounter{totalnumber}{50}
@@ -28,8 +25,6 @@
 \setcounter{bottomnumber}{50}    
 \usepackage[margin=3cm,bottom=3cm,nohead]{geometry}
 
-
-\input{../symbols.tex}
 \author{Baptiste Augui\'e}
 \title{Fresnel formul\ae}      
  
@@ -48,7 +43,7 @@ Let us consider the situation depicted in figure~\ref{fig:interface},
 % 
 where we define the Fresnel coefficients as the ratio of the complex \emph{amplitude} of the \emph{electric} fields, $r= E_r/E_i$ for the reflection coefficient, and $t= E_t/E_i$ for the transmission coefficient. The Fresnel coefficients can be obtained by considering the continuity of the tangential component of the $E$ and $H$ fields at the interface. The continuity of the normal components of $D$ and $B$ does not yield supplementary conditions and will not be considered. It is worth noting that the continuity of $H^y$ is only valid for materials that do not sustain a surface current resulting from the addition of external charges. 
 
-\subsection{TE-polarised light} % (fold)
+\subsection{TE-polarised light} 
 \label{sub:te_polarised_light}
 For TE-polarised light, the continuity of $E^y$ reads,
 \[
@@ -56,7 +51,7 @@ E_i + E_r  = E_t
 \]
 which yields,
 \begin{equation}
-	1+r =t.
+  1+r =t.
 \label{eq:rt1}
 \end{equation}
 The continuity of $H^y$ can be written as,
@@ -70,15 +65,15 @@ It is convenient to express the angles in terms of the normal component of the $
 \end{equation}
 for the incident, reflected, and refracted fields, so that $\cos\theta_t / \cos\theta_i=\dfrac{k_{z2}n_1}{k_{z1}n_2}$. The complex magnitude of the magnetic and electric fields are linked in each medium by the optical impedance. Its expression can be obtained from the induction law,
 \[
-\nabla\times \bE = -\partial_t \bB
+\nabla\times\mathbf{E} = -\partial_t \mathbf{B}
 \]
 expressed in Fourier space\footnote{assuming here a homogeneous plane wave} as,
 \[
-\bk\times \bE = i\omega \bB
+\mathbf{k}\times \mathbf{E} = i\omega \mathbf{B}
 \]
 The ratio $E/H$ is the impedance, written as,
 \begin{equation}
-	\frac{E}{H}= c \mu \mu_0 / n= \sqrt{\frac{\mu\mu_0}{\veps\veps_0}}=Z\cdot Z_0.
+  \frac{E}{H}= c \mu \mu_0 / n= \sqrt{\frac{\mu\mu_0}{\varepsilon\varepsilon_0}}=Z\cdot Z_0.
 \label{eq:impedance}
 \end{equation}
 We can define the admittance $Y$ as the inverse impedance, $Y=\dfrac{1}{Z\cdot Z_0}$
@@ -96,7 +91,7 @@ We can summarize the two continuity relations in the following system,
 \begin{equation*} \left\{
 \begin{aligned}
 1 + r &= t\\
-1 - r &= \frac{\mu_1k_{z2}}{\mu_2k_{z1}}t
+1 - r &= \frac{\mu_1 k_{z2}}{\mu_2 k_{z1}}t
 \end{aligned}\right.
 \end{equation*}
 Solving for $r$ and $t$ yields the result,
@@ -105,7 +100,7 @@ t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}},\qquad r_{12}^s=\frac{\m
 \label{eq:fresnels}
 \end{equation}
 
-\subsection{TM-polarised light} % (fold)
+\subsection{TM-polarised light} 
 \label{sub:tm_polarised_light}
 For TM-polarised light, the continuity of $H^y$ reads,
 \[
@@ -113,12 +108,12 @@ Y_1 (1 - r) = Y_2 t
 \]
 rewritten as,
 \begin{equation}
-	1 - r =\sqrt{\frac{\mu_1\veps_2}{\mu_2\veps_1}}\cdot t.
+  1 - r =\sqrt{\frac{\mu_1\varepsilon_2}{\mu_2\varepsilon_1}}\cdot t.
 \label{eq:rt3}
 \end{equation}
 Note that in the case of normal incidence, we can combine equation~\ref{eq:rt1} and equation~\ref{eq:rt3}, 
 \[
-t_{12} = \frac{2\sqrt{\mu_2\veps_1}}{\sqrt{\mu_2\veps_1}+\sqrt{\mu_1\veps_2}}, \qquad r_{12}=\frac{\sqrt{\mu_2\veps_1}-\sqrt{\mu_1\veps_2}}{\sqrt{\mu_1\veps_2}+\sqrt{\mu_2\veps_1}}.
+t_{12} = \frac{2\sqrt{\mu_2\varepsilon_1}}{\sqrt{\mu_2\varepsilon_1}+\sqrt{\mu_1\varepsilon_2}}, \qquad r_{12}=\frac{\sqrt{\mu_2\varepsilon_1}-\sqrt{\mu_1\varepsilon_2}}{\sqrt{\mu_1\varepsilon_2}+\sqrt{\mu_2\varepsilon_1}}.
 \]
 The continuity of $E^y$ can be written,
 \[
@@ -133,7 +128,7 @@ We can summarize the two continuity relations in the following system,
 
 \begin{equation*} \left\{
 \begin{aligned}
-1 - r &=\sqrt{\frac{\mu_1\veps_2}{\mu_2\veps_1}}t\\
+1 - r &=\sqrt{\frac{\mu_1\varepsilon_2}{\mu_2\varepsilon_1}}t\\
 1 + r &=\frac{n_1k_{z2}}{n_2k_{z1}}t
 \end{aligned}\right.
 \end{equation*}
@@ -161,13 +156,12 @@ Note that,
 \end{equation}
 To verify the conservation of energy, one must consider the irradiance defined in terms of the electric field as $I=\addfontfeature{Fractions=On}\text{1⁄2}Y|E|^2$, yielding,
 \begin{equation}
-	R=\frac{I_r}{I_i}=|r|^2, \qquad T=\frac{I_t}{I_i}=\frac{Y_1}{Y_2}|t|^2.
+  R=\frac{I_r}{I_i}=|r|^2, \qquad T=\frac{I_t}{I_i}=\frac{Y_1}{Y_2}|t|^2.
 \label{eq:irradiance}
 \end{equation}
 and we can verify that, indeed, $R+T=1$ for a single interface.
-% subsection tm_polarised_light (end)
 
-\section{Reflectivity of a layer} % (fold)
+\section{Reflectivity of a layer}
 \label{sec:two_interfaces}
 % 
 From the viewpoint of ray optics, a thin layer will support an infinite number of internal reflections (absorption and irregularities will however reduce the intensity in a physical situation). The infinite series of reflected orders can be expressed in the form a geometric sum, leading to a closed form formula as shown below.
@@ -219,9 +213,17 @@ For the transmission, one obtains,
 	\label{eq:fresnelTSlab}
 	\end{equation}
 
-% section two_interfaces (end)
 
-When N layers are stacked together, the reflection coefficient of the structure can be found by applying recursively the preceding formula for a single layer. This amounts to considering one of the reflection coefficients to be the effective reflection accounting for all the layers behind.
+\section{Reflectivity of a multilayer structure}
+\label{sec:stack}
 
+When N layers are stacked together, the reflection coefficient of the structure can be found by applying recursively the preceding formula for a single layer. This amounts to considering one of the reflection coefficients to be the effective reflection accounting for all the layers behind. Let us consider explicitly the case of a 3 layers system. The procedure is as follows,
+
+\begin{itemize}
+\item Compute and store for later use all single-interface coefficients, namely $r_{01}$, $r_{12}$, $r_{23}$, $r_{34}$
+\item Combine the previous coefficients in Eq.~\ref{eq:fresnelSlab} to compute the reflectivity of the last layer, i.e. $r_{24} = \frac{r_{23}+r_{34}\exp(2i k_{z3}d_3)}{1+r_{23}r_{34}\exp(2i k_{z3}d_3)}$. This value can be stored in a temporary variable $r_{\text{tmp}}$
+\item Go up, combining one interface at a time, $r_{\text{tmp}}=r_{14} = \frac{r_{12}+r_{24}\exp(2i k_{z2}d_2)}{1+r_{12}r_{24}\exp(2i k_{z2}d_2)}$
+\item the combined reflectivity of the multilayer is obtained when one has reached the top interface, $r_{\text{tmp}} = r_{04} = \frac{r_{01}+r_{14}\exp(2i k_{z1}d_1)}{1+r_{01}r_{14}\exp(2i k_{z1}d_1)}$
+\end{itemize}
 
 \end{document}

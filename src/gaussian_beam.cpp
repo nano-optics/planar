@@ -148,9 +148,7 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
   }
 
 RCPP_MODULE(gaussian){
-  using namespace Rcpp ;
-  
-  function( "integrand_gb", &integrand_gb,					\
+  Rcpp::function( "integrand_gb", &integrand_gb,					\
 	    "Integrand for the transmitted field under gaussian illumination" ) ;
 
 }

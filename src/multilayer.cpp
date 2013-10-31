@@ -227,13 +227,12 @@ Rcpp::List recursive_fresnel(const arma::colvec& k0,			\
 }
 
 RCPP_MODULE(planar){
-  using namespace Rcpp ;
-  function( "layer_fresnel", &layer_fresnel,					\
+  Rcpp::function( "layer_fresnel", &layer_fresnel,					\
 	    "Calculates the reflection and transmission coefficients of a single layer" ) ;
-  function( "multilayer", &multilayer,					\
+  Rcpp::function( "multilayer", &multilayer,					\
 	    "Calculates the reflection and transmission coefficients of a multilayer stack" ) ;
 
-  function( "recursive_fresnel", &recursive_fresnel,					\
+  Rcpp::function( "recursive_fresnel", &recursive_fresnel,					\
 	    "Calculates the reflection coefficient of a multilayer stack" ) ;
 
 }

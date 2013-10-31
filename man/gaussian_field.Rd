@@ -2,10 +2,10 @@
 \alias{gaussian_field}
 \title{gaussian_field}
 \usage{
-  gaussian_field(x = 1, y = 1, z = 1, lambda = 500,
+  gaussian_field(x = 1, y = 1, z = 1, wavelength = 500,
     alpha = 15 * pi/180, psi = 0, w0 = 10000,
     ni = 1.5 + (0+0i), no = 1 + (0+0i),
-    cutoff = min(1, sqrt(3 * 4)/(w0 * Re(2 * pi/lambda * ni))),
+    cutoff = min(1, sqrt(3 * 4)/(w0 * Re(2 * pi/wavelength * ni))),
     maxEval = 300)
 }
 \arguments{
@@ -15,7 +15,7 @@
 
   \item{z}{position}
 
-  \item{lambda}{wavelength}
+  \item{wavelength}{wavelength}
 
   \item{alpha}{beam incident angle}
 

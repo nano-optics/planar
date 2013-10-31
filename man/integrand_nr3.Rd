@@ -2,7 +2,7 @@
 \alias{integrand_nr3}
 \title{integrand_nr3}
 \usage{
-  integrand_nr3(d = 10, u, ucut, lambda,
+  integrand_nr3(d = 10, u, ucut, wavelength,
     epsilon = list(incident = 1.5^2, 1^2),
     thickness = c(0, 0), GL = FALSE)
 }
@@ -14,7 +14,7 @@
 
   \item{ucut}{limit of the integral}
 
-  \item{lambda}{wavelength in nm}
+  \item{wavelength}{wavelength in nm}
 
   \item{epsilon}{list of dielectric functions}
 

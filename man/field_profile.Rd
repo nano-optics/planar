@@ -2,16 +2,16 @@
 \alias{field_profile}
 \title{field_profile}
 \usage{
-  field_profile(lambda = 500, theta = 0,
+  field_profile(wavelength = 500, angle = 0,
     polarisation = "p", thickness = c(0, 20, 140, 20, 0),
     dmax = 200, res = 1000, res2 = res/10,
     epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2),
     displacement = FALSE, ...)
 }
 \arguments{
-  \item{lambda}{wavelength}
+  \item{wavelength}{wavelength}
 
-  \item{theta}{angle}
+  \item{angle}{angle}
 
   \item{dmax}{maximum distance to interface, if > layer
   thickness}

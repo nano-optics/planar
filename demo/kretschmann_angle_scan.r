@@ -1,52 +1,90 @@
-## Reflectivity against internal incident angle
-## for the Kretschmann configuration, at fixed wavelength
 
+## ----, echo=FALSE,results='hide'-----------------------------------------
+opts_chunk$set(fig.path="kretschmann/",
+               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
+library(ggplot2)
+theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
+library(RColorBrewer)
+col <- brewer.pal(3,"PRGn")
+
+
+## ----, results='hide'----------------------------------------------------
 library(planar)
 library(ggplot2)
 require(reshape2)
+library(gridExtra)
 require(plyr)
 
 wvl <- 632.8
-silver <- epsAg(wvl)
 gold <- epsAu(wvl)
 
-## with Cr layer
-parametersAu <- list(epsilon=list(1.515^2, -1.23 +20.78i, gold$epsilon, 1.0^2),
-                   lambda=gold$wavelength, thickness=c(0, 2, 50, 0),
-                   theta=seq(0,pi/2,length=2e3), polarisation='p')
 
-parametersAu <- list(epsilon=list(1.5^2, gold$epsilon, 1.0),
-                   lambda=gold$wavelength, thickness=c(0, 50, 0),
-                   theta=seq(0,pi/2,length=2e3), polarisation='p')
+## ------------------------------------------------------------------------
+results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, 1.0),
+                                lambda=gold$wavelength, thickness=c(0, 50, 0),
+                                theta=seq(0, pi/2, length=2e3), polarisation='p')
+str(results)
 
 
-parametersAg <- list(epsilon=list(1.5^2, silver$epsilon, 1.0),
-                   lambda=silver$wavelength, thickness=c(0, 50, 0),
-                   theta=seq(0,pi/2,length=2e3), polarisation='p')
+## ----reflectivity,fig.width=10-------------------------------------------
+m <- data.frame(results[c("theta", "R")])
 
-dAu <- do.call(recursive_fresnelcpp, parametersAu)
-dAg <- do.call(recursive_fresnelcpp, parametersAg)
-
-m <- melt(data.frame(angle = parametersAu$theta*180/pi,
-                     gold = dAu$R, silver = dAg$R), id="angle")
-
-tir <- asin(sqrt(parametersAu$epsilon[[length(parametersAu$epsilon)]]) /
-            sqrt(parametersAu$epsilon[[1]])) * 180/pi
-p <- 
+tir <- asin(1/1.5) * 180/pi
+ 
 ggplot(m) +
   geom_vline(aes(xintercept=x),
              data=data.frame(x=tir),
              linetype=2,color="grey50") +
-  geom_path(aes(angle, value, color=variable)) +
-  labs(colour="material") + scale_color_brewer(palette="Set1")+
+  geom_line(aes(theta*180/pi, R)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), limits=c(0,90),
-                     breaks=sort(c(seq(0,90,by=15), round(tir,1)))) +
-  theme_bw()
+  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
+                     breaks=seq(0,90, by=15)) 
+  
 
-p 
 
-ddply(m, .(variable), summarize, spp = angle[which.min(value)])
-## variable      spp
-## 1     gold 44.43722
-## 2   silver 43.58179
+## ----loop, fig.width=12--------------------------------------------------
+
+simulation <- function(thickness = 50){
+results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, 1.0^2),
+                                lambda=gold$wavelength, thickness=c(0, thickness, 0),
+                                theta=seq(0, pi/2, length=2e3), polarisation='p')
+data.frame(results[c("theta", "R")])
+
+}
+
+## loop over parameters
+parameters <- function(res=10) 
+  data.frame(thickness = seq(0, 100, length=res))
+
+d1 <- mdply(parameters(10), simulation)
+d2 <- mdply(parameters(300), simulation)
+
+
+p1 <- 
+ggplot(d1) +
+  geom_line(aes(theta*180/pi, R, colour=thickness, group=thickness)) +
+  scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
+  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
+                     breaks=seq(0,90, by=15)) +
+  guides(colour=guide_legend()) 
+
+## colour map
+p2 <- 
+ggplot(subset(d2, theta < 70 * pi/180)) +
+  geom_raster(aes(theta*180/pi, thickness, fill=R)) +
+  scale_y_continuous("thickness", expand=c(0,0))+
+  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
+                     breaks=seq(0,90, by=15)) 
+
+grid.arrange(p1, p2, nrow=1)
+
+
+## ----variation-----------------------------------------------------------
+minimum <- ddply(d2, .(thickness), summarize, 
+                 angle = theta[which.min(R)] * 180/pi,
+                 min = min(R))
+ggplot(melt(minimum, id="thickness")) + 
+  facet_grid(variable~., scales="free") +
+  geom_line(aes(thickness, value)) 
+
+

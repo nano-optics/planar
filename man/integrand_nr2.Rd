@@ -2,7 +2,7 @@
 \alias{integrand_nr2}
 \title{integrand_nr2}
 \usage{
-  integrand_nr2(d = 10, u, lambda,
+  integrand_nr2(d = 10, u, wavelength,
     epsilon = list(incident = 1.5^2, 1^2),
     thickness = c(0, 0), GL = FALSE)
 }
@@ -12,7 +12,7 @@
   \item{u}{transformed normalised in-plane wavevector
   sqrt(q^2 - 1)}
 
-  \item{lambda}{wavelength in nm}
+  \item{wavelength}{wavelength in nm}
 
   \item{epsilon}{list of dielectric functions}
 

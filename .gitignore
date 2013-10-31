@@ -3,3 +3,6 @@
 publis/
 *.o
 *.so
+inst/wiki/*.png
+inst/wiki/*.md
+inst/wiki/*.html

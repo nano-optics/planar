@@ -16,19 +16,19 @@ library(ggplot2)
 require(reshape2)
 library(gridExtra)
 require(plyr)
-
-wvl <- 632.8
-gold <- epsAu(wvl)
 ```
 
 We define a function to model our system with the parameters of interest: a semi-infinite incident medium (glass), a 50nm gold film, a thin layer of varying thickness and refractive index, and a semi-infinite dielectric medium of varying refractive index.
 
 ```{r simulation}
-simulation <- function(thickness = 0, n1 = n2, n2 = 1.0){
-  results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, n1^2, n2^2),
-                                lambda=gold$wavelength, thickness=c(0, 50, thickness, 0),
-                                theta=seq(0, pi/2, length=2e3), polarisation='p')
-  data.frame(results[c("theta", "R")])
+simulation <- function(thickness = 0, n1 = n2, n2 = 1.0, 
+                       wavelength=632.8, metal.fun=epsAu){
+  metal <- metal.fun(wavelength)
+  results <- recursive_fresnelcpp(epsilon=list(1.5^2, metal$epsilon, n1^2, n2^2),
+                                wavelength=metal$wavelength, 
+                                thickness=c(0, 50, thickness, 0),
+                                angle=seq(0, pi/2, length=2e3), polarisation='p')
+  data.frame(results[c("angle", "R")])
 }
 ```
 

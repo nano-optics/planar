@@ -3,11 +3,11 @@
 ##' computes the reflection coefficient of a multilayered interface
 ##' @title recursive_fresnel
 ##' @export
-##' @param lambda [vector] wavelength in nm
+##' @param wavelength [vector] wavelength in nm
 ##' @param k0 [vector] wavevector in nm^-1
-##' @param theta [vector] incident angles in radians
+##' @param angle [vector] incident angles in radians
 ##' @param q [vector] normalised incident in-plane wavevector
-##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(lambda)
+##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(wavelength)
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
 ##' @param polarisation [character] switch between p- and s- polarisation
 ##' @return fresnel coefficients and field profiles
@@ -15,8 +15,8 @@
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-recursive_fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
-                       theta = NULL, q = sin(theta),
+recursive_fresnel <- function(wavelength = NULL, k0 = 2*pi/wavelength,
+                       angle = NULL, q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0),
                        polarisation = c('p', 's')){
@@ -94,7 +94,8 @@ recursive_fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
   R <- Mod(refl)^2
   Tt <- Mod(trans)^2
   
-  list(wavelength=lambda, k0=k0, theta=theta, q=q,
+  list(wavelength=wavelength, k0=k0, 
+       angle=angle, q=q,
        reflection=refl, 
        transmission=trans, 
        R=R, T=Tt, A = 1 - R - Tt)
@@ -106,11 +107,11 @@ recursive_fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' computes the reflection coefficient of a multilayered interface
 ##' @title recursive_fresnelcpp
 ##' @export
-##' @param lambda [vector] wavelength in nm
+##' @param wavelength [vector] wavelength in nm
 ##' @param k0 [vector] wavevector in nm^-1
-##' @param theta [vector] incident angles in radians
+##' @param angle [vector] incident angles in radians
 ##' @param q [vector] normalised incident in-plane wavevector
-##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(lambda)
+##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(wavelength)
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
 ##' @param polarisation [character] switch between p- and s- polarisation
 ##' @return fresnel coefficients and field profiles
@@ -118,8 +119,8 @@ recursive_fresnel <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-recursive_fresnelcpp <- function(lambda = NULL, k0 = 2*pi/lambda,
-                       theta = NULL, q = sin(theta),
+recursive_fresnelcpp <- function(wavelength = NULL, k0 = 2*pi/wavelength,
+                       angle = NULL, q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0),
                        polarisation = c('p', 's')){
@@ -164,18 +165,19 @@ recursive_fresnelcpp <- function(lambda = NULL, k0 = 2*pi/lambda,
       trans <- trans / sqrt(impedance.ratio) 
   
   R <- Mod(refl)^2
-  Tt <- Mod(trans)^2
+  T <- Mod(trans)^2
   
-  list(wavelength = lambda, k0 = k0, theta=theta, q=q,
+  data.frame(wavelength = wavelength, k0 = k0, 
+       angle=angle, q=q,
        reflection=refl, 
        transmission=trans, 
-       R=R, T=Tt, A = 1 - R - Tt)
+       R=R, T=T, A = 1 - R - T)
 }
 
 
 
-single_layer <- function(lambda = NULL, k0 = 2*pi/lambda,
-                         theta = NULL, q = sin(theta),
+single_layer <- function(wavelength = NULL, k0 = 2*pi/wavelength,
+                         angle = NULL, q = sin(angle),
                          epsilon = list(incident=3.0^2, 3.7^2, 3.0^2),
                          thickness = 400){
   

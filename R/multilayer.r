@@ -3,11 +3,11 @@
 ##' solves the EM problem of a multilayered interface
 ##' @title multilayer
 ##' @export
-##' @param lambda [vector] wavelength in nm
+##' @param wavelength [vector] wavelength in nm
 ##' @param k0 [vector] wavevector in nm^-1
-##' @param theta [vector] incident angles in radians
+##' @param angle [vector] incident angles in radians
 ##' @param q [vector] normalised incident in-plane wavevector
-##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(lambda)
+##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(wavelength)
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
 ##' @param d vector of distances where LFIEF are evaluated from each interface
 ##' @param dout vector of distances where LFIEF are evaluated outside the stack
@@ -22,8 +22,8 @@
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
-                       theta = NULL, q = sin(theta),
+multilayer <- function(wavelength = NULL, k0 = 2*pi/wavelength,
+                       angle = NULL, q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0), 
                        polarisation = c('p', 's'),
@@ -258,7 +258,8 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
   Tt <- Mod(transmission)^2
   
   ## results
-  list(wavelength=lambda, k0 = k0, theta=theta, q=q, 
+  list(wavelength=wavelength, k0 = k0, 
+       angle=angle, q=q, 
        reflection=reflection, transmission=transmission,
        R=R, T=Tt, A = 1 - R - Tt,
        dist=distance, fields = fields,
@@ -271,8 +272,8 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' runs multilayer and returns the LFIEF as a function of distance inside and outside of the structure
 ##' @title field_profile
 ##' @export
-##' @param lambda wavelength
-##' @param theta angle
+##' @param wavelength wavelength
+##' @param angle angle
 ##' @param dmax maximum distance to interface, if > layer thickness
 ##' @param thickness vector of layer thickness
 ##' @param res resolution of sampling points
@@ -288,7 +289,7 @@ multilayer <- function(lambda = NULL, k0 = 2*pi/lambda,
 ##' Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
 ##' 
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
-field_profile <- function(lambda=500, theta=0, polarisation='p',
+field_profile <- function(wavelength=500, angle=0, polarisation='p',
                           thickness = c(0, 20, 140, 20, 0), 
                           dmax=200,  res=1e3, res2=res/10,
                           epsilon=list(1^2, -12 , 1.38^2, -12 , 1.46^2), 
@@ -296,7 +297,7 @@ field_profile <- function(lambda=500, theta=0, polarisation='p',
   
   d <- seq(0, max(thickness), length=res)
   dout <- seq(0, dmax, length=res2)
-  res <- multilayer(lambda=lambda, theta=theta,
+  res <- multilayer(wavelength=wavelength, angle=angle,
                     epsilon=epsilon,
                     thickness = thickness, d=d, dout=dout,
                     polarisation=polarisation, ...)
@@ -317,31 +318,16 @@ field_profile <- function(lambda=500, theta=0, polarisation='p',
   melt(all, id=1)
 }
 
-##' invert the description of a multilayer to simulate the opposite direction of incidence
-##'
-##' inverts list of epsilon and thickness of layers
-##' @title invert_stack
-##' @param p list
-##' @return list
-##' @export
-##' @family helping_functions
-##' @author Baptiste Auguie
-invert_stack <- function(p){
-  p[["epsilon"]] <- rev(p[["epsilon"]])
-  p[["thickness"]] <- rev(p[["thickness"]])
-  p
-}
-
 ##' Multilayer Fresnel coefficients
 ##'
 ##' solves the EM problem of a multilayered interface
 ##' @title multilayercpp
 ##' @export
-##' @param lambda [vector] wavelength in nm
+##' @param wavelength [vector] wavelength in nm
 ##' @param k0 [vector] wavevector in nm^-1
-##' @param theta [vector] incident angles in radians
+##' @param angle [vector] incident angles in radians
 ##' @param q [vector] normalised incident in-plane wavevector
-##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(lambda)
+##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(wavelength)
 ##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
 ##' @param polarisation [character] switch between p- and s- polarisation
 ##' @param ... unused
@@ -350,8 +336,8 @@ invert_stack <- function(p){
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-multilayercpp <- function(lambda = NULL, k0 = 2*pi/lambda,
-                       theta = NULL, q = sin(theta),
+multilayercpp <- function(wavelength = NULL, k0 = 2*pi/wavelength,
+                       angle = NULL, q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0),
                        polarisation = c('p', 's'), ...){
@@ -393,7 +379,8 @@ multilayercpp <- function(lambda = NULL, k0 = 2*pi/lambda,
   
   A <- 1 - R - Tt
   
-  list(wavelength=lambda, k0 = k0, theta=theta, q=q, 
+  list(wavelength=wavelength, k0 = k0, 
+       angle=angle, q=q, 
        reflection=refl, transmission=trans,
        R=R, T=Tt, A=A)
 }

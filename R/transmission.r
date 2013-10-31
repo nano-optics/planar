@@ -3,18 +3,18 @@
 ##' transmission loss through a prism
 ##' @title transmission
 ##' @export
-##' @param nPrism prism refractive index
-##' @param extAngle_r external incident angle in radians
-##' @param polar polarisation
+##' @param n prism refractive index
+##' @param external external incident angle in radians
+##' @param polarisation polarisation
 ##' @return transmission 
 ##' @author baptiste Auguie
-transmission <- function(nPrism, extAngle_r, polar = "p"){
+transmission <- function(n, external, polarisation = "p"){
   
-  alpha <- asin(sin(extAngle_r) / nPrism) # % refracted angle
+  alpha <- asin(sin(external) / nPrism) # % refracted angle
   
-  if(polar == 'p'){
-          4 * nPrism*cos(extAngle_r)*cos(alpha) /
-            (nPrism * cos(extAngle_r) + cos(alpha))^2
+  if(polarisation == 'p'){
+          4 * n*cos(external)*cos(alpha) /
+            (n * cos(external) + cos(alpha))^2
         } else {
          .NotYetImplemented()
         }			

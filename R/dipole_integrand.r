@@ -6,17 +6,17 @@
 ##' @export
 ##' @param d distance in nm
 ##' @param q normalised in-plane wavevector in [0, infty) 
-##' @param lambda wavelength in nm
+##' @param wavelength wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @family integrands dipole
 ##' @author baptiste Auguie
-integrand_mtot <- function(d=10, q, lambda,
+integrand_mtot <- function(d=10, q, wavelength,
                              epsilon = list(incident=1.5^2, 1.0^2),
                              thickness = c(0, 0)){
   
   ## define constants
-  k0 <- 2*pi/lambda
+  k0 <- 2*pi/wavelength
   k1 <- sqrt(epsilon[[1]])*k0
 
   Nlambda <- length(k0)
@@ -24,13 +24,13 @@ integrand_mtot <- function(d=10, q, lambda,
   
   u <- sqrt(1 - q^2 + 0i)
   
-  rp <- recursive_fresnelcpp(lambda=lambda,
+  rp <- recursive_fresnelcpp(wavelength=wavelength,
                            q = q,
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive_fresnelcpp(lambda=lambda,
+  rs <- recursive_fresnelcpp(wavelength=wavelength,
                            q = q,
                            epsilon=epsilon,
                            thickness=thickness,
@@ -53,7 +53,7 @@ integrand_mtot <- function(d=10, q, lambda,
 ##' @title dipole_direct
 ##' @export
 ##' @param d distance in nm
-##' @param lambda wavelength in nm
+##' @param wavelength wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @param Nquadrature1 quadrature points in radiative region
@@ -65,7 +65,7 @@ integrand_mtot <- function(d=10, q, lambda,
 ##' @family dipole
 ##' @author baptiste Auguie
 dipole_direct <- function(d=1,
-                   lambda ,
+                   wavelength ,
                    epsilon = list(incident=1.0^2),
                    thickness = c(0, 0),
                    Nquadrature1 = 50, Nquadrature2 = 200, Nquadrature3 = 50,
@@ -81,7 +81,7 @@ dipole_direct <- function(d=1,
   Nq2 <- length(GL2$nodes)
   Nq3 <- length(GL3$nodes)
   
-  Nlambda <- length(lambda)
+  Nlambda <- length(wavelength)
   
   ## if no qcut provided, estimate one from max of
   ## all possible SPP dispersions
@@ -109,7 +109,7 @@ dipole_direct <- function(d=1,
   qweights1 <- GL1$weights * C1
   
   in1 <- integrand_mtot(q=qnodes1,
-                          d=d, lambda=lambda,
+                          d=d, wavelength=wavelength,
                           epsilon=epsilon, thickness=thickness)
       
   weights1 <- matrix(qweights1, nrow=Nlambda, ncol=Nq1, byrow=TRUE)
@@ -125,7 +125,7 @@ dipole_direct <- function(d=1,
   qweights2 <- GL2$weights * C2
   
   in2 <- integrand_mtot(q=qnodes2,
-                                  d=d, lambda=lambda,
+                                  d=d, wavelength=wavelength,
                                   epsilon=epsilon, thickness=thickness)
   
   weights2 <- matrix(qweights2, nrow=Nlambda, ncol=Nq2, byrow=TRUE)
@@ -159,7 +159,7 @@ dipole_direct <- function(d=1,
   }
   
   in3 <- integrand_mtot(q=qnodes3,
-                          d=d, lambda=lambda,
+                          d=d, wavelength=wavelength,
                           epsilon=epsilon, thickness=thickness)
       
   weights3 <- matrix(qweights3, nrow=Nlambda, ncol=Nq3, byrow=TRUE)
@@ -167,7 +167,7 @@ dipole_direct <- function(d=1,
   integral3.perp <- rowSums(in3$integrand.p*weights3)
   integral3.par <- rowSums(in3$integrand.s*weights3)
   
-  data.frame(wavelength=lambda,
+  data.frame(wavelength=wavelength,
              Mtot.perp = 1 + 3/2*(integral1.perp + integral2.perp + integral3.perp),
              Mtot.par = 1 + 3/4*(integral1.par + integral2.par + integral3.par) )
   

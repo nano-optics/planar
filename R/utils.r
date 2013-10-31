@@ -1,4 +1,19 @@
 
+##' invert the description of a multilayer to simulate the opposite direction of incidence
+##'
+##' inverts list of epsilon and thickness of layers
+##' @title invert_stack
+##' @param p list
+##' @return list
+##' @export
+##' @family helping_functions
+##' @author Baptiste Auguie
+invert_stack <- function(p){
+  p[["epsilon"]] <- rev(p[["epsilon"]])
+  p[["thickness"]] <- rev(p[["thickness"]])
+  p
+}
+
 ##' relabel factors
 ##'
 ##' Wide to long format data.frame with new factor variable(s) describing the original columns

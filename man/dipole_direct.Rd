@@ -2,7 +2,7 @@
 \alias{dipole_direct}
 \title{dipole_direct}
 \usage{
-  dipole_direct(d = 1, lambda,
+  dipole_direct(d = 1, wavelength,
     epsilon = list(incident = 1^2), thickness = c(0, 0),
     Nquadrature1 = 50, Nquadrature2 = 200,
     Nquadrature3 = 50, qcut = NULL, qmax = Inf,
@@ -11,7 +11,7 @@
 \arguments{
   \item{d}{distance in nm}
 
-  \item{lambda}{wavelength in nm}
+  \item{wavelength}{wavelength in nm}
 
   \item{epsilon}{list of dielectric functions}
 

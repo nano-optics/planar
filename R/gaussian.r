@@ -6,7 +6,7 @@
 ##' @param x position
 ##' @param y position
 ##' @param z position
-##' @param lambda wavelength
+##' @param wavelength wavelength
 ##' @param alpha beam incident angle
 ##' @param psi beam polarisation angle
 ##' @param w0 beam waist radius
@@ -18,15 +18,15 @@
 ##' @export
 ##' @family gaussian_beam
 ##' @author Baptiste Auguie
-gaussian_field <- function(x=1, y=1, z=1, lambda=500, alpha = 15*pi/180, psi=0, 
+gaussian_field <- function(x=1, y=1, z=1, wavelength=500, alpha = 15*pi/180, psi=0, 
                            w0=1e4, ni=1.5+0i, no=1+0i,
-                           cutoff = min(1, sqrt(3*4)/(w0*Re(2*pi/lambda*ni))),
+                           cutoff = min(1, sqrt(3*4)/(w0*Re(2*pi/wavelength*ni))),
                            maxEval = 300){
   
-  k <- 2*pi/lambda
+  k <- 2*pi/wavelength
   ki <- k*ni
   res <- adaptIntegrate(gaussian$integrand_gb,
-                        lowerLimit=c(0, 0), # rho in [0,1], theta in [0,2*pi]
+                        lowerLimit=c(0, 0), # rho in [0,1], angle in [0,2*pi]
                         upperLimit=c(cutoff, 2*pi), # exp(-3) is tiny
                         fDim = 6, tol = 1e-04,
                         maxEval = maxEval,

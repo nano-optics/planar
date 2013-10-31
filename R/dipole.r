@@ -9,36 +9,36 @@
 ##' @title integrand_rad
 ##' @export
 ##' @param d distance in nm
-##' @param theta angle in radians
-##' @param lambda wavelength in nm
+##' @param angle angle in radians
+##' @param wavelength wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @param GL logical: result formatted for use with Gauss Legendre quadrature
 ##' @author baptiste Auguie
 ##' @family integrands dipole
-integrand_rad <- function(d = 10, theta, lambda,
+integrand_rad <- function(d = 10, angle, wavelength,
                        epsilon = list(incident=1.5^2, 1.0^2),
                        thickness = c(0, 0),  GL=FALSE){
 
   ## for 0 < q < 1, i.e. 0 < u < 1
   
   ## define constants
-  k0 <- 2*pi/lambda
+  k0 <- 2*pi/wavelength
   k1 <- sqrt(epsilon[[1]])*k0
 
   Nlambda <- length(k0)
-  Ntheta <- length(theta)
+  Ntheta <- length(angle)
   
-  cost <- cos(theta)
-  sint <- sin(theta)
+  cost <- cos(angle)
+  sint <- sin(angle)
   
-  rp <- recursive_fresnelcpp(lambda=lambda,
+  rp <- recursive_fresnelcpp(wavelength=wavelength,
                            q = sint,
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive_fresnelcpp(lambda=lambda,
+  rs <- recursive_fresnelcpp(wavelength=wavelength,
                            q = sint,
                            epsilon=epsilon,
                            thickness=thickness,
@@ -68,32 +68,32 @@ integrand_rad <- function(d = 10, theta, lambda,
 ##' @export
 ##' @param d distance in nm
 ##' @param u transformed normalised in-plane wavevector sqrt(1-q^2)
-##' @param lambda wavelength in nm
+##' @param wavelength wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @param GL logical: result formatted for use with Gauss Legendre quadrature
 ##' @author baptiste Auguie
 ##' @family integrands dipole
-integrand_nr1 <- function(d=10, u, lambda,
+integrand_nr1 <- function(d=10, u, wavelength,
                        epsilon = list(incident=1.5^2, 1.0^2),
                        thickness = c(0, 0), GL=FALSE){
 
   ## integrand1 is for 0 < q < 1, i.e. 0 < u < 1
   
   ## define constants
-  k0 <- 2*pi/lambda
+  k0 <- 2*pi/wavelength
   k1 <- sqrt(epsilon[[1]])*k0
 
   Nlambda <- length(k0)
   Nq <- length(u)
   
-  rp <- recursive_fresnelcpp(lambda=lambda,
+  rp <- recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 - u^2),
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive_fresnelcpp(lambda=lambda,
+  rs <- recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 - u^2),
                            epsilon=epsilon,
                            thickness=thickness,
@@ -117,32 +117,32 @@ integrand_nr1 <- function(d=10, u, lambda,
 ##' @export
 ##' @param d distance in nm
 ##' @param u transformed normalised in-plane wavevector sqrt(q^2 - 1)
-##' @param lambda wavelength in nm
+##' @param wavelength wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @param GL logical: result formatted for use with Gauss Legendre quadrature
 ##' @author baptiste Auguie
 ##' @family integrands dipole
-integrand_nr2 <- function(d=10, u, lambda,
+integrand_nr2 <- function(d=10, u, wavelength,
                        epsilon = list(incident=1.5^2, 1.0^2),
                        thickness = c(0, 0),  GL=FALSE){
 
   ## integrand2 is for 1 < q < infty, i.e. 0 < u < infty
 
   ## define constants
-  k0 <- 2*pi/lambda
+  k0 <- 2*pi/wavelength
   k1 <- sqrt(epsilon[[1]])*k0
 
   Nlambda <- length(k0)
   Nq <- length(u)
   
-  rp <- recursive_fresnelcpp(lambda=lambda,
+  rp <- recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 + u^2),
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive_fresnelcpp(lambda=lambda,
+  rs <- recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 + u^2),
                            epsilon=epsilon,
                            thickness=thickness,
@@ -170,18 +170,18 @@ integrand_nr2 <- function(d=10, u, lambda,
 ##' @param d distance in nm
 ##' @param u transformed normalised in-plane wavevector sqrt(q^2 - 1)
 ##' @param ucut limit of the integral
-##' @param lambda wavelength in nm
+##' @param wavelength wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @param GL logical: result formatted for use with Gauss Legendre quadrature
 ##' @author baptiste Auguie
 ##' @family integrands dipole
-integrand_nr3 <- function(d=10, u, ucut, lambda,
+integrand_nr3 <- function(d=10, u, ucut, wavelength,
                        epsilon = list(incident=1.5^2, 1.0^2),
                        thickness = c(0, 0), GL=FALSE){
 
   ## define constants
-  k0 <- 2*pi/lambda
+  k0 <- 2*pi/wavelength
   k1 <- sqrt(epsilon[[1]])*k0
 
   Nlambda <- length(k0)
@@ -199,13 +199,13 @@ integrand_nr3 <- function(d=10, u, ucut, lambda,
   Jac <-  matrix(1 / (1 - u)^2, Nlambda, Nq, byrow=TRUE)
   
   
-  rp <- recursive_fresnelcpp(lambda=lambda,
+  rp <- recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 + t^2),
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="p")$reflection
   
-  rs <- recursive_fresnelcpp(lambda=lambda,
+  rs <- recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 + t^2),
                            epsilon=epsilon,
                            thickness=thickness,
@@ -229,7 +229,7 @@ integrand_nr3 <- function(d=10, u, ucut, lambda,
 ##' @title dipole2
 ##' @export
 ##' @param d distance in nm
-##' @param lambda wavelength in nm
+##' @param wavelength wavelength in nm
 ##' @param epsilon list of dielectric functions
 ##' @param thickness list of layer thicknesses
 ##' @param qcut transition between regions 2 and 3
@@ -241,14 +241,14 @@ integrand_nr3 <- function(d=10, u, ucut, lambda,
 ##' @param show.messages logical, display integration info
 ##' @author baptiste Auguie
 dipole <- function(d=1,
-                   lambda,
+                   wavelength,
                    epsilon = list(incident=1.0^2),
                    thickness = c(0, 0), qcut=NULL, rel.err = 1e-3,
                    Nquadrature1 = 1e3, Nquadrature2 = 1e4, Nquadrature3 = 1e4,
                    GL = FALSE, 
                    show.messages=TRUE){
    
-  Nlambda <- length(lambda)
+  Nlambda <- length(wavelength)
   
 
   if(GL){
@@ -291,7 +291,7 @@ dipole <- function(d=1,
     Nu1 <- length(unodes1)
     
     in1 <- integrand_nr1(u=unodes1,
-                        d=d, lambda=lambda,
+                        d=d, wavelength=wavelength,
                         epsilon=epsilon, thickness=thickness, GL=TRUE)
     
     weights1 <- matrix(uweights1, nrow=Nlambda, ncol=Nu1, byrow=TRUE)
@@ -305,7 +305,7 @@ dipole <- function(d=1,
                           upperLimit = 1,
                           fDim = 2*Nlambda, tol=rel.err,
                           maxEval = Nquadrature1, 
-                          d=d, lambda=lambda,
+                          d=d, wavelength=wavelength,
                           epsilon=epsilon, thickness=thickness)
     
     integral1.perp <- in1$integral[seq(1,Nlambda)]
@@ -328,7 +328,7 @@ dipole <- function(d=1,
     Nu2 <- length(unodes2)
     
     in2 <- integrand_nr2(u=unodes2,
-                        d=d, lambda=lambda,
+                        d=d, wavelength=wavelength,
                     epsilon=epsilon, thickness=thickness,  GL=TRUE)
     
     weights2 <- matrix(uweights2, nrow=Nlambda, ncol=Nu2, byrow=TRUE)
@@ -344,7 +344,7 @@ dipole <- function(d=1,
                           upperLimit = ucut,
                           fDim = 2*Nlambda, tol=rel.err,
                           maxEval = Nquadrature2,
-                          d=d, lambda=lambda,
+                          d=d, wavelength=wavelength,
                           epsilon=epsilon, thickness=thickness)
     
     integral2.perp <- in2$integral[seq(1,Nlambda)]
@@ -370,7 +370,7 @@ dipole <- function(d=1,
     Nu3 <- length(unodes3)
     
     in3 <- integrand_nr2(u=unodes3,
-                        d=d, lambda=lambda,
+                        d=d, wavelength=wavelength,
                         epsilon=epsilon, thickness=thickness,  GL=TRUE)
     
     weights3 <- matrix(uweights3, nrow=Nlambda, ncol=Nu3, byrow=TRUE)
@@ -384,7 +384,7 @@ dipole <- function(d=1,
                           upperLimit = 1,
                           fDim = 2*Nlambda, tol=rel.err,
                           maxEval = Nquadrature3, 
-                          ucut=ucut, d=d, lambda=lambda,
+                          ucut=ucut, d=d, wavelength=wavelength,
                           epsilon=epsilon, thickness=thickness)
     
     integral3.perp <- in3$integral[seq(1,Nlambda)]
@@ -396,18 +396,18 @@ dipole <- function(d=1,
   if(GL){
     ## for Mrad, we use the same integration points as GL1 because we study the radiative region
     
-    thetamax <- pi/2; thetamin <- 0;
-    C4 <- (thetamax - thetamin)/2 ; D4 <- (thetamax + thetamin)/2
-    thetanodes <- C4 * GL1$nodes + D4
-    thetaweights <- GL1$weights * C4
+    anglemax <- pi/2; anglemin <- 0;
+    C4 <- (anglemax - anglemin)/2 ; D4 <- (anglemax + anglemin)/2
+    anglenodes <- C4 * GL1$nodes + D4
+    angleweights <- GL1$weights * C4
     
-    Ntheta <- length(thetanodes)
+    Ntheta <- length(anglenodes)
     
-    in4 <- integrand_rad(theta=thetanodes,
-                           d=d, lambda=lambda,
+    in4 <- integrand_rad(angle=anglenodes,
+                           d=d, wavelength=wavelength,
                            epsilon=epsilon, thickness=thickness, GL=TRUE)
     
-    weights4 <- matrix(thetaweights, nrow=Nlambda, ncol=Ntheta, byrow=TRUE)
+    weights4 <- matrix(angleweights, nrow=Nlambda, ncol=Ntheta, byrow=TRUE)
     
     Mrad.perp <- 3/4 * rowSums(in4$integrand.p*weights4)
     Mrad.par <- 3/8 * rowSums(in4$integrand.s*weights4)
@@ -418,7 +418,7 @@ dipole <- function(d=1,
                           upperLimit = pi/2,
                           fDim = 2*Nlambda, tol=rel.err,
                           maxEval = Nquadrature1, 
-                          d=d, lambda=lambda,
+                          d=d, wavelength=wavelength,
                           epsilon=epsilon, thickness=thickness)
     
     Mrad.perp <-  3/4 *in4$integral[seq(1,Nlambda)]
@@ -435,7 +435,7 @@ dipole <- function(d=1,
   }
   
   
-  results <- data.frame(wavelength=lambda,
+  results <- data.frame(wavelength=wavelength,
                   Mtot.perp = 1 + 3/2*(integral1.perp + integral2.perp + integral3.perp),
                   Mtot.par = 1 + 3/4*(integral1.par + integral2.par + integral3.par),
                   Mrad.perp =  Mrad.perp, Mrad.par = Mrad.par)

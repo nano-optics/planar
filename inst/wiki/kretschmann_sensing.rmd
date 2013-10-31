@@ -17,18 +17,19 @@ require(reshape2)
 library(gridExtra)
 require(plyr)
 
-wvl <- 632.8
-gold <- epsAu(wvl)
 ```
 
 We define a function to model our system with the parameters of interest: a semi-infinite incident medium (glass), a 50nm gold film, a thin layer of varying thickness and refractive index, and a semi-infinite dielectric medium of varying refractive index.
 
 ```{r simulation}
+wvl <- 632.8
+gold <- epsAu(wvl)
 simulation <- function(thickness = 0, n1 = n2, n2 = 1.0){
   results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, n1^2, n2^2),
-                                lambda=gold$wavelength, thickness=c(0, 50, thickness, 0),
-                                theta=seq(0, pi/2, length=2e3), polarisation='p')
-  data.frame(results[c("theta", "R")])
+                                  wavelength=gold$wavelength, 
+                                  thickness=c(0, 50, thickness, 0),
+                                  angle=seq(0, pi/2, length=2e3), polarisation='p')
+  results[c("angle", "R")]
 }
 ```
 
@@ -45,7 +46,7 @@ d2 <- mdply(parameters(300), simulation)
 
 p1 <- 
 ggplot(d1) +
-  geom_line(aes(theta*180/pi, R, colour=n2, group=n2)) +
+  geom_line(aes(angle*180/pi, R, colour=n2, group=n2)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) +
@@ -54,7 +55,7 @@ ggplot(d1) +
 ## colour map
 p2 <- 
 ggplot(d2) +
-  geom_raster(aes(theta*180/pi, n2, fill=R)) +
+  geom_raster(aes(angle*180/pi, n2, fill=R)) +
   scale_y_continuous("n", expand=c(0,0))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) 
@@ -79,7 +80,7 @@ d1 <- mdply(parameters(10), simulation, n2=1.0)
 
 p1 <- 
 ggplot(d1) + facet_grid(thickness ~ . , scales = "free") + 
-  geom_line(aes(theta*180/pi, R, colour=n1, group=n1)) +
+  geom_line(aes(angle*180/pi, R, colour=n1, group=n1)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) +

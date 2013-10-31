@@ -2,7 +2,7 @@
 \alias{integrand_mtot}
 \title{integrand_mtot}
 \usage{
-  integrand_mtot(d = 10, q, lambda,
+  integrand_mtot(d = 10, q, wavelength,
     epsilon = list(incident = 1.5^2, 1^2),
     thickness = c(0, 0))
 }
@@ -11,7 +11,7 @@
 
   \item{q}{normalised in-plane wavevector in [0, infty)}
 
-  \item{lambda}{wavelength in nm}
+  \item{wavelength}{wavelength in nm}
 
   \item{epsilon}{list of dielectric functions}
 

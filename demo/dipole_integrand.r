@@ -16,13 +16,13 @@ q <- sort(unique(c(seq(0.2,1, length=500), seq(1,1.2, length=500))))
 
 integrand <- function(d=1, m= "silver", q, ...){
   mat <- get(m)
-  int <- integrand_mtot(d=d, q=q, lambda= mat$wavelength*1e3,
+  int <- integrand_mtot(d=d, q=q, wavelength= mat$wavelength,
                           epsilon = list(incident=1.0^2, mat$epsilon, 1.0^2),
                           thickness = c(0, 50, 0))
 
   ## scaling <- 10 # max(int$integrand.p) / max(int$integrand.s)
-  m <- data.frame(wavelength = rep(mat$wavelength*1e3, length(q)),
-                  k0=2*pi/rep(mat$wavelength*1e3, length(q)),
+  m <- data.frame(wavelength = rep(mat$wavelength, length(q)),
+                  k0=2*pi/rep(mat$wavelength, length(q)),
                   q = rep(q, each=length(mat$wavelength)),
                   perpendicular=c(int$integrand.p),
                   parallel=c(int$integrand.s))
@@ -43,9 +43,9 @@ p
 
 ## now do slices for a wide view
 
-q <- sort(unique(c(seq(0.5,0.9999, length=500), seq(0.99, 1.01,length=500),
+q <- sort(unique(c(seq(0.5,0.99, length=500), seq(0.99, 1.01,length=500),
                    seq(1.001,1.2, length=500),
-                   seq(1.2,1000, length=1000))))
+                   seq(1.2,100, length=100))))
 
 wvl <- seq(200, 1000,by=200)
 silver <- epsAg(wvl)

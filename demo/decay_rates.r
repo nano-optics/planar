@@ -21,7 +21,7 @@ distance <- function(d, material="silver", ...){
   material <- get(material)
   
   params <- list(d=d,
-                 lambda = material$wavelength,
+                 wavelength = material$wavelength,
                  epsilon = list(incident=1.0^2, material$epsilon),
                  thickness = c(0, 0))
   

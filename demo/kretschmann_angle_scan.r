@@ -1,5 +1,6 @@
 
 ## ----, echo=FALSE,results='hide'-----------------------------------------
+require(knitr)
 opts_chunk$set(fig.path="kretschmann/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
@@ -21,13 +22,13 @@ gold <- epsAu(wvl)
 
 ## ------------------------------------------------------------------------
 results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, 1.0),
-                                lambda=gold$wavelength, thickness=c(0, 50, 0),
-                                theta=seq(0, pi/2, length=2e3), polarisation='p')
+                                wavelength=gold$wavelength, thickness=c(0, 50, 0),
+                                angle=seq(0, pi/2, length=2e3), polarisation='p')
 str(results)
 
 
 ## ----reflectivity,fig.width=10-------------------------------------------
-m <- data.frame(results[c("theta", "R")])
+m <- data.frame(results[c("angle", "R")])
 
 tir <- asin(1/1.5) * 180/pi
  
@@ -35,7 +36,7 @@ ggplot(m) +
   geom_vline(aes(xintercept=x),
              data=data.frame(x=tir),
              linetype=2,color="grey50") +
-  geom_line(aes(theta*180/pi, R)) +
+  geom_line(aes(angle*180/pi, R)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) 
@@ -46,9 +47,9 @@ ggplot(m) +
 
 simulation <- function(thickness = 50){
 results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, 1.0^2),
-                                lambda=gold$wavelength, thickness=c(0, thickness, 0),
-                                theta=seq(0, pi/2, length=2e3), polarisation='p')
-data.frame(results[c("theta", "R")])
+                                wavelength=gold$wavelength, thickness=c(0, thickness, 0),
+                                angle=seq(0, pi/2, length=2e3), polarisation='p')
+data.frame(results[c("angle", "R")])
 
 }
 
@@ -62,7 +63,7 @@ d2 <- mdply(parameters(300), simulation)
 
 p1 <- 
 ggplot(d1) +
-  geom_line(aes(theta*180/pi, R, colour=thickness, group=thickness)) +
+  geom_line(aes(angle*180/pi, R, colour=thickness, group=thickness)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) +
@@ -70,8 +71,8 @@ ggplot(d1) +
 
 ## colour map
 p2 <- 
-ggplot(subset(d2, theta < 70 * pi/180)) +
-  geom_raster(aes(theta*180/pi, thickness, fill=R)) +
+ggplot(subset(d2, angle < 70 * pi/180)) +
+  geom_raster(aes(angle*180/pi, thickness, fill=R)) +
   scale_y_continuous("thickness", expand=c(0,0))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) 
@@ -81,7 +82,7 @@ grid.arrange(p1, p2, nrow=1)
 
 ## ----variation-----------------------------------------------------------
 minimum <- ddply(d2, .(thickness), summarize, 
-                 angle = theta[which.min(R)] * 180/pi,
+                 angle = angle[which.min(R)] * 180/pi,
                  min = min(R))
 ggplot(melt(minimum, id="thickness")) + 
   facet_grid(variable~., scales="free") +

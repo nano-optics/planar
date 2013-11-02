@@ -2,9 +2,9 @@
 \alias{multilayer}
 \title{multilayer}
 \usage{
-  multilayer(wavelength = NULL, k0 = 2 * pi/wavelength,
-    angle = NULL, q = sin(angle),
-    epsilon = list(incident = 1.5^2, 1.33),
+  multilayer(wavelength = 2 * pi/k0,
+    k0 = 2 * pi/wavelength, angle = asin(q),
+    q = sin(angle), epsilon = list(incident = 1.5^2, 1.33),
     thickness = c(0, 0), polarisation = c("p", "s"), d = 1,
     dout = d, ...)
 }

@@ -8,7 +8,7 @@ library(ggplot2)
 require(reshape2)
 require(plyr)
 
-makeStack <- function(n = 3, lambda=seq(200, 1000),
+makeStack <- function(n = 3, wavelength=seq(200, 1000),
                       lambda0 = 460, thickness = lambda0/4, nH=2.3, nL=1.38, nS=1.52,
                       angle=0){
 
@@ -16,8 +16,8 @@ makeStack <- function(n = 3, lambda=seq(200, 1000),
   thickness.list <- c(0, rep(thickness/c(nL, nH), n), 0)
   
   params <- list(epsilon=as.list(epsilon.list),
-                 lambda=lambda, thickness=thickness.list,
-                 theta=angle*pi/180, polarisation='p')
+                 wavelength=wavelength, thickness=thickness.list,
+                 angle=angle*pi/180, polarisation='p')
   
   data.frame(do.call(recursive_fresnelcpp, params))
 }

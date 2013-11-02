@@ -23,7 +23,6 @@ integrand_mtot <- function(d=10, q, wavelength,
   Nq <- length(q)
   
   u <- sqrt(1 - q^2 + 0i)
-  
   rp <- recursive_fresnelcpp(wavelength=wavelength,
                            q = q,
                            epsilon=epsilon,

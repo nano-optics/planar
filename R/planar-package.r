@@ -7,6 +7,11 @@
 ##' @docType package
 ##' @useDynLib planar
 ##' @import Rcpp
+##' @import RcppArmadillo
+##' @importFrom statmod gauss.quad
+##' @importFrom cubature adaptIntegrate
+##' @import plyr 
+##' @import reshape2 
 ##' @title planar
 ##' @author baptiste Auguie \email{baptiste.auguie@@gmail.com}
 ##' @references

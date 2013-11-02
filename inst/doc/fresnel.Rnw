@@ -54,7 +54,7 @@ which yields,
   1+r =t.
 \label{eq:rt1}
 \end{equation}
-The continuity of $H^y$ can be written as,
+The continuity of $H^x$ can be written as,
 \[
 H_i\cos\theta_i - H_r\cos\theta_i  = H_t\cos\theta_t
 \]
@@ -63,7 +63,7 @@ It is convenient to express the angles in terms of the normal component of the $
 	k_z = n k_0 \cos\theta.
 \label{eq:k}
 \end{equation}
-for the incident, reflected, and refracted fields, so that $\cos\theta_t / \cos\theta_i=\dfrac{k_{z2}n_1}{k_{z1}n_2}$. The complex magnitude of the magnetic and electric fields are linked in each medium by the optical impedance. Its expression can be obtained from the induction law,
+for the incident, reflected, and refracted fields, so that $\cos\theta_t / \cos\theta_i=\dfrac{k_{z2}n_1}{k_{z1}n_2}$. The complex magnitude of the magnetic and electric fields are linked in each medium by the optical impedance. Its expression can be obtained from the induction law in a homogeneous medium,
 \[
 \nabla\times\mathbf{E} = -\partial_t \mathbf{B}
 \]

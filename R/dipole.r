@@ -98,7 +98,7 @@ integrand_nr1 <- function(d=10, u, wavelength,
                            epsilon=epsilon,
                            thickness=thickness,
                            polarisation="s")$reflection
-
+  
     phase <- exp(2i*d*outer(k1,u))
   
     integrand.p <- Re(matrix(1 - u^2, Nlambda, Nq, byrow=TRUE) * rp * phase)
@@ -290,10 +290,10 @@ dipole <- function(d=1,
     
     Nu1 <- length(unodes1)
     
+#     message("here")
     in1 <- integrand_nr1(u=unodes1,
                         d=d, wavelength=wavelength,
                         epsilon=epsilon, thickness=thickness, GL=TRUE)
-    
     weights1 <- matrix(uweights1, nrow=Nlambda, ncol=Nu1, byrow=TRUE)
     
     integral1.perp <- rowSums(in1$integrand.p*weights1)

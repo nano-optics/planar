@@ -2,7 +2,7 @@
 \alias{recursive_fresnelcpp}
 \title{recursive_fresnelcpp}
 \usage{
-  recursive_fresnelcpp(wavelength = NULL,
+  recursive_fresnelcpp(wavelength = 2 * pi/k0,
     k0 = 2 * pi/wavelength, angle = NULL, q = sin(angle),
     epsilon = list(incident = 1.5^2, 1.33),
     thickness = c(0, 0), polarisation = c("p", "s"))

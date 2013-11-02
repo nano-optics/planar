@@ -36,21 +36,21 @@ fluorescence.enhancement <- function(d=seq(1,10),
   epsilon.ex <- if(material == "silver") epsAg(lambdaex)$epsilon else epsAu(lambdaex)$epsilon 
   epsilon.fluo <- if(material == "silver") epsAg(lambdafluo)$epsilon else epsAu(lambdafluo)$epsilon 
 
-  Mex <- multilayer(lambda = lambdaex, theta = thetaex, polarisation = polarisation,  
+  Mex <- multilayer(wavelength = lambdaex, angle = thetaex, polarisation = polarisation,  
                     thickness = thickness, d = d,
                     epsilon = list(nPrism^2, epsilon.ex, nWater^2))
   
-  Mfluo <- multilayer(lambda = lambdafluo, theta = thetafluo,
+  Mfluo <- multilayer(wavelength = lambdafluo, angle = thetafluo,
                       polarisation = polarisation,  
                       thickness = thickness, d=d,
                       epsilon = list(nPrism^2, epsilon.fluo, nWater^2))
 
-    params <- list(lambda = lambdafluo,
+    params <- list(wavelength = lambdafluo,
                    epsilon = list(nWater^2, epsilon.fluo, nPrism^2), # reversed order
                    thickness = thickness, 
                    Nquadrature1 = Nquadrature1, Nquadrature2 = Nquadrature2,
                    Nquadrature3 = Nquadrature3, qcut = qcut, rel.err=rel.err,  GL=GL)
-    
+
     Mtot <-   sapply(d, function(.d){
       dl <- do.call(dipole, c(params, list(d=.d, show.messages = TRUE)))
     }, simplify=TRUE)

@@ -22,8 +22,8 @@
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-multilayer <- function(wavelength = NULL, k0 = 2*pi/wavelength,
-                       angle = NULL, q = sin(angle),
+multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
+                       angle = asin(q), q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0), 
                        polarisation = c('p', 's'),
@@ -240,28 +240,27 @@ multilayer <- function(wavelength = NULL, k0 = 2*pi/wavelength,
       ## Mr.perp[[ii]] <- 0 * Mr.par[[ii]] # default value
       
       ## absolute positions on the right of interface ii
-      distance[[ii+1]] <-    sampling[[ii+1]] + interfaces[ii]
+      distance[[ii+1]] <- sampling[[ii+1]] + interfaces[ii]
 
     } # end loop 
  
     fields <- list(Eiy.E1y=Eiy.E1y, Epiy.E1y=Epiy.E1y)
   }  # end swich polarisation
   
-  # careful: t this was calculated for H fields...
   impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
   
-  if(polarisation == 'p') #p 
-    transmission <- transmission * sqrt(impedance.ratio) else
-      transmission <- transmission / sqrt(impedance.ratio) 
-  
+  # careful: tp this was calculated for H fields...
+  if(polarisation == 'p') 
+      transmission <- transmission * impedance.ratio 
+        
   R <- Mod(reflection)^2
-  Tt <- Mod(transmission)^2
+  T <- impedance.ratio * Mod(transmission)^2
   
   ## results
   list(wavelength=wavelength, k0 = k0, 
        angle=angle, q=q, 
        reflection=reflection, transmission=transmission,
-       R=R, T=Tt, A = 1 - R - Tt,
+       R=R, T=T, A = 1 - R - T,
        dist=distance, fields = fields,
        Ml.perp=lapply(Ml.perp, drop), Ml.par=lapply(Ml.par, drop),
        Mr.perp=lapply(Mr.perp, drop), Mr.par=lapply(Mr.par, drop))
@@ -336,8 +335,8 @@ field_profile <- function(wavelength=500, angle=0, polarisation='p',
 ##' @examples
 ##' library(planar)
 ##' demo(package="planar")
-multilayercpp <- function(wavelength = NULL, k0 = 2*pi/wavelength,
-                       angle = NULL, q = sin(angle),
+multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
+                       angle = asin(q), q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33),
                        thickness = c(0, 0),
                        polarisation = c('p', 's'), ...){
@@ -379,9 +378,9 @@ multilayercpp <- function(wavelength = NULL, k0 = 2*pi/wavelength,
   
   A <- 1 - R - Tt
   
-  list(wavelength=wavelength, k0 = k0, 
-       angle=angle, q=q, 
-       reflection=refl, transmission=trans,
-       R=R, T=Tt, A=A)
+  data.frame(wavelength=wavelength, k0 = k0, 
+             angle=angle, q=q, 
+             reflection=refl, transmission=trans,
+             R=R, T=Tt, A=A)
 }
 

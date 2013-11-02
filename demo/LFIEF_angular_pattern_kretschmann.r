@@ -8,8 +8,8 @@ library(ggplot2)
 ## from left to right
 ## incident air | metal | glass
 
-back <- list(lambda=632.8,
-             theta = seq(-90, 90, length=1e4)[-c(1, 1e4)] * pi/180, 
+back <- list(wavelength=632.8,
+             angle = seq(-90, 90, length=1e4)[-c(1, 1e4)] * pi/180, 
              epsilon = list(1.52^2, epsAg(632.8)$epsilon, 1.0^2),
              thickness = c(0, 50, 0),
              d = 1,
@@ -22,25 +22,25 @@ front <- invert_stack(back)
 M.front <- do.call(multilayer, front)
 M.back <- do.call(multilayer, back)
 
-theta <- c(back$theta + pi/2, back$theta + 3*pi/2) * 180 / pi
+theta <- c(back$angle + pi/2, back$angle + 3*pi/2) * 180 / pi
 ## look at field in first and last media
 last <- length(M.back$Mr.par)
 intensity.par = c(M.front$Ml.par[[1]] , M.back$Mr.par[[last]])
 intensity.perp = c(M.front$Ml.perp[[1]] , M.back$Mr.perp[[last]])
 
-combined <- data.frame(theta=theta, parallel=intensity.par,
+combined <- data.frame(angle=theta, parallel=intensity.par,
                        perpendicular=intensity.perp,
                        side = gl(2, length(M.front$q)))
 
 ## basic plot
-qplot(theta, perpendicular, colour=side, data=combined, geom="line")
+qplot(angle, perpendicular, colour=side, data=combined, geom="line")
 
 ## polar plot with two variables
-m <- melt(combined, id=c("theta", "side"))
+m <- melt(combined, id=c("angle", "side"))
 
 mylabels <- c(-90,-45,0,45,90, 45,0,-45)
 p <- 
-  ggplot(m, aes(theta, value, group=interaction(side,variable))) +
+  ggplot(m, aes(angle, value, group=interaction(side,variable))) +
   annotate("rect", xmin=180,xmax=360,ymin=1e-2,ymax=100,fill="grey95",alpha=0.5) +
   annotate("rect", xmin=0,xmax=360,ymin=1e-2,ymax=1,fill=NA,colour="grey50",lty="dashed") +
   geom_polygon(aes(fill=side), alpha=0.5,colour=NA)  +

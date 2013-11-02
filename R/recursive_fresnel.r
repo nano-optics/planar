@@ -80,27 +80,25 @@ recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   ## r_{N-1,N}, then r_{N-2,N}, ... finally r_{1N}
   
   ## starting from last rsingle
-  refl <- rsingle[,,Nsurface]
-  trans <- tsingle[,,Nsurface]
+  reflection <- rsingle[,,Nsurface]
+  transmission <- tsingle[,,Nsurface]
   
   for(jj in rev(seq_len(Nsurface - 1))){ 
-    trans <- ( tsingle[,,jj] * trans*phase1[,,jj+1]) /
-      (1 + rsingle[,,jj]*refl*phase2[,,jj+1])
-    refl <- ( rsingle[,,jj] + refl*phase2[,,jj+1]) /
-      (1 + rsingle[,,jj]*refl*phase2[,,jj+1])
+    transmission <- ( tsingle[,,jj] * transmission*phase1[,,jj+1]) /
+      (1 + rsingle[,,jj]*reflection*phase2[,,jj+1])
+    reflection <- ( rsingle[,,jj] + reflection*phase2[,,jj+1]) /
+      (1 + rsingle[,,jj]*reflection*phase2[,,jj+1])
   }
   
-  impedance.ratio <- epsilon[[1]] / epsilon[[Nlayer]]
+  impedance.ratio <- sqrt(epsilon[[1]]) / sqrt(epsilon[[Nlayer]])
   
-  prefactor <- sqrt(impedance.ratio) 
-  
-  R <- Mod(refl)^2
-  T <- prefactor * Mod(trans)^2
+  R <- Mod(reflection)^2
+  T <- impedance.ratio * Mod(transmission)^2
   
   list(wavelength=wavelength, k0=k0, 
        angle=angle, q=q,
-       reflection=refl, 
-       transmission=trans, 
+       reflection=reflection, 
+       transmission=transmission, 
        R = R, T = T, A = 1 - R - T)
   
 }
@@ -161,22 +159,18 @@ recursive_fresnelcpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
                                   as.vector(thickness),
                                   as.integer(polarisation))
   
-  trans <- drop(res$transmission)
-  refl <- drop(res$reflection)
+  transmission <- drop(res$transmission)
+  reflection <- drop(res$reflection)
   
-  impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
-  
-  if(polarisation == 0L) #p 
-    trans <- trans * sqrt(impedance.ratio) else
-      trans <- trans / sqrt(impedance.ratio) 
-  
-  R <- Mod(refl)^2
-  T <- Mod(trans)^2
+  impedance.ratio <- Re(sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer]))
+#   ratio <- epsilon[,1] / epsilon[,Nlayer]
+  R <- Mod(reflection)^2
+  T <- impedance.ratio * Mod(transmission)^2
   
   list(wavelength = wavelength, k0 = k0, 
        angle=angle, q=q,
-       reflection=refl, 
-       transmission=trans, 
+       reflection=reflection, 
+       transmission=transmission, 
        R=R, T=T, A = 1 - R - T)
 }
 

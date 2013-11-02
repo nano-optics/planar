@@ -247,14 +247,14 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
     fields <- list(Eiy.E1y=Eiy.E1y, Epiy.E1y=Epiy.E1y)
   }  # end swich polarisation
   
-  impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
   
   # careful: tp this was calculated for H fields...
+  impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
   if(polarisation == 'p') 
       transmission <- transmission * impedance.ratio 
         
   R <- Mod(reflection)^2
-  T <- impedance.ratio * Mod(transmission)^2
+  T <- Re(impedance.ratio) * Mod(transmission)^2
   
   ## results
   list(wavelength=wavelength, k0 = k0, 
@@ -363,24 +363,23 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   
   
   
-  trans <- drop(res$transmission)
-  refl <- drop(res$reflection)
+  transmission <- drop(res$transmission)
+  reflection <- drop(res$reflection)
   
-  # careful: t this was calculated for H fields...
+  # careful: tp this was calculated for H fields...
   impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
   
-  if(polarisation == 0L) #p 
-    trans <- trans * sqrt(impedance.ratio) else
-      trans <- trans / sqrt(impedance.ratio) 
+  if(polarisation == 0L) # p 
+    transmission <- transmission * impedance.ratio 
   
-  R <- Mod(refl)^2
-  Tt <- Mod(trans)^2
+  R <- Mod(reflection)^2
+  T <- Re(impedance.ratio) * Mod(transmission)^2
   
-  A <- 1 - R - Tt
+  A <- 1 - R - T
   
   data.frame(wavelength=wavelength, k0 = k0, 
              angle=angle, q=q, 
-             reflection=refl, transmission=trans,
-             R=R, T=Tt, A=A)
+             reflection=reflection, transmission=transmission,
+             R=R, T=T, A=A)
 }
 

@@ -247,14 +247,16 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
     fields <- list(Eiy.E1y=Eiy.E1y, Epiy.E1y=Epiy.E1y)
   }  # end swich polarisation
   
+  index.ratio <- Re(sqrt(epsilon[,1])/sqrt(epsilon[, Nlayer]))
+  m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
   
-  # careful: tp this was calculated for H fields...
-  impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
-  if(polarisation == 'p') 
-      transmission <- transmission * impedance.ratio 
-        
+  if(polarisation == "p"){
+    rho <- index.ratio
+  } else {
+    rho <- 1 / index.ratio
+  }
   R <- Mod(reflection)^2
-  T <- Re(impedance.ratio) * Mod(transmission)^2
+  T <- rho * m * Mod(transmission)^2
   
   ## results
   list(wavelength=wavelength, k0 = k0, 
@@ -361,19 +363,19 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   res <- planar$multilayer(as.vector(k0), as.matrix(kx), as.matrix(epsilon),
                            as.vector(thickness), as.integer(polarisation))
   
-  
-  
   transmission <- drop(res$transmission)
   reflection <- drop(res$reflection)
   
-  # careful: tp this was calculated for H fields...
-  impedance.ratio <- sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer])  
+  index.ratio <- Re(sqrt(epsilon[,1])/sqrt(epsilon[, Nlayer]))
+  m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
   
-  if(polarisation == 0L) # p 
-    transmission <- transmission * impedance.ratio 
-  
+  if(polarisation == 0L){
+    rho <- index.ratio
+  } else {
+    rho <- 1 / index.ratio
+  }
   R <- Mod(reflection)^2
-  T <- Re(impedance.ratio) * Mod(transmission)^2
+  T <- rho * m * Mod(transmission)^2
   
   A <- 1 - R - T
   

@@ -102,28 +102,40 @@ t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}},\qquad r_{12}^s=\frac{\m
 
 \subsection{TM-polarised light} 
 \label{sub:tm_polarised_light}
-For TM-polarised light, it is generally easier to consider the Fresnel coefficients for the magnetic field, denoted $\rho$ and $\tau$. The continuity of $H^y$ reads,
+For TM-polarised light, the continuity of $H^y$ reads,
 \[
-1 - \rho = \tau
+Y_1 (1 - r) = Y_2 t
+\]
+rewritten as,
+\begin{equation}
+  1 - r =\sqrt{\frac{\mu_1\varepsilon_2}{\mu_2\varepsilon_1}}\cdot t.
+\label{eq:rt3}
+\end{equation}
+Note that in the case of normal incidence, we can combine equation~\ref{eq:rt1} and equation~\ref{eq:rt3}, 
+\[
+t_{12} = \frac{2\sqrt{\mu_2\varepsilon_1}}{\sqrt{\mu_2\varepsilon_1}+\sqrt{\mu_1\varepsilon_2}}, \qquad r_{12}=\frac{\sqrt{\mu_2\varepsilon_1}-\sqrt{\mu_1\varepsilon_2}}{\sqrt{\mu_1\varepsilon_2}+\sqrt{\mu_2\varepsilon_1}}.
 \]
 The continuity of $E^y$ can be written,
 \[
-\frac{k_{z1}}{\varepsilon_1} + \rho \frac{k_{z1}}{\varepsilon_1} = \tau \frac{k_{z2}}{\varepsilon_2}
+E_i\cos\theta_i + E_r\cos\theta_i  = E_t\cos\theta_t
+\]
+and can be expressed in terms of the normal component of the wave-vectors as,
+\[
+1 + r = \frac{n_1k_{z2}}{n_2k_{z1}}t.
 \]
 
 We can summarize the two continuity relations in the following system,
 
 \begin{equation*} \left\{
 \begin{aligned}
-1 - rho &=\tau\\
-(1 + \rho) \frac{k_{z1}}{\varepsilon_1}&=\frac{k_{z2}}{\varepsilon_2}\tau
+1 - r &=\sqrt{\frac{\mu_1\varepsilon_2}{\mu_2\varepsilon_1}}t\\
+1 + r &=\frac{n_1k_{z2}}{n_2k_{z1}}t
 \end{aligned}\right.
 \end{equation*}
 % 
-Solving for $\rho$ and $\tau$ yields the result,
+Solving for $r$ and $t$ yields the result,
 \begin{equation} 
-\tau_{12}^p=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},\qquad 
-\rho_{12}^p=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}}.
+t_{12}^p=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}}\sqrt{\frac{\mu_2\varepsilon_1}{\mu_1\varepsilon_2}},\qquad r_{12}^p=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}}.
 \label{eq:fresnelp}
 \end{equation}
 
@@ -131,8 +143,8 @@ To summarize, for a single interface from 1 to 2 with normal along the $z$ direc
 	% 
 	\begin{equation} 
 	\begin{aligned}
-	\rho_{12}^p&=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& r_{12}^s&=\frac{\mu_2 k_{z1}-\mu_1k_{z2}}{\mu_2 k_{z1}+\mu_1k_{z2}}\\
-	\tau_{12}^p&=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& t_{12}^s&=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}}.
+	r_{12}^p&=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& r_{12}^s&=\frac{\mu_2 k_{z1}-\mu_1k_{z2}}{\mu_2 k_{z1}+\mu_1k_{z2}}\\
+	t_{12}^p&=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}}\sqrt{\frac{\mu_2\varepsilon_1}{\mu_1\varepsilon_2}},&{}& t_{12}^s&=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}}.
 	\end{aligned}
 	\label{eq:fresnel}
 	\end{equation}

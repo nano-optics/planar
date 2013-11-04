@@ -17,7 +17,7 @@
 ##' demo(package="planar")
 recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
                        angle = NULL, q = sin(angle),
-                       epsilon = list(incident=1.5^2, 1.33),
+                       epsilon = list(incident=1.5^2, 1.33^2),
                        thickness = c(0, 0),
                        polarisation = c('p', 's')){
   
@@ -51,22 +51,19 @@ recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   for (ii in seq(1, Nsurface)){
     
     if(polarisation == 'p'){
-      
+      # Note: this is for the H field
       a <- kiz[,,ii] / epsilon[[ii]]
       b <- kiz[,,ii+1] / epsilon[[ii+1]]
-      
-      rsingle[,,ii] <-  (a - b) / (a + b)
-      tsingle[,,ii] <-  2 * a / (a + b) * sqrt(epsilon[[ii]]) / sqrt(epsilon[[ii+1]])
-      
+    
     } else { # s-polarisation
-      
+      # for the E field
       a <- kiz[,,ii] 
       b <- kiz[,,ii+1]
       
-      rsingle[,,ii] <-  (a - b) / (a + b)
-      tsingle[,,ii] <-  2 * a / (a + b) 
     }
     
+    rsingle[,,ii] <-  (a - b) / (a + b)
+    tsingle[,,ii] <-  2 * a / (a + b) 
     
     phase1[,,ii] <- exp(1i*thickness[ii]*kiz[,,ii])
     phase2[,,ii] <- exp(2i*thickness[ii]*kiz[,,ii])
@@ -89,11 +86,17 @@ recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
     reflection <- ( rsingle[,,jj] + reflection*phase2[,,jj+1]) /
       (1 + rsingle[,,jj]*reflection*phase2[,,jj+1])
   }
+#  
+  index.ratio <- Re(sqrt(epsilon[[1]])/sqrt(epsilon[[Nlayer]]))
+  m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
   
-  impedance.ratio <- sqrt(epsilon[[1]]) / sqrt(epsilon[[Nlayer]])
-  
+  if(polarisation == "p"){
+    rho <- index.ratio
+  } else {
+    rho <- 1 / index.ratio
+  }
   R <- Mod(reflection)^2
-  T <- impedance.ratio * Mod(transmission)^2
+  T <- rho * m * Mod(transmission)^2
   
   list(wavelength=wavelength, k0=k0, 
        angle=angle, q=q,
@@ -122,7 +125,7 @@ recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
 ##' demo(package="planar")
 recursive_fresnelcpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
                        angle = NULL, q = sin(angle),
-                       epsilon = list(incident=1.5^2, 1.33),
+                       epsilon = list(incident=1.5^2, 1.33^2),
                        thickness = c(0, 0),
                        polarisation = c('p', 's')){
   
@@ -162,10 +165,16 @@ recursive_fresnelcpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   transmission <- drop(res$transmission)
   reflection <- drop(res$reflection)
   
-  impedance.ratio <- Re(sqrt(epsilon[,1]) / sqrt(epsilon[,Nlayer]))
-#   ratio <- epsilon[,1] / epsilon[,Nlayer]
+  index.ratio <- Re(sqrt(epsilon[, 1])/sqrt(epsilon[, Nlayer]))
+  m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
+  
+  if(polarisation == 0L){
+    rho <- index.ratio
+  } else {
+    rho <- 1 / index.ratio
+  }
   R <- Mod(reflection)^2
-  T <- impedance.ratio * Mod(transmission)^2
+  T <- rho * m * Mod(transmission)^2
   
   list(wavelength = wavelength, k0 = k0, 
        angle=angle, q=q,

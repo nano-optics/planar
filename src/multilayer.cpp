@@ -186,18 +186,17 @@ Rcpp::List recursive_fresnel(const arma::colvec& k0,			\
 
       a = kiz.slice(ii) / repmat(epsilon.col(ii), 1, Ntheta);
       b = kiz.slice(ii + 1) / repmat(epsilon.col(ii + 1), 1, Ntheta);
-      rsingle.slice(ii) = (a - b) / (a + b);
-      tsingle.slice(ii) = 2 * a / (a + b) % repmat(sqrt(epsilon.col(ii)/epsilon.col(ii + 1)), 1, Ntheta);
       
     } else { // s-polarisation
       
       a = kiz.slice(ii);
       b = kiz.slice(ii + 1);
-      rsingle.slice(ii) = (a - b) / (a + b);
-      tsingle.slice(ii) = 2 * a / (a + b);
 
     }
    
+    rsingle.slice(ii) = (a - b) / (a + b);
+    tsingle.slice(ii) = 2 * a / (a + b) ;
+
     phase2.slice(ii) =  exp(arma::cx_double(0,2)*thickness(ii)*kiz.slice(ii));
     phase1.slice(ii) =  exp(arma::cx_double(0,1)*thickness(ii)*kiz.slice(ii));
    

@@ -7,11 +7,11 @@ require(ggplot2)
 wvl <- seq(200, 1000,by=2)*1e-3
 gold <- epsAu(wvl*1e3)
 
-  
-RTA_comparison <- function(angle = 44*pi/180,
+
+RTA_comparison <- function(angle = 30*pi/180,
                           epsilon=list(incident = 1.5^2, gold$epsilon,
                                        Re(gold$epsilon*0+ 1.0^2)),
-                          thickness=c(0, 50, 0), polarisation="p",
+                          thickness=c(0, 20, 0), polarisation="p",
                           wavelength=gold$wavelength, ...){
 
  res1 <- multilayer(wavelength, angle=angle, epsilon=epsilon, 

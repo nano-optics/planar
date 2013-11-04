@@ -247,7 +247,13 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
     fields <- list(Eiy.E1y=Eiy.E1y, Epiy.E1y=Epiy.E1y)
   }  # end swich polarisation
   
+  ## T is nt*cos(Ot)*|Et|^2 / ni*cos(Oi)*|Ei|^2
+  ## for s-pol, |Et|^2 / |Ei|^2 = |ts|^2, hence T = nt/ni * cos(Ot)/cos(Oi) * |ts|^2
+  ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
+  
+  # ratio of indices
   index.ratio <- Re(sqrt(epsilon[,1])/sqrt(epsilon[, Nlayer]))
+  # ratio of cosines
   m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
   
   if(polarisation == "p"){
@@ -366,7 +372,13 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   transmission <- drop(res$transmission)
   reflection <- drop(res$reflection)
   
+  ## T is nt*cos(Ot)*|Et|^2 / ni*cos(Oi)*|Ei|^2
+  ## for s-pol, |Et|^2 / |Ei|^2 = |ts|^2, hence T = nt/ni * cos(Ot)/cos(Oi) * |ts|^2
+  ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
+  
+  # ratio of indices
   index.ratio <- Re(sqrt(epsilon[,1])/sqrt(epsilon[, Nlayer]))
+  # ratio of cosines
   m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
   
   if(polarisation == 0L){

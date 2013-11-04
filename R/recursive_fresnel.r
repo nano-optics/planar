@@ -86,12 +86,18 @@ recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
     reflection <- ( rsingle[,,jj] + reflection*phase2[,,jj+1]) /
       (1 + rsingle[,,jj]*reflection*phase2[,,jj+1])
   }
-#  
+  
+  ## T is nt*cos(Ot)*|Et|^2 / ni*cos(Oi)*|Ei|^2
+  ## for s-pol, |Et|^2 / |Ei|^2 = |ts|^2, hence T = nt/ni * cos(Ot)/cos(Oi) * |ts|^2
+  ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
+  
+  # ratio of refractive indices
   index.ratio <- Re(sqrt(epsilon[[1]])/sqrt(epsilon[[Nlayer]]))
+  # ratio of cosines
   m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
   
   if(polarisation == "p"){
-    rho <- index.ratio
+    rho <- index.ratio 
   } else {
     rho <- 1 / index.ratio
   }
@@ -165,7 +171,13 @@ recursive_fresnelcpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   transmission <- drop(res$transmission)
   reflection <- drop(res$reflection)
   
+  ## T is nt*cos(Ot)*|Et|^2 / ni*cos(Oi)*|Ei|^2
+  ## for s-pol, |Et|^2 / |Ei|^2 = |ts|^2, hence T = nt/ni * cos(Ot)/cos(Oi) * |ts|^2
+  ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
+  
+  # ratio of refractive indices
   index.ratio <- Re(sqrt(epsilon[, 1])/sqrt(epsilon[, Nlayer]))
+  # ratio of cosines
   m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
   
   if(polarisation == 0L){

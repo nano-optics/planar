@@ -2,7 +2,9 @@ The Kretschmann configuration is commonly used for _sensing applications_: the s
 Furthermore, because SPPs are associated with a exponential decay of the electric field in the surrounding medium, the technique provides a surface-sensitive, sub-wavelength, probe.
 
 ```{r , echo=FALSE,results='hide'}
-opts_chunk$set(fig.path="sensing/",
+library(knitr)
+library(ggplot2)
+opts_chunk$set(fig.path="decayrates/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
@@ -45,7 +47,7 @@ d2 <- mdply(parameters(300), simulation)
 
 p1 <- 
 ggplot(d1) +
-  geom_line(aes(theta*180/pi, R, colour=n2, group=n2)) +
+  geom_line(aes(angle*180/pi, R, colour=n2, group=n2)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) +
@@ -54,7 +56,7 @@ ggplot(d1) +
 ## colour map
 p2 <- 
 ggplot(d2) +
-  geom_raster(aes(theta*180/pi, n2, fill=R)) +
+  geom_raster(aes(angle*180/pi, n2, fill=R)) +
   scale_y_continuous("n", expand=c(0,0))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) 
@@ -79,7 +81,7 @@ d1 <- mdply(parameters(10), simulation, n2=1.0)
 
 p1 <- 
 ggplot(d1) + facet_grid(thickness ~ . , scales = "free") + 
-  geom_line(aes(theta*180/pi, R, colour=n1, group=n1)) +
+  geom_line(aes(angle*180/pi, R, colour=n1, group=n1)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) +

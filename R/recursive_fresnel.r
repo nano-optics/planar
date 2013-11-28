@@ -12,9 +12,6 @@
 ##' @param polarisation [character] switch between p- and s- polarisation
 ##' @return fresnel coefficients and field profiles
 ##' @author baptiste Auguie
-##' @examples
-##' library(planar)
-##' demo(package="planar")
 recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
                        angle = NULL, q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33^2),
@@ -126,9 +123,6 @@ recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
 ##' @param polarisation [character] switch between p- and s- polarisation
 ##' @return fresnel coefficients and field profiles
 ##' @author baptiste Auguie
-##' @examples
-##' library(planar)
-##' demo(package="planar")
 recursive_fresnelcpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
                        angle = NULL, q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33^2),

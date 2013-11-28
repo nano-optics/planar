@@ -1,7 +1,9 @@
 Local field enhancement factors for a dipole near or inside a multilayer.
 
 ```{r , echo=FALSE,results='hide'}
-opts_chunk$set(fig.path="internalfield/",
+library(knitr)
+library(ggplot2)
+opts_chunk$set(fig.path="fieldmultilayer/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))

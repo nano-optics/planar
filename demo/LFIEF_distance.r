@@ -4,12 +4,12 @@
 library(planar)
 require(reshape2)
 
-wvl <- seq(200, 1000,by=2)*1e-3
-gold <- epsAu(wvl*1e3)
+wvl <- 600
+gold <- epsAu(wvl)
 
 enhancement_factor <- function(d=1, angle = seq(0,pi/2-0.001,length=500),
-                          epsilon=list(incident = 1.0^2, gold$epsilon[1], 1.0^2),
-                          thickness=c(0, 45, 0),
+                          epsilon=list(incident = 1.0^2, 1.2 + 5i, gold$epsilon[1], 1.0^2),
+                          thickness=c(0, 5, 45, 0),
                           wavelength=633, ...){
 
  res.p <- multilayer(wavelength, angle=angle, epsilon=epsilon, d=rep(d,length(thickness)),
@@ -21,9 +21,7 @@ enhancement_factor <- function(d=1, angle = seq(0,pi/2-0.001,length=500),
                    thickness=thickness, polarisation="p", ...)
  res2.s <- recursive_fresnel(wavelength, angle=angle, epsilon=epsilon, 
                            thickness=thickness, polarisation="s", ...)
- res2.p <- res.p
- res2.s <- res.s
- 
+
  n <- length(epsilon)
  sinl <- sin(angle)
  sinr <- sinl * sqrt(epsilon[[1]] / epsilon[[n]])
@@ -36,12 +34,12 @@ enhancement_factor <- function(d=1, angle = seq(0,pi/2-0.001,length=500),
  left.s <- Mod(exp(-1i*d* kzl) + res2.s$reflection * exp(1i*d* kzl))^2
  right.s <- Mod(res2.s$transmission * exp(1i*(d)* kzr))^2
  left.p <- sinl^2 * Mod(exp(-1i*d* kzl) + res2.p$reflection * exp(1i*d* kzl))^2
- right.p <- sinr^2 * Mod(res2.p$transmission * exp(1i*(d)* kzr))^2
+ right.p <- epsilon[[1]] / epsilon[[n]] *sinr^2 * Mod(res2.p$transmission * exp(1i*(d)* kzr))^2
  
  left2.p <- res.p$Ml.perp[[1]][,1] 
  left2.s <- res.s$Ml.par[[1]][,1]
- right2.p <- res.p$Mr.perp[[2]][,2]  
- right2.s <- res.s$Mr.par[[2]][,2] 
+ right2.p <- res.p$Mr.perp[[n-1]][,2]  
+ right2.s <- res.s$Mr.par[[n-1]][,2] 
  
  d <- data.frame(angle=angle*180/pi,
                  left.p=left.p, right.p=right.p,
@@ -55,11 +53,11 @@ enhancement_factor <- function(d=1, angle = seq(0,pi/2-0.001,length=500),
  
 }
 
-test <- enhancement_factor(10, thickness=c(0, 50, 0), 
-                      epsilon=list(incident = 1.45^2, gold$epsilon[1], 1.1^2))
+test <- enhancement_factor(1, thickness=c(0, 5, 50, 0), 
+                      epsilon=list(incident = 1.45^2, -2 + 20i, gold$epsilon[1], 1.3^2))
 
 p <- 
-ggplot(test) + facet_wrap(~polarisation) +
+ggplot(test) + facet_wrap(~polarisation, scales="free") +
   geom_path(aes(angle, value, colour=side, linetype=model), size=1.2)
 
 print(p)

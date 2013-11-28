@@ -5,18 +5,6 @@
 \usepackage[english,UKenglish]{babel}
 
 \usepackage{amsmath,amssymb}% AMS standards
-%\usepackage[adobe-utopia]{mathdesign}
-\usepackage{fontspec,xltxtra,xunicode}
-
-\defaultfontfeatures{Mapping=tex-text}
-
-\renewcommand{\rmdefault}{Minion Pro}
-\setmainfont[Mapping=tex-text,Numbers=Lowercase]{Minion Pro}
-\setromanfont[Mapping=tex-text]{Minion Pro}
-\setsansfont[Mapping=tex-text,Scale=MatchLowercase]{Myriad Pro}
-\setmonofont[Scale=MatchLowercase]{Andale Mono}
-
-%\newcommand{\mtdefault}{\rmdefault}
 \usepackage[compact]{titlesec}  
 \hbadness=10000
 \hfuzz=50pt
@@ -60,7 +48,7 @@ H_i\cos\theta_i - H_r\cos\theta_i  = H_t\cos\theta_t
 \]
 It is convenient to express the angles in terms of the normal component of the $k$-vectors,
 \begin{equation}
-	k_z = n k_0 \cos\theta.
+  k_z = n k_0 \cos\theta.
 \label{eq:k}
 \end{equation}
 for the incident, reflected, and refracted fields, so that $\cos\theta_t / \cos\theta_i=\dfrac{k_{z2}n_1}{k_{z1}n_2}$. The complex magnitude of the magnetic and electric fields are linked in each medium by the optical impedance. Its expression can be obtained from the induction law in a homogeneous medium,
@@ -102,40 +90,28 @@ t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}},\qquad r_{12}^s=\frac{\m
 
 \subsection{TM-polarised light} 
 \label{sub:tm_polarised_light}
-For TM-polarised light, the continuity of $H^y$ reads,
+For TM-polarised light, it is generally easier to consider the Fresnel coefficients for the magnetic field, denoted $\rho$ and $\tau$. The continuity of $H^y$ reads,
 \[
-Y_1 (1 - r) = Y_2 t
-\]
-rewritten as,
-\begin{equation}
-  1 - r =\sqrt{\frac{\mu_1\varepsilon_2}{\mu_2\varepsilon_1}}\cdot t.
-\label{eq:rt3}
-\end{equation}
-Note that in the case of normal incidence, we can combine equation~\ref{eq:rt1} and equation~\ref{eq:rt3}, 
-\[
-t_{12} = \frac{2\sqrt{\mu_2\varepsilon_1}}{\sqrt{\mu_2\varepsilon_1}+\sqrt{\mu_1\varepsilon_2}}, \qquad r_{12}=\frac{\sqrt{\mu_2\varepsilon_1}-\sqrt{\mu_1\varepsilon_2}}{\sqrt{\mu_1\varepsilon_2}+\sqrt{\mu_2\varepsilon_1}}.
+1 - \rho = \tau
 \]
 The continuity of $E^y$ can be written,
 \[
-E_i\cos\theta_i + E_r\cos\theta_i  = E_t\cos\theta_t
-\]
-and can be expressed in terms of the normal component of the wave-vectors as,
-\[
-1 + r = \frac{n_1k_{z2}}{n_2k_{z1}}t.
+\frac{k_{z1}}{\varepsilon_1} + \rho \frac{k_{z1}}{\varepsilon_1} = \tau \frac{k_{z2}}{\varepsilon_2}
 \]
 
 We can summarize the two continuity relations in the following system,
 
 \begin{equation*} \left\{
 \begin{aligned}
-1 - r &=\sqrt{\frac{\mu_1\varepsilon_2}{\mu_2\varepsilon_1}}t\\
-1 + r &=\frac{n_1k_{z2}}{n_2k_{z1}}t
+1 - rho &=\tau\\
+(1 + \rho) \frac{k_{z1}}{\varepsilon_1}&=\frac{k_{z2}}{\varepsilon_2}\tau
 \end{aligned}\right.
 \end{equation*}
 % 
-Solving for $r$ and $t$ yields the result,
+Solving for $\rho$ and $\tau$ yields the result,
 \begin{equation} 
-t_{12}^p=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}}\sqrt{\frac{\mu_2\varepsilon_1}{\mu_1\varepsilon_2}},\qquad r_{12}^p=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}}.
+\tau_{12}^p=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},\qquad 
+\rho_{12}^p=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}}.
 \label{eq:fresnelp}
 \end{equation}
 
@@ -143,8 +119,8 @@ To summarize, for a single interface from 1 to 2 with normal along the $z$ direc
 	% 
 	\begin{equation} 
 	\begin{aligned}
-	r_{12}^p&=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& r_{12}^s&=\frac{\mu_2 k_{z1}-\mu_1k_{z2}}{\mu_2 k_{z1}+\mu_1k_{z2}}\\
-	t_{12}^p&=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}}\sqrt{\frac{\mu_2\varepsilon_1}{\mu_1\varepsilon_2}},&{}& t_{12}^s&=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}}.
+	\rho_{12}^p&=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& r_{12}^s&=\frac{\mu_2 k_{z1}-\mu_1k_{z2}}{\mu_2 k_{z1}+\mu_1k_{z2}}\\
+	\tau_{12}^p&=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& t_{12}^s&=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}}.
 	\end{aligned}
 	\label{eq:fresnel}
 	\end{equation}
@@ -154,7 +130,7 @@ Note that,
 	r_{ij}=-r_{ji}.
 \label{eq:t}
 \end{equation}
-To verify the conservation of energy, one must consider the irradiance defined in terms of the electric field as $I=\addfontfeature{Fractions=On}\text{1⁄2}Y|E|^2$, yielding,
+To verify the conservation of energy, one must consider the irradiance defined in terms of the electric field as $I=\text{1???2}Y|E|^2$, yielding,
 \begin{equation}
   R=\frac{I_r}{I_i}=|r|^2, \qquad T=\frac{I_t}{I_i}=\frac{Y_1}{Y_2}|t|^2.
 \label{eq:irradiance}

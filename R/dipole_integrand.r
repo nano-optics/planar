@@ -69,8 +69,6 @@ dipole_direct <- function(d=1,
                    thickness = c(0, 0),
                    Nquadrature1 = 50, Nquadrature2 = 200, Nquadrature3 = 50,
                    qcut = NULL, qmax = Inf, show.messages=TRUE){
-   
-  require(statmod) # quadrature points in (-1, 1)
 
   GL1 <- gauss.quad(Nquadrature1)
   GL2 <- gauss.quad(Nquadrature2)

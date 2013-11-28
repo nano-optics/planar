@@ -2,11 +2,9 @@
 \alias{dipole_direct}
 \title{dipole_direct}
 \usage{
-  dipole_direct(d = 1, wavelength,
-    epsilon = list(incident = 1^2), thickness = c(0, 0),
-    Nquadrature1 = 50, Nquadrature2 = 200,
-    Nquadrature3 = 50, qcut = NULL, qmax = Inf,
-    show.messages = TRUE)
+dipole_direct(d = 1, wavelength, epsilon = list(incident = 1^2),
+  thickness = c(0, 0), Nquadrature1 = 50, Nquadrature2 = 200,
+  Nquadrature3 = 50, qcut = NULL, qmax = Inf, show.messages = TRUE)
 }
 \arguments{
   \item{d}{distance in nm}
@@ -32,14 +30,14 @@
   \item{show.messages}{logical, display integration info}
 }
 \description{
-  Dipole total decay rate near a multilayer interface
+Dipole total decay rate near a multilayer interface
 }
 \details{
-  direct application of the textbook formula using
-  integrand_mtot; performs poorly compared to the
-  transformed version in \code{dipole}
+direct application of the textbook formula using
+integrand_mtot; performs poorly compared to the transformed
+version in \code{dipole}
 }
 \author{
-  baptiste Auguie
+baptiste Auguie
 }
 

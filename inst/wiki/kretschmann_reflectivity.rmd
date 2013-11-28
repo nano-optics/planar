@@ -5,7 +5,9 @@ Here we model the optical properties of such a system, starting with the angular
 ### Reflectivity against internal incident angle for the Kretschmann configuration, at fixed wavelength
 
 ```{r , echo=FALSE,results='hide'}
-opts_chunk$set(fig.path="kretschmann/",
+library(knitr)
+library(ggplot2)
+opts_chunk$set(fig.path="kretschmannreflectivity/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
@@ -37,7 +39,7 @@ str(results)
 #### Plotting the results
 
 ```{r reflectivity,fig.width=10}
-m <- results[c("angle", "R")]
+m <- data.frame(results[c("angle", "R")])
 
 tir <- asin(1/1.5) * 180/pi
  
@@ -64,7 +66,7 @@ results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, 1.0^2),
                                 thickness=c(0, thickness, 0),
                                 angle=seq(0, pi/2, length=2e3), 
                                 polarisation='p')
-results[c("angle", "R")]
+data.frame(results[c("angle", "R")])
 
 }
 

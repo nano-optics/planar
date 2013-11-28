@@ -8,10 +8,12 @@
 ##' @useDynLib planar
 ##' @import Rcpp
 ##' @import RcppArmadillo
-##' @importFrom statmod gauss.quad
-##' @importFrom cubature adaptIntegrate
+##' @import dielectric
+##' @import methods
 ##' @import plyr 
 ##' @import reshape2 
+##' @importFrom statmod gauss.quad
+##' @importFrom cubature adaptIntegrate
 ##' @title planar
 ##' @author baptiste Auguie \email{baptiste.auguie@@gmail.com}
 ##' @references

@@ -23,7 +23,6 @@ Rcpp::List layer_fresnel(const arma::colvec& k0,			\
   
   const arma::colvec& k02 = k0 % k0;
   const arma::cx_mat& kx2 = kx % kx;
-  const arma::cx_double I = arma::cx_double(0,1);
   
   // kiz
   arma::cx_mat kiz0 = arma::ones<arma::cx_mat>(Nlambda, Ntheta), kiz1=kiz0, kiz2=kiz0;
@@ -118,7 +117,7 @@ Rcpp::List multilayer(const arma::colvec& k0,				\
       Ki = kiz.slice(ii+1) / kiz.slice( ii) ;
     }
 
-    phasei = exp(I*thickness(ii)*kiz.slice(ii)) ;
+    phasei = exp(arma::cx_double(0,1)*thickness(ii)*kiz.slice(ii)) ;
     
     Mi11.slice(ii) = 0.5*(1+Ki) / phasei;
     Mi21.slice(ii) = 0.5*(1-Ki) % phasei;
@@ -160,7 +159,6 @@ Rcpp::List recursive_fresnel(const arma::colvec& k0,			\
   
   const arma::colvec& k02 = k0 % k0;
   const arma::cx_mat& kx2 = kx % kx;
-  const arma::cx_double I = arma::cx_double(0,1);
   
   // loop to calculate kiz
   arma::cx_cube kiz = arma::ones<arma::cx_cube>(Nlambda, Ntheta, Nlayer);

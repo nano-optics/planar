@@ -2,26 +2,26 @@
 \alias{invert_stack}
 \title{invert_stack}
 \usage{
-  invert_stack(p)
+invert_stack(p)
 }
 \arguments{
   \item{p}{list}
 }
 \value{
-  list
+list
 }
 \description{
-  invert the description of a multilayer to simulate the
-  opposite direction of incidence
+invert the description of a multilayer to simulate the
+opposite direction of incidence
 }
 \details{
-  inverts list of epsilon and thickness of layers
+inverts list of epsilon and thickness of layers
 }
 \author{
-  Baptiste Auguie
+Baptiste Auguie
 }
 \seealso{
-  Other helping_functions: \code{\link{classify}},
-  \code{\link{field_profile}}, \code{\link{modify_levels}}
+Other helping_functions: \code{\link{classify}},
+\code{\link{field_profile}}, \code{\link{modify_levels}}
 }
 

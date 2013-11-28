@@ -2,10 +2,9 @@
 \alias{recursive_fresnel}
 \title{recursive_fresnel}
 \usage{
-  recursive_fresnel(wavelength = 2 * pi/k0,
-    k0 = 2 * pi/wavelength, angle = NULL, q = sin(angle),
-    epsilon = list(incident = 1.5^2, 1.33^2),
-    thickness = c(0, 0), polarisation = c("p", "s"))
+recursive_fresnel(wavelength = 2 * pi/k0, k0 = 2 * pi/wavelength,
+  angle = NULL, q = sin(angle), epsilon = list(incident = 1.5^2, 1.33^2),
+  thickness = c(0, 0), polarisation = c("p", "s"))
 }
 \arguments{
   \item{wavelength}{[vector] wavelength in nm}
@@ -27,20 +26,16 @@
   polarisation}
 }
 \value{
-  fresnel coefficients and field profiles
+fresnel coefficients and field profiles
 }
 \description{
-  Multilayer Fresnel coefficients
+Multilayer Fresnel coefficients
 }
 \details{
-  computes the reflection coefficient of a multilayered
-  interface
-}
-\examples{
-library(planar)
-demo(package="planar")
+computes the reflection coefficient of a multilayered
+interface
 }
 \author{
-  baptiste Auguie
+baptiste Auguie
 }
 

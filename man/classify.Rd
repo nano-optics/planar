@@ -2,7 +2,7 @@
 \alias{classify}
 \title{classify}
 \usage{
-  classify(d, id = NULL, vars = NULL, ...)
+classify(d, id = NULL, vars = NULL, ...)
 }
 \arguments{
   \item{d}{data.frame}
@@ -14,20 +14,20 @@
   \item{...}{passed on to melt}
 }
 \value{
-  data.frame
+data.frame
 }
 \description{
-  relabel factors
+relabel factors
 }
 \details{
-  Wide to long format data.frame with new factor
-  variable(s) describing the original columns
+Wide to long format data.frame with new factor variable(s)
+describing the original columns
 }
 \author{
-  Baptiste Auguie
+Baptiste Auguie
 }
 \seealso{
-  Other helping_functions: \code{\link{field_profile}},
-  \code{\link{invert_stack}}, \code{\link{modify_levels}}
+Other helping_functions: \code{\link{field_profile}},
+\code{\link{invert_stack}}, \code{\link{modify_levels}}
 }
 

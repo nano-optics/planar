@@ -1,7 +1,9 @@
 Using the angular spectrum decomposition of a gaussian beam in a bundle of plane waves, the near-field profile is calculated on the transmitted side of an interface illuminated under total internal reflection.
 
 ```{r , echo=FALSE,results='hide'}
-opts_chunk$set(fig.path="gaussian/",
+library(knitr)
+library(ggplot2)
+opts_chunk$set(fig.path="gaussianbeam/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
@@ -22,7 +24,7 @@ alpha <- 70*pi/180 # incident angle
 ```{r depth}
 xyz <- as.matrix(expand.grid(x=seq(5e3,5e4,length=10), y=0, z=seq(1, 500, length=50)))
 res <- adply(xyz, 1, gaussian_field, 
-             lambda=500, w0=w0, ni=1.5+0i, alpha=alpha, maxEval=500)
+             wavelength=500, w0=w0, ni=1.5+0i, alpha=alpha, maxEval=500)
 xyz <- data.frame(xyz, field=res[[2]])
 ggplot(xyz, aes(z, field, colour=x, group=x))+
   geom_line()
@@ -33,7 +35,7 @@ ggplot(xyz, aes(z, field, colour=x, group=x))+
 
 ```{r GH}
 xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0,length=200), y=0, z=seq(0, 100,by=10)))
-res <- adply(xyz, 1, gaussian_field, lambda=500, psi=pi/2, maxEval = 1000, 
+res <- adply(xyz, 1, gaussian_field, wavelength=500, psi=pi/2, maxEval = 1000, 
              w0=w0, ni=1.5+0i, alpha=alpha)
 xyz <- data.frame(xyz, field=res[[2]])
 
@@ -47,7 +49,7 @@ ggplot(xyz, aes(x, field, colour=z, group=z))+
 ```{r map}
 xyz <- as.matrix(expand.grid(x=seq(-3*w0, 3*w0, length=50), y=seq(-3*w0, 3*w0, length=50),
                              z=10))
-res <- adply(xyz, 1, gaussian_field, lambda=500, maxEval = 200, 
+res <- adply(xyz, 1, gaussian_field, wavelength=500, maxEval = 200, 
              w0=w0, ni=1.5+0i, alpha=alpha)
 xyz <- data.frame(xyz, field=res[[2]])
 

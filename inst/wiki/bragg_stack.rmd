@@ -1,16 +1,17 @@
 Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters.
 The structure is a stack of lambda/4 layers of alternating indices nH (high) and nL (low) on a glass substrate. 
 
-```{r , echo=FALSE,results='hide'}
-opts_chunk$set(fig.path="bragg/",
-               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
+```{r setup, echo=FALSE,results='hide'}
 library(ggplot2)
+library(knitr)
+opts_chunk$set(fig.path="braggstack/",
+               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 ```
 
 #### Setting up
 
-```{r , results='hide'}
+```{r stack, results='hide'}
 library(planar)
 library(ggplot2)
 require(reshape2)
@@ -24,10 +25,10 @@ make_stack <- function(n = 3, wavelength=seq(300, 700),
   epsilon.list <- as.list(c(1, rep(c(nL, nH)^2, n), nS))
   thickness.list <- c(0, rep(thickness/c(nL, nH), n), 0)
   
-  recursive_fresnelcpp(wavelength=wavelength, angle=angle,
+  res <- recursive_fresnelcpp(wavelength=wavelength, angle=angle,
                        epsilon=epsilon.list, thickness=thickness.list,
                        polarisation='p')
-
+data.frame(res[c("wavelength","k0", "R")])
 }
 ```
 With increasing number of layers, the reflectivity stop-band becomes stronger, with a more rectangular transfer function. Side-bands also develop accordingly, however, with higher and higher frequency.

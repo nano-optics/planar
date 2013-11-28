@@ -4,24 +4,24 @@
 \alias{planar-package}
 \title{planar}
 \description{
-  Multilayer optics
+Multilayer optics
 }
 \details{
-  R/c++ implementation of the dipole emission near a planar
-  multilayer stack
+R/c++ implementation of the dipole emission near a planar
+multilayer stack
 }
 \author{
-  baptiste Auguie \email{baptiste.auguie@gmail.com}
+baptiste Auguie \email{baptiste.auguie@gmail.com}
 }
 \references{
-  Etchegoin, P. Le Ru, E., Principles of Surface-Enhanced
-  Raman Spectroscopy, Elsevier, Amsterdam (2009).
+Etchegoin, P. Le Ru, E., Principles of Surface-Enhanced
+Raman Spectroscopy, Elsevier, Amsterdam (2009).
 
-  L. Novotny, E. Hecht, Principles of Nano-optics Cambridge
-  University Press, 2006
+L. Novotny, E. Hecht, Principles of Nano-optics Cambridge
+University Press, 2006
 
-  H. Raether. Surface Plasmons on Smooth and Rough Surfaces
-  and on Gratings. Springer, 1988.
+H. Raether. Surface Plasmons on Smooth and Rough Surfaces
+and on Gratings. Springer, 1988.
 }
 \keyword{packagelibrary}
 

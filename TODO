@@ -9,7 +9,7 @@ NEW FEATURES
 
 CLEANUP
 
-* variable names consistency (lambda, theta)
+* tests using testthat
 
 * simplify demos
 

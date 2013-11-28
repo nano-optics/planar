@@ -35,8 +35,8 @@ options(demo.ask=FALSE)
 
 <<dielectric_functions>>=
 wvl <- seq(200, 1000,by=2)
-gold <- planar:::epsAu(wvl)
-silver <- planar:::epsAg(wvl)
+gold <- epsAu(wvl)
+silver <- epsAg(wvl)
 @ 
 
 \section{Fresnel coefficients}

@@ -2,9 +2,8 @@
 \alias{integrand_nr2}
 \title{integrand_nr2}
 \usage{
-  integrand_nr2(d = 10, u, wavelength,
-    epsilon = list(incident = 1.5^2, 1^2),
-    thickness = c(0, 0), GL = FALSE)
+integrand_nr2(d = 10, u, wavelength, epsilon = list(incident = 1.5^2, 1^2),
+  thickness = c(0, 0), GL = FALSE)
 }
 \arguments{
   \item{d}{distance in nm}
@@ -22,18 +21,18 @@
   Legendre quadrature}
 }
 \description{
-  Dipole decay rates near a multilayer interface
+Dipole decay rates near a multilayer interface
 }
 \details{
-  Integrand of the dipole decay rates near a multilayer
-  interface. Transformed part I2 from u=0 to ucut
+Integrand of the dipole decay rates near a multilayer
+interface. Transformed part I2 from u=0 to ucut
 }
 \author{
-  baptiste Auguie
+baptiste Auguie
 }
 \seealso{
-  Other integrands dipole: \code{\link{integrand_mtot}},
-  \code{\link{integrand_nr1}}, \code{\link{integrand_nr3}},
-  \code{\link{integrand_rad}}
+Other integrands dipole: \code{\link{integrand_mtot}},
+\code{\link{integrand_nr1}}, \code{\link{integrand_nr3}},
+\code{\link{integrand_rad}}
 }
 

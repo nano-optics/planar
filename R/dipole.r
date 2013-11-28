@@ -252,13 +252,10 @@ dipole <- function(d=1,
   
 
   if(GL){
-    require(statmod) # quadrature points in (-1, 1)
     GL1 <- gauss.quad(Nquadrature1)
     GL2 <- gauss.quad(Nquadrature2)
     GL3 <- gauss.quad(Nquadrature3)
-  } else {
-    require(cubature) # adaptive quadrature
-  }
+  } 
 
   ## if no qcut provided, estimate one from max of
   ## all possible SPP dispersions

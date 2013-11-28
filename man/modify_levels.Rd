@@ -2,7 +2,7 @@
 \alias{modify_levels}
 \title{modify_levels}
 \usage{
-  modify_levels(f, modify = list())
+modify_levels(f, modify = list())
 }
 \arguments{
   \item{f}{factor}
@@ -10,16 +10,16 @@
   \item{modify}{named list}
 }
 \value{
-  factor
+factor
 }
 \description{
-  relabel factors
+relabel factors
 }
 \author{
-  Baptiste Auguie
+Baptiste Auguie
 }
 \seealso{
-  Other helping_functions: \code{\link{classify}},
-  \code{\link{field_profile}}, \code{\link{invert_stack}}
+Other helping_functions: \code{\link{classify}},
+\code{\link{field_profile}}, \code{\link{invert_stack}}
 }
 

@@ -19,7 +19,7 @@
 ##' @family gaussian_beam
 ##' @author Baptiste Auguie
 gaussian_field <- function(x=1, y=1, z=1, wavelength=500, alpha = 15*pi/180, psi=0, 
-                           w0=1e4, ni=1.5+0i, no=1+0i,
+                           w0=1e4, ni=1.5, no=1,
                            cutoff = min(1, sqrt(3*4)/(w0*Re(2*pi/wavelength*ni))),
                            maxEval = 300){
   

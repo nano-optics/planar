@@ -16,12 +16,8 @@
 ##' @param ... unused
 ##' @author baptiste Auguie
 ##' @references
-##' Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
-##' 
+##' Principles of surface-enhanced Raman spectroscopy and related plasmonic effects.
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
-##' @examples
-##' library(planar)
-##' demo(package="planar")
 multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
                        angle = asin(q), q = sin(angle),
                        epsilon = list(incident=1.5^2, 1.33),

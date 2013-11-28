@@ -1,7 +1,9 @@
 Applying optical reciprocity to the problem of dipolar emission near a planar interface, we can obtain the radiation pattern (intensity vs angle) by modelling the near-field at the dipole location for plane-wave illumination at a range of incident angles.
 
 ```{r , echo=FALSE,results='hide'}
-opts_chunk$set(fig.path="lfiefpattern/",
+library(knitr)
+library(ggplot2)
+opts_chunk$set(fig.path="lfiefpatterns/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))

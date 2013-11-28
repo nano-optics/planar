@@ -2,7 +2,7 @@
 \alias{transmission}
 \title{transmission}
 \usage{
-  transmission(n, external, polarisation = "p")
+transmission(n, external, polarisation = "p")
 }
 \arguments{
   \item{n}{prism refractive index}
@@ -12,15 +12,15 @@
   \item{polarisation}{polarisation}
 }
 \value{
-  transmission
+transmission
 }
 \description{
-  transmission loss through a prism
+transmission loss through a prism
 }
 \details{
-  transmission loss through a prism
+transmission loss through a prism
 }
 \author{
-  baptiste Auguie
+baptiste Auguie
 }
 

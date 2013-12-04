@@ -6,3 +6,14 @@ publis/
 inst/wiki/*.png
 inst/wiki/*.md
 inst/wiki/*.html
+*.gz
+
+*.out
+
+*.log
+
+*.aux
+
+*.tex
+
+vignettes/gaussian.pdf

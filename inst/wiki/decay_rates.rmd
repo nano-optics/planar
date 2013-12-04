@@ -1,5 +1,5 @@
-The Kretschmann configuration is commonly used for _sensing applications_: the sharp resonance associated with the excitation of SPPs at the metal/dielectric interface is strongly sensitive about the refractive index of the dielectric medium. 
-Furthermore, because SPPs are associated with a exponential decay of the electric field in the surrounding medium, the technique provides a surface-sensitive, sub-wavelength, probe.
+Total and radiative decay rate enhancements for a dipole near a metal interface. Reproducing Fig. 6.1, p. 304 from Principles of Surface-Enhanced Raman Spectroscopy. A dipole is placed near a semi-infinite air/metal interface with orientation either parallel or perpendicular to the interface the total decay rates peak at the wavelength of excitation of planar SPPs epsilon=-1 at the interface (loss channel). The radiative decay rate in the upper medium has a trough at the wavelength where $\varepsilon=0$ ($Dn=0$, by continuity $En=0$).
+
 
 ```{r , echo=FALSE,results='hide'}
 library(knitr)

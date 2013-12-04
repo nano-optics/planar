@@ -14,6 +14,7 @@ Description: Solves the electromagnetic problem of reflection and transmission
     near a multilayer structure.
 SystemRequirements: GNU make
 Version: 1.5
+VignetteBuilder: knitr
 Depends:
     methods,
     dielectric

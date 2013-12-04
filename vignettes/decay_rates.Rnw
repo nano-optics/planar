@@ -1,0 +1,63 @@
+\documentclass[12pt, a4paper]{article}
+
+\title{Dipole emission near a planar multilayer stack}
+\author{Baptiste Augui\'e}    
+\date{\today}
+
+\usepackage{amsmath,amssymb}% AMS standards    
+
+%\VignetteIndexEntry{decay rates}
+%\VignetteEngine{knitr::knitr}
+\bibliographystyle{alpha}
+
+\begin{document}
+
+\newcommand{\dq}{\text{d}q} 
+\newcommand{\du}{\text{d}u} 
+
+\maketitle
+
+\section{Decay rates}
+
+From \cite{RE09} (p. 571), and \cite{NH06} (pp. 335--360), the total decay rate for a dipole perpendicular to the interface is
+
+\begin{equation}
+  M^\perp_\text{tot} = 1 + \frac 3 2 \int_0^\infty \Re\left\{ \frac{q^3}{\sqrt{1 - q^2}} r^p (q) \exp\left(2 i k_1 d\sqrt{1 - q^2} \right)\right\}\dq 
+  \label{eq:Mptot1}
+\end{equation}
+
+The integrand diverges as $q\to 1$, it is therefore advantageous to perform the substitution $u:=\sqrt{1 - q^2}$. In order to maintain a real path of integration, the integral is first split into a radiative region ($0\leq q\leq 1$, $u:=\sqrt{1 - q^2}\geq 0$), and an evanescent region ($1\leq q\leq \infty$, $-i u:=\sqrt{q^2 - 1}\geq 0$). After some algebraic manipulation, we obtain,
+\begin{equation}
+  M^\perp_\text{tot} = 1 + \frac 3 2 \left(I_1 + I_2\right)
+  \label{eq:Mptot2}
+\end{equation}
+where
+\begin{equation}
+  \begin{split}
+I_1 + I_2 =& \int_0^1 \left[1 - u^2\right]\cdot\Re\left\{ r^p (\sqrt{1 - u^2}) \exp\left(2 id k_1 u\right)\right\}\du \\ & +\int_0^\infty \left[1 + u^2\right]\cdot\exp\left(-2d k_1  u\right)\cdot\Im\left\{ r^p (\sqrt{1 + u^2}) \right\}\du 
+  \end{split}
+  \label{eq:MptotI12}
+\end{equation}
+
+Similarly, for the parallel dipole
+\begin{equation}
+  M^\parallel_\text{tot} = 1 + \frac 3 4 \int_0^\infty \Re\left\{ \left[ \frac{r^s(q)}{\sqrt{1 - q^2}} - r^p (q) \sqrt{1 - q^2}\right] \cdot q\cdot\exp\left(2 i k_1 d\sqrt{1 - q^2} \right)\right\}\dq  \label{eq:Mstot1}
+\end{equation}
+which can be rewritten as,
+\begin{equation}
+  M^\parallel_\text{tot} = 1 + \frac 3 4 \left(I^\parallel_1 + I^\parallel_2\right)
+  \label{eq:Mstot2}
+\end{equation}
+where
+\begin{equation}
+  \begin{split}
+I^\parallel_1 + I^\parallel_2 =& \int_0^1 \Re\left\{\left[r^s (\sqrt{1 - u^2})  - u^2\cdot r^p (\sqrt{1 - u^2}) \right] \exp\left(2 id k_1 u\right)\right\}\du \\ & 
++\int_0^\infty \exp\left(-2d k_1  u\right)\cdot \Im\left\{r^s (\sqrt{1 + u^2}) + u^2\cdot r^p (\sqrt{1 + u^2}) \right\}\du 
+  \end{split}
+  \label{eq:MstotI12}
+\end{equation}
+
+\bibliography{refs}
+
+\end{document}
+

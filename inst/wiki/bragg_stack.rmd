@@ -1,5 +1,4 @@
-Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters.
-The structure is a stack of lambda/4 layers of alternating indices nH (high) and nL (low) on a glass substrate. 
+Reflectivity of a Bragg stack with varying number of layers. Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters. The structure is a stack of lambda/4 layers of alternating indices nH (high) and nL (low) on a glass substrate. 
 
 ```{r setup, echo=FALSE,results='hide'}
 library(ggplot2)

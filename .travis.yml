@@ -16,7 +16,7 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
-  - ./travis-tool.sh install_r RcppArmadillo Rcpp dielectric 
+  - ./travis-tool.sh install_r RcppArmadillo Rcpp dielectric statmod cubature reshape2 plyr ggplot2 Hmisc gridExtra lattice knitr testthat
 
 script: 
   - ./travis-tool.sh run_tests

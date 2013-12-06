@@ -247,10 +247,11 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   ## for s-pol, |Et|^2 / |Ei|^2 = |ts|^2, hence T = nt/ni * cos(Ot)/cos(Oi) * |ts|^2
   ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
   
-  # ratio of indices
-  index.ratio <- Re(sqrt(epsilon[,1])/sqrt(epsilon[, Nlayer]))
+  # ratio of refractive indices
+  index.ratio <- matrix(Re(sqrt(epsilon[,1])/sqrt(epsilon[,Nlayer])), nrow=Nlambda, ncol=Nq)
   # ratio of cosines
-  m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
+  qq <- matrix(q, nrow=Nlambda, ncol=Nq, byrow=TRUE)
+  m <- Re(sqrt(1 - (index.ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
   
   if(polarisation == "p"){
     rho <- index.ratio
@@ -351,6 +352,8 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   polarisation = if(polarisation == "p") 0L else 1L
   
   Nlayer <- length(thickness)
+  Nlambda <- length(k0)
+  Nq <- length(q)
   
   ## checks
   stopifnot(thickness[1]==0L,
@@ -372,10 +375,11 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   ## for s-pol, |Et|^2 / |Ei|^2 = |ts|^2, hence T = nt/ni * cos(Ot)/cos(Oi) * |ts|^2
   ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
   
-  # ratio of indices
-  index.ratio <- Re(sqrt(epsilon[,1])/sqrt(epsilon[, Nlayer]))
+  # ratio of refractive indices
+  index.ratio <- matrix(Re(sqrt(epsilon[,1])/sqrt(epsilon[,Nlayer])), nrow=Nlambda, ncol=Nq)
   # ratio of cosines
-  m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
+  qq <- matrix(q, nrow=Nlambda, ncol=Nq, byrow=TRUE)
+  m <- Re(sqrt(1 - (index.ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
   
   if(polarisation == 0L){
     rho <- index.ratio

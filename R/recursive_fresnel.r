@@ -89,9 +89,10 @@ recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
   
   # ratio of refractive indices
-  index.ratio <- Re(sqrt(epsilon[[1]])/sqrt(epsilon[[Nlayer]]))
+  index.ratio <- matrix(Re(sqrt(epsilon[[1]])/sqrt(epsilon[[Nlayer]])), nrow=Nlambda, ncol=Nq)
   # ratio of cosines
-  m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
+  qq <- matrix(q, nrow=Nlambda, ncol=Nq, byrow=TRUE)
+  m <- Re(sqrt(1 - (index.ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
   
   if(polarisation == "p"){
     rho <- index.ratio 
@@ -136,6 +137,8 @@ recursive_fresnelcpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   kx <- outer(k0*sqrt(epsilon[[1]]), q) # kx = q*k0
   epsilon = do.call(cbind, epsilon)
   
+  Nlambda <- length(k0)
+  Nq <- length(q)
   Nlayer <- length(thickness)
   
   ## case pure scalars
@@ -170,9 +173,11 @@ recursive_fresnelcpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
   
   # ratio of refractive indices
-  index.ratio <- Re(sqrt(epsilon[, 1])/sqrt(epsilon[, Nlayer]))
+  index.ratio <- matrix(Re(sqrt(epsilon[, 1])/sqrt(epsilon[, Nlayer])), nrow=Nlambda, ncol=Nq)
   # ratio of cosines
-  m <- Re(sqrt(1 - (index.ratio * q)^2 + (0+0i))/sqrt(1 - q^2))
+  qq <- matrix(q, nrow=Nlambda, ncol=Nq, byrow=TRUE)
+  m <- Re(sqrt(1 - (index.ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
+  
   
   if(polarisation == 0L){
     rho <- index.ratio

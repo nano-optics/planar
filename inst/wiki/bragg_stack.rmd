@@ -1,20 +1,22 @@
-Reflectivity of a Bragg stack with varying number of layers. Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters. The structure is a stack of lambda/4 layers of alternating indices nH (high) and nL (low) on a glass substrate. 
+## Reflectivity of a Bragg stack with varying number of layers
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+
+Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters. The structure is a stack of $\lambda/4$ layers of alternating indices $n_H$ (high) and $n_L$ (low) on a glass substrate. 
 
 ```{r setup, echo=FALSE,results='hide'}
 library(ggplot2)
 library(knitr)
 opts_chunk$set(fig.path="braggstack/",
-               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
+               warning=FALSE,error=FALSE,message=FALSE, tidy=FALSE)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 ```
 
 #### Setting up
 
+We first define a function that generates the structure (list) describing the multilayer stack, and pass it to the function that calculates the optical response.
+
 ```{r stack, results='hide'}
 library(planar)
-library(ggplot2)
-require(reshape2)
-require(plyr)
 
 make_stack <- function(n = 3, wavelength=seq(300, 700),
                       lambda0 = 500, thickness = lambda0/4, 
@@ -30,14 +32,16 @@ make_stack <- function(n = 3, wavelength=seq(300, 700),
 data.frame(res[c("wavelength","k0", "R")])
 }
 ```
-With increasing number of layers, the reflectivity stop-band becomes stronger, with a more rectangular transfer function. Side-bands also develop accordingly, however, with higher and higher frequency.
+With this function, we can simulate the optical response for a number of parameters using the convenient syntax of the plyr package (equivalent to for loops over sets of parameters). Here we compare stacks with increasing number of layers, and various incident angles. 
 
 ```{r simulation}
+require(plyr)
 
 params <- expand.grid(n=c(2, 4, 8), angle=seq(0,pi/3, by=pi/6))
 all <- mdply(params, make_stack)
 all$angle.d <- 180/pi*all$angle
 
+library(ggplot2)
 ggplot(all)+ facet_grid(angle.d ~ .)+
   geom_line(aes(2*pi/k0, R, colour=factor(n))) +
   labs(colour="layers") +
@@ -45,3 +49,5 @@ ggplot(all)+ facet_grid(angle.d ~ .)+
   scale_y_continuous("Reflectivity", expand=c(0,0), lim=c(0,1))
 
 ```
+
+With increasing number of layers, the reflectivity stop-band becomes stronger, with a more rectangular transfer function. Side-bands also develop accordingly, however, with higher and higher frequency. The position of the stopband shifts with incident angle, as the projection of the k-vector determines the resonance condition.

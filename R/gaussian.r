@@ -12,6 +12,8 @@
 ##' @param w0 beam waist radius
 ##' @param ni incident medium (prism) refractive index
 ##' @param no outer medium (substrate) refractive index
+##' @param nl layer refractive index
+##' @param d thickness of layer
 ##' @param cutoff radial integration limit
 ##' @param maxEval passed to adaptIntegrate
 ##' @return data.frame Electric field (squared modulus) at the x, y, z position
@@ -19,7 +21,7 @@
 ##' @family gaussian_beam
 ##' @author Baptiste Auguie
 gaussian_field <- function(x=1, y=1, z=1, wavelength=500, alpha = 15*pi/180, psi=0, 
-                           w0=1e4, ni=1.5, no=1,
+                           w0=1e4, ni=1.5, no=1, nl=no, d=0,
                            cutoff = min(1, sqrt(3*4)/(w0*Re(2*pi/wavelength*ni))),
                            maxEval = 300){
   
@@ -31,7 +33,7 @@ gaussian_field <- function(x=1, y=1, z=1, wavelength=500, alpha = 15*pi/180, psi
                         fDim = 6, tol = 1e-04,
                         maxEval = maxEval,
                         r2 = c(x, y, z), ki=ki, psi=psi, alpha=alpha,
-                        w0=w0, ni=ni, no=no)$integral
+                        w0=w0, ni=ni, no=no, nl=nl, d=d)$integral
   
   E <- complex(real = res[1:3], imag=res[4:6])
   Re(crossprod(E, Conj(E)))

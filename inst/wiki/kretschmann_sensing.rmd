@@ -1,3 +1,6 @@
+## Sensing in the Kretschmann configuration
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+
 The Kretschmann configuration is commonly used for _sensing applications_: the sharp resonance associated with the excitation of SPPs at the metal/dielectric interface is strongly sensitive about the refractive index of the dielectric medium. 
 Furthermore, because SPPs are associated with a exponential decay of the electric field in the surrounding medium, the technique provides a surface-sensitive, sub-wavelength, probe.
 
@@ -80,7 +83,6 @@ parameters <- function(res=10)
 
 d1 <- mdply(parameters(10), simulation, n2=1.0)
 
-p1 <- 
 ggplot(d1) + facet_grid(thickness ~ . , scales = "free") + 
   geom_line(aes(angle*180/pi, R, colour=n1, group=n1)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
@@ -88,7 +90,5 @@ ggplot(d1) + facet_grid(thickness ~ . , scales = "free") +
                      breaks=seq(0,90, by=15)) +
   guides(colour=guide_legend()) +
   theme(panel.margin = unit(1, "lines"))
-
-p1
-
 ```
+For an optical thickness approaching $\lambda / 2$, a new reflectivity dip appears, that is associated with the excitation of a guided mode. It is sharper than the standard SPP mode, because the modal field is mostly located in the dielectric layer.

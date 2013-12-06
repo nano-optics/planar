@@ -1,3 +1,6 @@
+## Dipole radiation patterns
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+
 Applying optical reciprocity to the problem of dipolar emission near a planar interface, we can obtain the radiation pattern (intensity vs angle) by modelling the near-field at the dipole location for plane-wave illumination at a range of incident angles.
 
 ```{r , echo=FALSE,results='hide'}
@@ -36,7 +39,7 @@ stack <- list(wavelength=632.8,
 M <- do.call(multilayer, stack)
 str(M)
 
-# combine results of front vs back illumination simulations (identical here)
+# combine results of front vs back illumination simulations (identical here, but anyway...)
 combined <- data.frame(angle = c(stack$angle, stack$angle + pi) * 180/pi,
                       parallel = c(M$Mr.par[[1]], M$Ml.par[[1]]),
                       perpendicular = c(M$Mr.perp[[1]], M$Ml.perp[[1]]),

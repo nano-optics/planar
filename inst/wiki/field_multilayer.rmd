@@ -1,4 +1,5 @@
-Local field enhancement factors for a dipole near or inside a multilayer.
+## Local field enhancement factors for a dipole near or inside a multilayer
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
 
 ```{r , echo=FALSE,results='hide'}
 library(knitr)
@@ -17,10 +18,11 @@ library(ggplot2)
 require(reshape2)
 require(plyr)
 ```
+
 We simulate a thin metal layer sandwiched between glass (incident medium) and air, illuminated from the glass side under p-polarisation, at 44 degrees (Kretschmann configuration). The electric field is normalised by the permittivity of each layer to exemplify the continuity of electric displacement (squared, here) across interfaces.
 
 ```{r simulation}
-m <- field_profile(lambda=633, theta=44*pi/180, polarisation='p',
+m <- field_profile(wavelength=633, angle=44*pi/180, polarisation='p',
                    thickness=c(0, 50, 0), dmax=400, res=5000,
                    epsilon=list(1.5^2, -12+1i, 1.0^2), 
                    displacement=TRUE)
@@ -28,6 +30,7 @@ m$L1 <- factor(m$L1, labels=c("glass", "metal", "air"))
 str(m)
 ```
 A strong electric field can be noted, particularly for the perpendicular component, which decays exponentially from the metal-air interface: this is characteristic of the excitation of surface plasmon-polaritons.
+
 ```{r plot, fig.width=12}
 
 limits <- ddply(m, .(L1), summarize, 

@@ -6,6 +6,8 @@ publis/
 inst/wiki/*.png
 inst/wiki/*.md
 inst/wiki/*.html
+inst/wiki/gaussian/
+
 *.gz
 
 *.out
@@ -17,3 +19,5 @@ inst/wiki/*.html
 *.tex
 
 vignettes/gaussian.pdf
+
+inst/tmp/testdipole.r

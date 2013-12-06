@@ -68,7 +68,7 @@ arma::cx_colvec evanescent_field(const cx_colvec& ei2p, const colvec& ki2p, \
    const cx_colvec& ko2p,  const cx_double ni, const cx_double no)
   {
 
-    cx_double i = cx_double(0,1), epsilon = cx_double(2.3e-16,0);
+    cx_double i = cx_double(0,1);
     cx_double ni2 = ni*ni, no2 = no*no, nratio2 = ni2/no2;
     cx_colvec eo2p(3);
     cx_double tp, ts;
@@ -83,19 +83,24 @@ arma::cx_colvec evanescent_field(const cx_colvec& ei2p, const colvec& ki2p, \
     return (eo2p);
   }
 
+
+
 // [[Rcpp::export]]
 arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
-                     const double psi, const double alpha, const double w0,\
-                     const double ni, const double no)
+			  const double psi, const double alpha, const double w0, \
+			  const double ni, const double no, const cx_double nl, const double d)
   {
 
     double delta, rho, theta, sx, sy;
-    cx_double i = cx_double(0,1), epsilon = cx_double(2.3e-16,0), a, pw, ko;
+    cx_double i = cx_double(0,1), a, pw, ko, kl;
   
-    cx_colvec ei1(3),   ei2(3), ei2p(3), eo2p(3), Eo2(3);
+    cx_colvec ei1(3), ei2(3), ei2p(3), eo2p(3), Eo2(3);
     colvec ki1(3), ki2(3), ki2p(3);
-    cx_colvec ko2(3), ko2p(3);
+    cx_colvec ko2(3), ko2p(3), kl2p(3);
     mat Ry(3, 3), Rz(3, 3), Rzi(3, 3);
+
+    cx_double ni2 = ni*ni, no2 = no*no, nl2=nl*nl, nratio2 = ni2/no2;
+    cx_double tp, ts, ap, bp;
 
     // change of variables from polar coordinates
     rho = rt(0); theta = rt(1);
@@ -126,15 +131,57 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     ei2p = Rz * ei2;
   
     // transmission through interface
-    ko = no / ni * ki;
+    ko = no / ni * ki; // outer medium
+    kl = nl / ni *ki; // layer
+    kl2p(0) = ki2p(0); 
+    kl2p(1) = ki2p(1);
+    kl2p(2) = sqrt(kl*kl - kl2p(0)*kl2p(0) - kl2p(1)*kl2p(1));
     ko2p(0) = ki2p(0); 
     ko2p(1) = ki2p(1);
     ko2p(2) = sqrt(ko*ko - ko2p(0)*ko2p(0) - ko2p(1)*ko2p(1));
-    eo2p = evanescent_field(ei2p, ki2p, ko2p, ni, no);
+    // eo2p = evanescent_field(ei2p, ki2p, ko2p, ni, no);
 
-   // pw = exp(i*(ki2(0)*r2(0) + ki2(1)*r2(1))) * \
-   //     exp(-sqrt(ki2(0)*ki2(0) - ko*ko )*r2(2));
+    // Fresnel coefficients
 
+    // tp = 2.0 * no2 * ki2p(2) / (no2*ki2p(2) + ni2*ko2p(2));
+    // ts = 2.0 * ki2p(2) / (ki2p(2) + ko2p(2));
+
+    // p-pol
+    ap = ki2p(2) / ni2;
+    bp = kl2p(2) / nl2;
+    arma::cx_double rp01 = (ap - bp) / (ap + bp);
+    arma::cx_double tp01 = 2.0 * ap / (ap + bp);
+    
+    ap = kl2p(2) / nl2;
+    bp = ko2p(2) / no2;
+    arma::cx_double rp12 = (ap - bp) / (ap + bp);
+    arma::cx_double tp12 = 2.0 * ap / (ap + bp);
+
+    // s-pol
+
+    ap = ki2p(2);
+    bp = kl2p(2);
+    arma::cx_double rs01 = (ap - bp) / (ap + bp);
+    arma::cx_double ts01 = 2.0 * ap / (ap + bp);
+    
+    ap = kl2p(2);
+    bp = ko2p(2);
+    arma::cx_double rs12 = (ap - bp) / (ap + bp);
+    arma::cx_double ts12 = 2.0 * ap / (ap + bp);
+ 
+    arma::cx_double phase1 =  exp(i*d*kl2p(2));
+    arma::cx_double phase2 =  exp(2.0*i*d*kl2p(2));
+   
+    // rp  = ( rp01 + rp12%phase2 ) / ( 1 + rp01%rp12%phase2 );
+    // rs  = ( rs01 + rs12%phase2 ) / ( 1 + rs01%rs12%phase2 );
+    tp  = ( tp01 * tp12 * phase1 ) / ( 1.0 + rp01 * rp12 * phase2 );
+    ts  = ( ts01 * ts12 * phase1 ) / ( 1.0 + rs01 * rs12 * phase2 );
+    
+    eo2p(0) = nratio2 * tp * ko2p(2)/ki2p(2) * ei2p(0);
+    eo2p(1) = ts * ei2p(1);
+    eo2p(2) = nratio2 * tp * ei2p(2);
+
+    // incident plane wave
     pw = exp(i*(ki2(0)*r2(0) + ki2(1)*r2(1) + sqrt(ko*ko - ki2(0)*ki2(0) +0.0*i)*r2(2)));
 
     Eo2 = rho * a * pw  * Rzi * eo2p;

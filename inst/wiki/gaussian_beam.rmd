@@ -91,7 +91,7 @@ xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0, length=30),
                              z=seq(2, 1000, length=30)))
                              
 res <- adply(xyz, 1, gaussian_field, d=50, nl=sqrt(epsAu(633)$epsilon),
-             wavelength=633, w0=w0, ni=1.5+0i, alpha=44.5*pi/180, maxEval=500, .progress="text")
+             wavelength=633, w0=w0, ni=1.5+0i, alpha=44.5*pi/180, maxEval=500)
 xyz <- data.frame(xyz, field=res[[2]])
 
 sprites3d(xyz[,1], xyz[,2], xyz[,3]*10 ,radius=1000,lit=FALSE, alpha=.1,

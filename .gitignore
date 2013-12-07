@@ -18,6 +18,5 @@ inst/wiki/gaussian/
 
 *.tex
 
-vignettes/gaussian.pdf
 
 inst/tmp/testdipole.r

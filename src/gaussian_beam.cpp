@@ -110,7 +110,7 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     // work out kz component
     ki1(0) = ki*sx;
     ki1(1) = ki*sy;
-    ki1(2) = ki*sqrt(1 - sx*sx - sy*sy); // only real freqs.
+    ki1(2) = sqrt(ki*ki - ki1(0)*ki1(0) - ki1(1)*ki1(1)); // only real freqs.
 
     // incident field polarisation and distribution
     ei1 = incident_field(psi);
@@ -184,7 +184,8 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     // incident plane wave
     pw = exp(i*(ki2(0)*r2(0) + ki2(1)*r2(1) + sqrt(ko*ko - ki2(0)*ki2(0) +0.0*i)*r2(2)));
 
-    Eo2 = rho * a * pw  * Rzi * eo2p;
+    // Eo2 = rho * a * pw  * Rzi * eo2p;
+    Eo2 = rho*ki*ki * a * pw  * Rzi * eo2p;
 
     // join real and imaginary part in 6-vector for cubature::adaptIntegrate
     colvec Er = real(Eo2);

@@ -86,16 +86,55 @@ xyz <- data.frame(xyz, field=res[[2]])
 
 ```{r volume, rgl=TRUE}
 w0 <- 2000
-xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0, length=30), 
-                             y=seq(-3*w0, 3*w0, length=30),
-                             z=seq(2, 1000, length=30)))
+x <- seq(-5*w0, 15*w0, length=100)
+z <- seq(2, 1000, length=100)
+xyz <- as.matrix(expand.grid(x=x, 
+                             y=0, #seq(-3*w0, 3*w0, length=30),
+                             z=z))
                              
 res <- adply(xyz, 1, gaussian_field, d=50, nl=sqrt(epsAu(633)$epsilon),
              wavelength=633, w0=w0, ni=1.5+0i, alpha=44.5*pi/180, maxEval=500)
 xyz <- data.frame(xyz, field=res[[2]])
 
-sprites3d(xyz[,1], xyz[,2], xyz[,3]*10 ,radius=1000,lit=FALSE, alpha=.1,
-        color=grey(scales::rescale(xyz[,4], to=c(0.9,0))))
+col <- heat.colors(100)[cut(xyz$field, 100)]
+
+rgl.surface(x=x, y=matrix(xyz$field/max(xyz$field)*1e4, ncol=100), 
+            z=z*10, color=col, back="lines", lit=FALSE, alpha=0.9)
+# 
+# sprites3d(xyz[,1], xyz[,2], xyz[,3]*10 ,radius=1000,lit=FALSE, alpha=.1,
+#         color=grey(scales::rescale(xyz[,4], to=c(0.9,0))))
+```
+
+The effect of the beam size on the field enhancement is quite dramatic as soon as the spread of incident angles causes the coupling to SPPs to deteriorate. Here we simulate the LFIEF for silver, with a beam waist varying from 1000 microns to 1 micron.
+
+```{r waist, fig.height=15}
+## first, check the plane wave result
+results <- multilayer(epsilon=list(1.52^2, epsAg(632.8)$epsilon, 1.0),
+                         wavelength=632.8, thickness=c(0, 50, 0), d=1,
+                         angle=seq(0, pi/2, length=2e3), polarisation='p')
+
+max(results$Mr.perp[[2]], na.rm=T)
+
+spp <- results$angle[which.min(results$R)]
+
+simul <- function(w0=10){
+  w0 <- w0*1e3
+  xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=seq(0, 300, by=50)))
+  res <- adply(xyz, 1, gaussian_field, d=50, nl=sqrt(epsAg(632.8)$epsilon),
+               wavelength=632.8, w0=w0, ni=1.52, alpha=spp, maxEval=1000)
+  data.frame(xyz, field=res[[2]])
+}
+# 
+
+all <- mdply(data.frame(w0=c(1e3, 5e2, 1e2, 50, 10, 5, 1)), simul)
+
+ggplot(all, aes(x/w0/1000, field, group=z, colour=z))+
+  geom_line() + facet_grid(w0~., scales="free", labeller=label_both) +
+  geom_vline(aes(x=0,y=NULL),lty=2) +
+  labs(x=expression(x/w[0]), y=expression("|E|"^2), 
+       colour=expression("z /nm")) +
+  coord_cartesian(xlim=c(-5,5)) + theme_minimal()+
+  guides(colour=guide_legend())
 ```
 
 

@@ -258,8 +258,11 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   } else {
     rho <- 1 / index.ratio
   }
+  dim(transmission) <- dim(m) # case 1-dims were dropped
   R <- Mod(reflection)^2
   T <- rho * m * Mod(transmission)^2
+  T <- drop(T)
+  transmission <- drop(transmission)
   
   ## results
   list(wavelength=wavelength, k0 = k0, 
@@ -376,18 +379,22 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
   
   # ratio of refractive indices
-  index.ratio <- matrix(Re(sqrt(epsilon[,1])/sqrt(epsilon[,Nlayer])), nrow=Nlambda, ncol=Nq)
+  index.ratio <- matrix(Re(sqrt(epsilon[[1]])/sqrt(epsilon[[Nlayer]])), nrow=Nlambda, ncol=Nq)
   # ratio of cosines
   qq <- matrix(q, nrow=Nlambda, ncol=Nq, byrow=TRUE)
   m <- Re(sqrt(1 - (index.ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
   
-  if(polarisation == 0L){
+  if(polarisation == "p"){
     rho <- index.ratio
   } else {
     rho <- 1 / index.ratio
   }
+  
+  dim(transmission) <- dim(m) # case 1-dims were dropped
   R <- Mod(reflection)^2
-  T <- rho * m * Mod(transmission)^2
+  T <- rho * m * Mod(transmission2)^2
+  T <- drop(T)
+  transmission <- drop(transmission)
   
   A <- 1 - R - T
   

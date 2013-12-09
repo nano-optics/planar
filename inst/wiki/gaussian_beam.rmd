@@ -1,7 +1,7 @@
 ## Near-field profile under gaussian-beam illumination
 _baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
 
-Using the angular spectrum decomposition of a gaussian beam in a bundle of plane waves, the near-field profile is calculated on the transmitted side of an interface illuminated under total internal reflection.
+Using the angular spectrum decomposition of a gaussian beam in a bundle of plane waves, the near-field profile is calculated on the transmitted side of a thin metal film illuminated under total internal reflection.
 
 ```{r , echo=FALSE,results='hide'}
 library(knitr)
@@ -18,14 +18,10 @@ library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 ```
 
-#### Setting up
-
-```{r , results='hide'}
+```{r , results='hide', echo=FALSE}
 library(planar)
 library(ggplot2)
 library(plyr)
-w0 <- 1e3 # beam waist 1 micron
-alpha <- 70*pi/180 # incident angle
 ```
 
 ## Depth profile
@@ -36,7 +32,7 @@ res <- adply(xyz, 1, gaussian_field, d=50, nl=sqrt(epsAu(633)$epsilon),
              wavelength=633, w0=5e3, ni=1.5+0i, alpha=45, maxEval=1000)
 xyz <- data.frame(xyz, field=res[[2]])
 ggplot(xyz, aes(z, field, colour=x, group=x))+
-  geom_line() +scale_y_log10()+
+  geom_line() + scale_y_log10()+
   labs(x=expression("z /nm"), y=expression(log("|E|"^2)), 
        colour=expression("x /nm")) 
 
@@ -45,7 +41,7 @@ We observe that the field decays exponentially away from the interface with the 
 
 ## Coupling to SPPs
 
-The detrimental effect of the beam size on the field enhancement is quite dramatic: as soon as the spread of incident angles causes the coupling to SPPs to deteriorate. Here we simulate the LFIEF for silver, with a beam waist varying from 1000 microns to 1 micron.
+The detrimental effect of the beam size on the field enhancement can be quite dramatic, as soon as the spread of incident angles causes the coupling to SPPs to deteriorate. Here we simulate the LFIEF for silver, with a beam waist varying from 1mm down to 1 micron.
 
 ```{r waist, fig.height=15}
 ## first, check the plane wave result
@@ -121,7 +117,7 @@ w0 <- 2000
 x <- seq(-5*w0, 15*w0, length=100)
 z <- seq(2, 1000, length=100)
 xyz <- as.matrix(expand.grid(x=x, 
-                             y=0, #seq(-3*w0, 3*w0, length=30),
+                             y=0, 
                              z=z))
                              
 res <- adply(xyz, 1, gaussian_field, d=50, nl=sqrt(epsAu(633)$epsilon),
@@ -132,9 +128,6 @@ col <- heat.colors(100)[cut(xyz$field, 100)]
 
 rgl.surface(x=x, y=matrix(xyz$field/max(xyz$field)*1e4, ncol=100), 
             z=z*10, color=col, back="lines", lit=FALSE, alpha=0.9)
-# 
-# sprites3d(xyz[,1], xyz[,2], xyz[,3]*10 ,radius=1000,lit=FALSE, alpha=.1,
-#         color=grey(scales::rescale(xyz[,4], to=c(0.9,0))))
 ```
 
 

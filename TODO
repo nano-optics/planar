@@ -5,13 +5,15 @@ ENHANCEMENTS
 
 NEW FEATURES
 
-* field profile under gaussian beam illumination (reflection and transmission)
+* full field profile under gaussian beam illumination (reflection and transmission)
+
+* C/armadillo interface to cubature for more efficient integration
 
 CLEANUP
 
 * tests using testthat
 
-* simplify demos
+* simple demos
 
 * check the derivation of fresnel coeffs for T, turn doc into vignette
 

@@ -2,6 +2,10 @@ planar 1.5
 
 USER VISIBLE CHANGES:
 
+* initial version of gaussian beam calculations (single layer, incomplete)
+
+* removed demos (see wiki instead)
+
 * more consistent variable names and output
 
 * angles are in radians, distances in nanometres

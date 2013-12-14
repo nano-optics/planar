@@ -2,7 +2,6 @@
 \usepackage{graphicx}
 \usepackage{hyperref}         
 \usepackage[english,UKenglish]{babel}
-\usepackage{siunitx}
 \usepackage{amsmath,amssymb}% AMS standards
 \hbadness=10000
 \hfuzz=50pt
@@ -91,7 +90,7 @@ t^s E_{2'y}\\
 \left(\frac{n_i}{n_o}\right)^2t^p E_{i2'z}
 \end{bmatrix}\exp\left(i \bk_{o2'}\cdot \br_{2'} \right).
 $$
-The wave vector of this inhomogeneous plane wave is given by $\bk_{o2'}  = \left(k_{i2'x}, k_{i2'y}, \sqrt{k_o^2 - (k_{i2'x}^2+k_{i2'x}^2)}\right)$.
+The wave vector of this inhomogeneous plane wave is given by $\bk_{o2'}  = \left(k_{i2'x}, k_{i2'y}, \sqrt{k_o^2 - (k_{i2'x}^2+k_{i2'y}^2)}\right)$.
 
 The electric field is finally transformed back into the reference frame $F_{2}$ by a rotation of $R_z(-\delta)$, before the integration is performed, in polar coordinates, 
 
@@ -103,8 +102,8 @@ with
 
 \begin{equation}
 \left\{\begin{aligned}
-\rho &=\sqrt{k_{ix1}^2 + k_{iy1}^2}\\
-\theta &= \tan^{-1}\frac{k_{iy1}}{k_{ix1}}
+k_{ix1} &=k_i \rho\cos\theta\\
+k_{iy1} &=k_i \rho\sin\theta\\
 \end{aligned}\right..
 \end{equation}
 

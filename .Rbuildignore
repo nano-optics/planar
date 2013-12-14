@@ -5,4 +5,3 @@ travis-tool.sh
 inst/tmp/
 inst/tests/
 inst/animation/
-inst/wiki/

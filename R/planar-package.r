@@ -3,7 +3,6 @@
 ##' R/c++ implementation of the dipole emission near a planar multilayer stack
 ##' 
 ##' @name planar-package
-##' @aliases planar
 ##' @docType package
 ##' @useDynLib planar
 ##' @import Rcpp

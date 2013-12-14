@@ -1,6 +1,6 @@
 \name{dipole}
 \alias{dipole}
-\title{dipole2}
+\title{dipole}
 \usage{
 dipole(d = 1, wavelength, epsilon = list(incident = 1^2), thickness = c(0,
   0), qcut = NULL, rel.err = 0.001, Nquadrature1 = 1000,

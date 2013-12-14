@@ -66,7 +66,6 @@ parameters <- function(res=10)
 
 d1 <- mdply(parameters(10), simulation, n2=1.0)
 
-p1 <- 
 ggplot(d1) + facet_grid(thickness ~ . , scales = "free") + 
   geom_line(aes(angle*180/pi, R, colour=n1, group=n1)) +
   scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
@@ -74,8 +73,5 @@ ggplot(d1) + facet_grid(thickness ~ . , scales = "free") +
                      breaks=seq(0,90, by=15)) +
   guides(colour=guide_legend()) +
   theme(panel.margin = unit(1, "lines"))
-
-p1
-
 
 

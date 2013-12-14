@@ -1,6 +1,5 @@
 \docType{package}
 \name{planar-package}
-\alias{planar}
 \alias{planar-package}
 \title{planar}
 \description{

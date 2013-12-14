@@ -31,7 +31,7 @@ stack <- list(wavelength=632.8,
 M <- do.call(multilayer, stack)
 str(M)
 
-# combine results of front vs back illumination simulations (identical here)
+# combine results of front vs back illumination simulations (identical here, but anyway...)
 combined <- data.frame(angle = c(stack$angle, stack$angle + pi) * 180/pi,
                       parallel = c(M$Mr.par[[1]], M$Ml.par[[1]]),
                       perpendicular = c(M$Mr.perp[[1]], M$Ml.perp[[1]]),

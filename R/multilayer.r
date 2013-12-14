@@ -392,7 +392,7 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   
   dim(transmission) <- dim(m) # case 1-dims were dropped
   R <- Mod(reflection)^2
-  T <- rho * m * Mod(transmission2)^2
+  T <- rho * m * Mod(transmission)^2
   T <- drop(T)
   transmission <- drop(transmission)
   

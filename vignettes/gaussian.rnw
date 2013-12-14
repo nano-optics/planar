@@ -21,6 +21,9 @@
 \renewcommand\arraystretch{1.5}
 %% ---------------------------------
 
+%\VignetteIndexEntry{gaussian beam}
+%\VignetteEngine{knitr::knitr}
+
 \author{Baptiste Augui\'e}
 \title{Near-field profile in the Kretschmann configuration with gaussian-beam illumination}
 

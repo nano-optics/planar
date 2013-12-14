@@ -1,80 +1,60 @@
 
-## ----, echo=FALSE,results='hide'-----------------------------------------
+## ----, echo=FALSE,results='hide', message=FALSE--------------------------
 library(knitr)
+library(planar)
 library(ggplot2)
-opts_chunk$set(fig.path="decayrates/",
+require(reshape2)
+require(plyr)
+opts_chunk$set(fig.path="decayrates/", 
                warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 
 
 ## ----, results='hide'----------------------------------------------------
-library(planar)
-library(ggplot2)
-require(reshape2)
-library(gridExtra)
-require(plyr)
 
+wvl <- seq(200, 1000,by=2)
+silver <- epsAg(wvl)
+gold <- epsAu(wvl)
 
-## ----simulation----------------------------------------------------------
-simulation <- function(thickness = 0, n1 = n2, n2 = 1.0, 
-                       wavelength=632.8, metal.fun=epsAu){
-  metal <- metal.fun(wavelength)
-  results <- recursive_fresnelcpp(epsilon=list(1.5^2, metal$epsilon, n1^2, n2^2),
-                                wavelength=metal$wavelength, 
-                                thickness=c(0, 50, thickness, 0),
-                                angle=seq(0, pi/2, length=2e3), polarisation='p')
-  data.frame(results[c("angle", "R")])
+distance <- function(d=1, material="silver", ...){
+
+  material <- get(material)
+  
+  dl <- dipole(d=d,
+               wavelength = material$wavelength,
+               epsilon = list(incident=1.0^2, material$epsilon),
+               thickness = c(0, 0),
+               Nquadrature1 = 1e3, Nquadrature2 = 5e3, GL = FALSE,
+               Nquadrature3 = 5e3, qcut = NULL, rel.err=1e-3,
+               show.messages = FALSE)
+
+  message(attr(dl, "comment"))
+  
+  m <- melt(dl, id = "wavelength")
+
+  m$orientation <- m$variable
+  
+  levels(m$orientation) <- list(perpendicular="Mtot.perp",
+                                perpendicular="Mrad.perp",
+                                parallel="Mtot.par",
+                                parallel="Mrad.par")
+  
+  levels(m$variable) <- list(Mtot="Mtot.perp",
+                             Mtot="Mtot.par",
+                             Mrad="Mrad.perp",
+                             Mrad="Mrad.par")
+  invisible(m)
 }
 
 
-## ----loop, fig.width=12--------------------------------------------------
+## ----simulation, message=TRUE, fig.width=10------------------------------
+params <- expand.grid(d=c(1,5,10), material=c("silver", "gold"), stringsAsFactors = FALSE)
+all <- mdply(params, distance)
 
-## loop over parameters
-parameters <- function(res=10) 
-  data.frame(n2 = seq(1.0, 1.5, length=res))
-
-d1 <- mdply(parameters(10), simulation)
-d2 <- mdply(parameters(300), simulation)
-
-p1 <- 
-ggplot(d1) +
-  geom_line(aes(angle*180/pi, R, colour=n2, group=n2)) +
-  scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) +
-  guides(colour=guide_legend())
-
-## colour map
-p2 <- 
-ggplot(d2) +
-  geom_raster(aes(angle*180/pi, n2, fill=R)) +
-  scale_y_continuous("n", expand=c(0,0))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) 
-
-grid.arrange(p1, p2, nrow=1)
-
-
-## ----variation-----------------------------------------------------------
-
-## loop over parameters
-parameters <- function(res=10) 
-  expand.grid(thickness = c(10, 50, 100, 400),
-              n1 = seq(1.0, 1.5, length=res))
-
-d1 <- mdply(parameters(10), simulation, n2=1.0)
-
-p1 <- 
-ggplot(d1) + facet_grid(thickness ~ . , scales = "free") + 
-  geom_line(aes(angle*180/pi, R, colour=n1, group=n1)) +
-  scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) +
-  guides(colour=guide_legend()) +
-  theme(panel.margin = unit(1, "lines"))
-
-p1
-
+ggplot(all, aes(wavelength, value, colour=factor(d), linetype=orientation))+
+  facet_grid(variable~material, scales="free_y") + 
+  geom_path() + labs(colour="distance /nm", y="EM enhancement factor", x="wavelength /nm")+
+  scale_y_log10() 
 
 

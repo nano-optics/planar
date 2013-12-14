@@ -2,79 +2,76 @@
 ## ----, echo=FALSE,results='hide'-----------------------------------------
 library(knitr)
 library(ggplot2)
-opts_chunk$set(fig.path="sppdispersion/",
-               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
-library(ggplot2)
-theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
-
-
-## ----, results='hide'----------------------------------------------------
 library(planar)
 library(ggplot2)
 require(reshape2)
 library(gridExtra)
 require(plyr)
+opts_chunk$set(fig.path="sppdispersion/",
+               warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
+library(ggplot2)
+theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 
-wvl <- 632.8
+
+## ----kretschmann---------------------------------------------------------
+
+k0 <- seq(1e-4, 3e-2, length=500)
+wvl <- 2*pi/k0
+silver <- epsAg(wvl)
 gold <- epsAu(wvl)
 
-
-## ----simulation----------------------------------------------------------
-simulation <- function(thickness = 0, n1 = n2, n2 = 1.0){
-  results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, n1^2, n2^2),
-                                wavelength=gold$wavelength, thickness=c(0, 50, thickness, 0),
-                                angle=seq(0, pi/2, length=2e3), polarisation='p')
-  data.frame(results[c("angle", "R")])
+dispersion <- function(material="silver"){
+  material <- get(material)
+  res <- recursive_fresnelcpp(k0=k0,
+                              q=seq(0,1, length=500),
+                              epsilon=list(1.5^2, material$epsilon, 1.0),
+                              thickness=c(0, 50, 0),
+                              polarisation='p')
+  
+  m <- melt(data.frame(k0=res$k0, R=res$R), id=c("k0"))
+  m$q <- rep(Re(res$q), each=nrow(res$R))
+  invisible(m)
 }
 
+m <- mdply(data.frame(material=c("silver","gold"), stringsAsFactors=FALSE), dispersion)
 
-## ----loop, fig.width=12--------------------------------------------------
-
-## loop over parameters
-parameters <- function(res=10) 
-  data.frame(n2 = seq(1.0, 1.5, length=res))
-
-d1 <- mdply(parameters(10), simulation)
-d2 <- mdply(parameters(300), simulation)
-
-p1 <- 
-ggplot(d1) +
-  geom_line(aes(angle*180/pi, R, colour=n2, group=n2)) +
-  scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) +
-  guides(colour=guide_legend())
-
-## colour map
-p2 <- 
-ggplot(d2) +
-  geom_raster(aes(angle*180/pi, n2, fill=R)) +
-  scale_y_continuous("n", expand=c(0,0))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) 
-
-grid.arrange(p1, p2, nrow=1)
+ggplot(m, aes(q, k0, fill=value)) +
+  facet_wrap(~material, ncol=1) +
+  geom_raster() + labs(fill = "R") +
+  scale_x_continuous(expression(q==k[x] / k[1]), expand=c(0,0))+
+  scale_y_continuous(expression(k[0]/nm^-1), expand=c(0,0))+
+  theme_minimal()
 
 
-## ----variation-----------------------------------------------------------
 
-## loop over parameters
-parameters <- function(res=10) 
-  expand.grid(thickness = c(10, 50, 100, 400),
-              n1 = seq(1.0, 1.5, length=res))
+## ----coupled-------------------------------------------------------------
 
-d1 <- mdply(parameters(10), simulation, n2=1.0)
+k0 <- seq(1e-4, 2e-2, length=500)
+wvl <- 2*pi/k0
+silver <- epsAg(wvl)
+gold <- epsAu(wvl)
 
-p1 <- 
-ggplot(d1) + facet_grid(thickness ~ . , scales = "free") + 
-  geom_line(aes(angle*180/pi, R, colour=n1, group=n1)) +
-  scale_y_continuous("Reflectivity", expand=c(0,0), limits=c(0,1))+
-  scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
-                     breaks=seq(0,90, by=15)) +
-  guides(colour=guide_legend()) +
-  theme(panel.margin = unit(1, "lines"))
+coupled <- function(thickness = 50, material="silver"){
+  material <- get(material)
+  res <- recursive_fresnelcpp(k0=k0,
+                              q=seq(1,1.4, length=500),
+                              epsilon=list(1.0, material$epsilon, 1.0),
+                              thickness=c(0, thickness, 0),
+                              polarisation='p')
+  
+  m <- melt(data.frame(k0=res$k0, R=res$R), id=c("k0"))
+  m$q <- rep(Re(res$q), each=nrow(res$R))
+  invisible(m)
+}
 
-p1
+m <- mdply(data.frame(thickness=c(50, 1000)), coupled)
+
+ggplot(m, aes(q, k0, fill=value)) +
+  facet_wrap(~thickness, ncol=1) +
+  geom_raster() + labs(fill = "R") +
+  scale_x_continuous(expression(q==k[x] / k[1]), expand=c(0,0))+
+  scale_y_continuous(expression(k[0]/nm^-1), expand=c(0,0))+
+  theme_minimal()
 
 
 

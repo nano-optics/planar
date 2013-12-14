@@ -3,7 +3,7 @@
 library(knitr)
 library(ggplot2)
 opts_chunk$set(fig.path="rtaconsistency/",
-               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
+               warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 
@@ -22,8 +22,8 @@ gold <- epsAu(wvl)
 
 ## ----simulation----------------------------------------------------------
 RTA_comparison <- function(angle = 30*pi/180,
-                          epsilon=list(incident = 1.5^2, gold$epsilon,
-                                       Re(gold$epsilon*0+ 1.0^2)),
+                          epsilon=list(incident = 1.33^2, gold$epsilon,
+                                       1.5^2),
                           thickness=c(0, 20, 0), polarisation="p",
                           wavelength=gold$wavelength, ...){
 
@@ -51,7 +51,8 @@ p <-
 ggplot(testp, aes(wavelength, value, colour=L1, linetype=variable,
                   group=interaction(L1, variable)))+
   geom_line(position=position_jitter(width=0, height=0.)) +
-  scale_y_continuous( )
+  scale_y_continuous(expand=c(0,0), lim=c(0,1)) +
+  labs(y="", colour="code", linetype="variable")
 
 grid.arrange(p, p %+% tests)
 

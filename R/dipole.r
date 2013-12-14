@@ -226,7 +226,7 @@ integrand_nr3 <- function(d=10, u, ucut, wavelength,
 ##' Dipole decay rates near a multilayer interface
 ##'
 ##' dipole decay rates near a multilayer interface
-##' @title dipole2
+##' @title dipole
 ##' @export
 ##' @param d distance in nm
 ##' @param wavelength wavelength in nm

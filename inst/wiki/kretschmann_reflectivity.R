@@ -2,7 +2,7 @@
 ## ----, echo=FALSE,results='hide'-----------------------------------------
 library(knitr)
 library(ggplot2)
-opts_chunk$set(fig.path="kretschmannreflectivity/",
+opts_chunk$set(fig.path="kretschmannreflectivity/", fig.width=10,
                warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
@@ -43,13 +43,13 @@ ggplot(m) +
   
 
 
-## ----loop, fig.width=12--------------------------------------------------
+## ----loop----------------------------------------------------------------
 
 simulation <- function(thickness = 50){
 results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, 1.0^2),
                                 wavelength=gold$wavelength, 
                                 thickness=c(0, thickness, 0),
-                                angle=seq(0, pi/2, length=2e3), 
+                                angle=pi/180*seq(15, 60, length=500), 
                                 polarisation='p')
 data.frame(results[c("angle", "R")])
 
@@ -73,21 +73,23 @@ ggplot(d1) +
 
 ## colour map
 p2 <- 
-ggplot(subset(d2, angle < 70 * pi/180)) +
+ggplot(d2) +
   geom_raster(aes(angle*180/pi, thickness, fill=R)) +
   scale_y_continuous("thickness", expand=c(0,0))+
   scale_x_continuous("Internal angle /degrees", expand=c(0,0), 
                      breaks=seq(0,90, by=15)) 
 
-grid.arrange(p1, p2, nrow=1)
+grid.arrange(p1, p2, nrow=2)
 
 
 ## ----variation-----------------------------------------------------------
-minimum <- ddply(d2, .(thickness), summarize, 
+minimum <- ddply(subset(d2, angle > tir*pi/180 & thickness > 5), .(thickness), summarize, 
                  angle = angle[which.min(R)] * 180/pi,
                  min = min(R))
 ggplot(melt(minimum, id="thickness")) + 
   facet_grid(variable~., scales="free") +
-  geom_line(aes(thickness, value)) 
+  geom_line(aes(thickness, value)) +
+  labs(y="", x="thickness /nm")
+  
 
 

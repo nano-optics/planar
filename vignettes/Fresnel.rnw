@@ -13,6 +13,9 @@
 \setcounter{bottomnumber}{50}    
 \usepackage[margin=3cm,bottom=3cm,nohead]{geometry}
 
+%\VignetteIndexEntry{fresnel formulae}
+%\VignetteEngine{knitr::knitr}
+
 \author{Baptiste Augui\'e}
 \title{Fresnel formul\ae}      
  

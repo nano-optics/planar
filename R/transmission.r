@@ -10,7 +10,7 @@
 ##' @author baptiste Auguie
 transmission <- function(n, external, polarisation = "p"){
   
-  alpha <- asin(sin(external) / nPrism) # % refracted angle
+  alpha <- asin(sin(external) / n) # % refracted angle
   
   if(polarisation == 'p'){
           4 * n*cos(external)*cos(alpha) /

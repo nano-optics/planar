@@ -29,7 +29,7 @@ simul <- function(w0=10){
 # 
 params <- data.frame(w0=2)
 all <- mdply(params, simul)
-
+  
 ggplot(all, aes(x, z, fill=field))+
   geom_raster(interpolate=TRUE) +
   scale_x_continuous(expand=c(0,0))+

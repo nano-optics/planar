@@ -43,33 +43,38 @@ We observe that the field decays exponentially away from the interface with the 
 
 The detrimental effect of the beam size on the field enhancement can be quite dramatic, as soon as the spread of incident angles causes the coupling to SPPs to deteriorate. Here we simulate the LFIEF for silver, with a beam waist varying from 1mm down to 1 micron.
 
-```{r waist, fig.height=15}
+```{r waist}
+wavelength <- 632.8
+metal <- epsAg(wavelength)$epsilon
 ## first, check the plane wave result
-results <- multilayer(epsilon=list(1.52^2, epsAg(632.8)$epsilon, 1.0),
-                         wavelength=632.8, thickness=c(0, 50, 0), d=1,
+results <- multilayer(epsilon=list(1.5^2, metal, 1.0),
+                         wavelength=wavelength, thickness=c(0, 50, 0), d=1,
                          angle=seq(0, pi/2, length=2e3), polarisation='p')
 
-max(results$Mr.perp[[2]], na.rm=T)
+maxi <- max(results$Mr.perp[[2]] + results$Mr.par[[2]], na.rm=T)
+spp <- results$angle[which.max(results$Mr.perp[[2]] + results$Mr.par[[2]])]
 
-spp <- results$angle[which.min(results$R)]
-
-simul <- function(w0=10){
+simulation <- function(w0=10){
   w0 <- w0*1e3
-  xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=0))
-  res <- adply(xyz, 1, gaussian_field, d=50, nl=sqrt(epsAg(632.8)$epsilon),
-               wavelength=632.8, w0=w0, ni=1.52, alpha=spp, maxEval=1000)
+  xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=seq(1)))
+  res <- adply(xyz, 1, gaussian_field, d=50, nl=sqrt(metal),
+               wavelength=wavelength, w0=w0, ni=1.5, alpha=spp, maxEval=2000)
   data.frame(xyz, field=res[[2]])
 }
-# 
 
-all <- mdply(data.frame(w0=c(1e3, 5e2, 1e2, 50, 10, 5, 1)), simul)
-all$waist <- factor(all$w0, levels = c(1e3, 5e2, 1e2, 50, 10, 5, 1))
-ggplot(all, aes(x/w0/1000, field))+
-  geom_line() + facet_grid(waist~., scales="free", labeller=label_both) +
+params <- data.frame(w0=c(5, 10, 50, 1e2, 500, 1e3, 1e4 ))
+all <- mdply(params, simulation)
+
+ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
+  geom_line() + 
   geom_vline(aes(x=0,y=NULL),lty=2) +
+  geom_hline(aes(x=0,yintercept=maxi),lty=3) +
+  annotate("text", label="plane-wave", y=maxi, x=-2.5, vjust=1, fontface="italic") +
   labs(x=expression(x/w[0]), y=expression("|E|"^2), 
-       colour=expression("z /nm")) +
-  coord_cartesian(xlim=c(-5,5)) + theme_minimal()
+       colour=expression(w[0]/mu*m)) +
+  coord_cartesian(xlim=c(-5,5)) + theme_minimal()+
+  guides(colour=guide_legend(reverse=TRUE)) +
+  theme(panel.background=element_rect(fill=NA))
 ```
 
 ## Beam shift

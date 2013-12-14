@@ -60,30 +60,6 @@ arma::cx_colvec incident_field(const double psi)
     return (E);
   }
 
-// TODO
-// include in main function, but take out the calculation of fresnel coefficients with an external
-// routine, to switch between single / multiple interfaces
-
-arma::cx_colvec evanescent_field(const cx_colvec& ei2p, const colvec& ki2p, \
-   const cx_colvec& ko2p,  const cx_double ni, const cx_double no)
-  {
-
-    cx_double i = cx_double(0,1);
-    cx_double ni2 = ni*ni, no2 = no*no, nratio2 = ni2/no2;
-    cx_colvec eo2p(3);
-    cx_double tp, ts;
-   
-    tp = 2.0 * no2 * ki2p(2) / (no2*ki2p(2) + ni2*ko2p(2));
-    ts = 2.0 * ki2p(2) / (ki2p(2) + ko2p(2));
-
-    eo2p(0) = nratio2 * tp * ko2p(2)/ki2p(2) * ei2p(0);
-    eo2p(1) = ts * ei2p(1);
-    eo2p(2) = nratio2 * tp * ei2p(2);
-
-    return (eo2p);
-  }
-
-
 
 // [[Rcpp::export]]
 arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
@@ -106,6 +82,8 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     ko = no / ni * ki; // outer medium
     kl = nl / ni *ki; // layer
     cx_double tp, ts, rp, rs, ap, bp, as, bs;
+    // temporary variables for internal field calculations
+    cx_double Kp, Ks, Mp11, Ms11, Mp21, Ms21, Hy, Hyp;
 
     // change of variables from polar coordinates
     rho = rt(0); theta = rt(1);
@@ -188,7 +166,12 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     tp  = ( tp01 * tp12 * phase1 ) / ( 1.0 + rp01 * rp12 * phase2 );
     ts  = ( ts01 * ts12 * phase1 ) / ( 1.0 + rs01 * rs12 * phase2 );
 
-    // reflection from layer
+    // internal field in layer not implemented
+    // TODO: factor out the field calculation using transfer matrices
+    // to deal with arbitrary number of layers etc.
+
+    // reflection from layer 
+    // note: field is calculated outside of the layer, not inside
     if(reflected) {
       rp  = ( rp01 + rp12 * phase2 ) / ( 1.0 + rp01 * rp12 * phase2 );
       rs  = ( rs01 + rs12 * phase2 ) / ( 1.0 + rs01 * rs12 * phase2 );
@@ -196,31 +179,24 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
       eo2p(0) = rp*ei2p(0);
       eo2p(1) = rs*ei2p(1);
       eo2p(2) = rp*ei2p(2);
-    // incident plane wave
-    pw = exp(i*(ki2(0)*r2(0) + ki2(1)*r2(1) + ki2(2)*r2(2)));
-    pwr = exp(i*(ki2(0)*r2(0) + ki2(1)*r2(1) - ki2(2)*r2(2)));
-
-    Eo2 = rho*ki*ki * a * (pwr*Rzi*eo2p + pw*Rzi*ei2p); // 
-
-    // join real and imaginary part in 6-vector for cubature::adaptIntegrate
-    colvec Er = real(Eo2);
-    colvec Ei = imag(Eo2);
-    colvec res = join_cols(Er, Ei);
-
-    return (res);
-
+      
+      pw = exp(i*(ki2(0)*r2(0) + ki2(1)*r2(1) + ki2(2)*r2(2))); // incident plane wave
+      pwr = exp(i*(ki2(0)*r2(0) + ki2(1)*r2(1) - ki2(2)*r2(2))); // reflected plane wave
+      Eo2 = rho*ki*ki * a * (pwr*Rzi*eo2p + pw*Rzi*ei2p); 
+    } else {
+      // transmitted field
+      eo2p(0) = nini / nono * tp * ko2p(2)/ki2p(2) * ei2p(0);
+      eo2p(1) = ts * ei2p(1);
+      eo2p(2) = nini / nono * tp * ei2p(2);
+      
+      // incident plane wave
+      pw = exp(i*(ko2(0)*r2(0) + ko2(1)*r2(1) + ko2(2)*r2(2)));
+      Eo2 = rho*ki*ki * a * pw  * Rzi * eo2p;
     }
-    
-    eo2p(0) = nini / nono * tp * ko2p(2)/ki2p(2) * ei2p(0);
-    eo2p(1) = ts * ei2p(1);
-    eo2p(2) = nini / nono * tp * ei2p(2);
 
-    // incident plane wave
-    pw = exp(i*(ko2(0)*r2(0) + ko2(1)*r2(1) + ko2(2)*r2(2)));
+    // join real and imaginary part in 6-vector 
+    // for cubature::adaptIntegrate
 
-    Eo2 = rho*ki*ki * a * pw  * Rzi * eo2p;
-
-    // join real and imaginary part in 6-vector for cubature::adaptIntegrate
     colvec Er = real(Eo2);
     colvec Ei = imag(Eo2);
     colvec res = join_cols(Er, Ei);

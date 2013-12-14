@@ -143,14 +143,14 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
        Eiz.E1[,,ii] <- - Hiy.H1y[,,ii] * AuxE2
        Epiz.E1[,,ii] <- - Hpiy.H1y[,,ii] * AuxE2
     }
-
+    
     ## loop to compute the local field EFs
     for (ii in seq(1, Nlayer-1, by=1)){
 
       ## left of interface ii
       ## the relative coordinate is sampling[[ii]] - thickness[ii]
       d1 <- thickness[ii] - sampling[[ii]]
-
+      
       Ml.perp[[ii]] <- sapply(d1, function(.d)
                                 Mod(Eiz.E1[,,ii]  * exp(1i*.d*kiz[,,ii]) +
                                     Epiz.E1[,,ii] * exp(-1i*.d*kiz[,,ii]))^2,

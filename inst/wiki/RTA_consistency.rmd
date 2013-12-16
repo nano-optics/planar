@@ -26,19 +26,19 @@ gold <- epsAu(wvl)
 ```
 Simulation of the optical response of a thin gold film sandwiched between glass and water, with incidence at 20 degrees.
 ```{r simulation}
-RTA_comparison <- function(angle = c(10,80)*pi/180,
+RTA_comparison <- function(angle = c(10,80),
                            epsilon=list(incident = 1.33^2, gold$epsilon,
                                         1.5^2),
                            thickness=c(0, 20, 0), polarisation="p",
                            wavelength=gold$wavelength, ...){
-  
-  res1 <- multilayer(wavelength, angle=angle, epsilon=epsilon, 
+  angle_r <- angle*pi/180
+  res1 <- multilayer(wavelength, angle=angle_r, epsilon=epsilon, 
                      thickness=thickness, polarisation=polarisation, ...)
-  res2 <- multilayercpp(wavelength, angle=angle, epsilon=epsilon, 
+  res2 <- multilayercpp(wavelength, angle=angle_r, epsilon=epsilon, 
                         thickness=thickness, polarisation=polarisation, ...)
-  res3 <- recursive_fresnel(wavelength, angle=angle, epsilon=epsilon, 
+  res3 <- recursive_fresnel(wavelength, angle=angle_r, epsilon=epsilon, 
                             thickness=thickness, polarisation=polarisation, ...)
-  res4 <- recursive_fresnelcpp(wavelength, angle=angle, epsilon=epsilon, 
+  res4 <- recursive_fresnelcpp(wavelength, angle=angle_r, epsilon=epsilon, 
                                thickness=thickness, polarisation=polarisation, ...)
   
   A1 <- as.vector(res1[["A"]])
@@ -61,7 +61,7 @@ RTA_comparison <- function(angle = c(10,80)*pi/180,
               "multilayercpp" = data.frame(A=A2, R=R2, T=T2, common),
               "fresnel" = data.frame(A=A3, R=R3, T=T3, common),
               "fresnelcpp" = data.frame(A=A4, R=R4, T=T4, common))
-  m <-  melt(all, meas=c("A", "R", "T"))
+  m <-  melt(all, meas=c( "R", "T", "A"))
   m 
 }
 
@@ -71,7 +71,7 @@ test <- mdply(params, RTA_comparison)
 ggplot(test, aes(wavelength, value, colour=L1, linetype=variable,
                   group=interaction(L1,variable)))+ 
   facet_grid(polarisation~angle) +
-  geom_line(position=position_jitter(width=0, height=0.)) +
+  geom_line() +
   scale_y_continuous(expand=c(0,0), lim=c(0,1)) +
   labs(y="", colour="code", linetype="variable")
 ```

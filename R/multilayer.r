@@ -214,13 +214,13 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
 
     ## loop to compute the local field EFs
     for (ii in seq(1, Nlayer-1, by=1)){
-
+      
       ## left of interface ii
       ## the relative coordinate is sampling[[ii]] - thickness[ii]
       d1 <- thickness[ii] - sampling[[ii]]
 
       Ml.par[[ii]] <- sapply(d1, function(.d)
-                               Mod(Eiy.E1y[,,ii,drop=FALSE]  * exp(1i*.d*kiz[,,ii]) +
+                               Mod(Eiy.E1y[,,ii]  * exp(1i*.d*kiz[,,ii]) +
                                    Epiy.E1y[,,ii] * exp(-1i*.d*kiz[,,ii]))^2,
                                simplify="array")
       
@@ -228,8 +228,8 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
       ## the relative coordinate is sampling[[ii+1]]
      
       Mr.par[[ii]] <- sapply(sampling[[ii+1]], function(.d)
-                             Mod(Eiy.E1y[,,ii+1,drop=FALSE]  * exp( 1i*.d*kiz[,,ii+1,drop=FALSE]) +
-                                 Epiy.E1y[,,ii+1,drop=FALSE] * exp(-1i*.d*kiz[,,ii+1,drop=FALSE]))^2,
+                             Mod(Eiy.E1y[,,ii+1]  * exp( 1i*.d*kiz[,,ii+1]) +
+                                 Epiy.E1y[,,ii+1] * exp(-1i*.d*kiz[,,ii+1]))^2,
                              simplify="array")
 
       ## Ml.perp[[ii]] <- 0 * Ml.par[[ii]] # default value
@@ -378,13 +378,14 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   ## for s-pol, |Et|^2 / |Ei|^2 = |ts|^2, hence T = nt/ni * cos(Ot)/cos(Oi) * |ts|^2
   ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
   
+  
   # ratio of refractive indices
-  index.ratio <- matrix(Re(sqrt(epsilon[[1]])/sqrt(epsilon[[Nlayer]])), nrow=Nlambda, ncol=Nq)
+  index.ratio <- matrix(Re(sqrt(epsilon[,1])/sqrt(epsilon[,Nlayer])), nrow=Nlambda, ncol=Nq)
   # ratio of cosines
   qq <- matrix(q, nrow=Nlambda, ncol=Nq, byrow=TRUE)
   m <- Re(sqrt(1 - (index.ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
   
-  if(polarisation == "p"){
+  if(polarisation == 0L){
     rho <- index.ratio
   } else {
     rho <- 1 / index.ratio
@@ -398,9 +399,9 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   
   A <- 1 - R - T
   
-  data.frame(wavelength=wavelength, k0 = k0, 
-             angle=angle, q=q, 
-             reflection=reflection, transmission=transmission,
-             R=R, T=T, A=A)
+  list(wavelength=wavelength, k0 = k0, 
+       angle=angle, q=q, 
+       reflection=reflection, transmission=transmission,
+       R=R, T=T, A=A)
 }
 

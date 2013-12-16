@@ -1,20 +1,4 @@
-## Consistency of results between algorithms
-_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
 
-Two algorithms are available to calculate the reflection, transmission and absorption characteristics of a multilayer. Here we check the consistency of the results, using both the R and c++ implementations.
-
-```{r , echo=FALSE,results='hide'}
-library(knitr)
-library(ggplot2)
-opts_chunk$set(fig.path="rtaconsistency/",
-               warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
-library(ggplot2)
-theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
-```
-
-#### Setting up
-
-```{r , results='hide'}
 library(planar)
 library(ggplot2)
 library(plyr)
@@ -23,9 +7,6 @@ library(reshape2)
 wvl <- seq(200, 1000,by=2)
 gold <- epsAu(wvl)
 
-```
-Simulation of the optical response of a thin gold film sandwiched between glass and water, with incidence at 20 degrees.
-```{r simulation}
 RTA_comparison <- function(angle = c(10,80)*pi/180,
                            epsilon=list(incident = 1.33^2, gold$epsilon,
                                         1.5^2),
@@ -74,4 +55,3 @@ ggplot(test, aes(wavelength, value, colour=L1, linetype=variable,
   geom_line(position=position_jitter(width=0, height=0.)) +
   scale_y_continuous(expand=c(0,0), lim=c(0,1)) +
   labs(y="", colour="code", linetype="variable")
-```

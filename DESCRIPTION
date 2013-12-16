@@ -1,5 +1,5 @@
 Package: planar
-Maintainer: baptiste Auguie <baptiste.auguie@gmail.com>
+Maintainer: Baptiste Auguie <baptiste.auguie@gmail.com>
 Title: Multilayer optics
 LinkingTo: Rcpp, RcppArmadillo
 Type: Package

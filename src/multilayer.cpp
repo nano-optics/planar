@@ -77,6 +77,205 @@ Rcpp::List layer_fresnel(const arma::colvec& k0,			\
 
 }
 
+Rcpp::List multilayer_field(const double k0,				
+			    const double kx,			
+			    const arma::cx_vec& epsilon,		
+			    const arma::colvec& thickness, 
+			    const double z, const double psi) {
+  
+  // psi is the polarisation angle
+  
+  const int Nlayer = thickness.n_elem;
+
+  const double k02 = k0 * k0;
+  const arma::cx_double q = kx / (sqrt(epsilon(0))*k0);
+  const arma::cx_double kx2 = kx * kx;
+  const arma::cx_double I = arma::cx_double(0,1), oI = arma::cx_double(0,0);
+
+  // loop to calculate kiz
+  arma::cx_vec kiz = arma::zeros<arma::cx_vec>(Nlayer);
+  int ii=0;
+  for(ii=0; ii<Nlayer; ii++){
+    kiz(ii)  = sqrt(epsilon(ii) * k02 - kx2);
+  } 
+
+  arma::cx_double Mp11=1.0, Mp12=0.0, Mp21=0.0, Mp22=1.0, M11new, M12new, M21new, M22new;
+  arma::cx_double Ms11=1.0, Ms12=0.0, Ms21=0.0, Ms22=1.0;
+  arma::cx_vec Mpi11=arma::ones<arma::cx_vec>(Nlayer-1), Mpi12=Mpi11, Mpi21=Mpi11, Mpi22=Mpi11;
+  arma::cx_vec Msi11=arma::ones<arma::cx_vec>(Nlayer-1), Msi12=Msi11, Msi21=Msi11, Msi22=Msi11;
+
+  arma::cx_double Kpi, Ksi, phasei;
+
+  // loop from first to last interface, transition matrices
+  for(ii=0; ii<Nlayer-1; ii++){
+    
+    Ksi = kiz(ii+1)/kiz(ii) ;
+    Kpi = Ksi * epsilon(ii)/epsilon(ii+1);
+    
+    phasei = exp( I * thickness(ii) * kiz(ii)) ;
+    
+    Mpi11(ii) = 0.5*(1.0 +Kpi) / phasei;
+    Mpi21(ii) = 0.5*(1.0 -Kpi) * phasei;
+    Mpi12(ii) = 0.5*(1.0 -Kpi) / phasei;
+    Mpi22(ii) = 0.5*(1.0 +Kpi) * phasei;
+    M11new = Mp11*Mpi11(ii) + Mp12*Mpi21(ii);
+    M21new = Mp21*Mpi11(ii) + Mp22*Mpi21(ii);
+    M12new = Mp11*Mpi12(ii) + Mp12*Mpi22(ii);
+    M22new = Mp21*Mpi12(ii) + Mp22*Mpi22(ii);
+    Mp11 = M11new;
+    Mp12 = M12new;
+    Mp21 = M21new;
+    Mp22 = M22new;
+
+    Msi11(ii) = 0.5*(1.0 +Ksi) / phasei;
+    Msi21(ii) = 0.5*(1.0 -Ksi) * phasei;
+    Msi12(ii) = 0.5*(1.0 -Ksi) / phasei;
+    Msi22(ii) = 0.5*(1.0 +Ksi) * phasei;
+    M11new = Ms11*Msi11(ii) + Ms12*Msi21(ii);
+    M21new = Ms21*Msi11(ii) + Ms22*Msi21(ii);
+    M12new = Ms11*Msi12(ii) + Ms12*Msi22(ii);
+    M22new = Ms21*Msi12(ii) + Ms22*Msi22(ii);
+    Ms11 = M11new;
+    Ms12 = M12new;
+    Ms21 = M21new;
+    Ms22 = M22new;
+
+  } 
+  arma::cx_double ts = 1.0 / Ms11, tp = 1.0 / Mp11;
+  arma::cx_double rs = Ms21 * ts, rp = Mp21 * tp;
+   
+  // calculate the fields
+  arma::cx_vec HiyH1y(Nlayer) , HpiyH1y(Nlayer) , EixE1(Nlayer) , EpixE1(Nlayer) , EizE1(Nlayer) , EpizE1(Nlayer);
+  arma::cx_vec EiyE1y(Nlayer) , EpiyE1y(Nlayer) , HixH1(Nlayer) , HpixH1(Nlayer) , HizH1(Nlayer) , HpizH1(Nlayer);
+  arma::cx_double AuxE1, AuxE2, AuxH1, AuxH2;
+
+
+  // p-pol
+  HiyH1y(Nlayer-1) = tp;
+  HpiyH1y(Nlayer-1) = oI;
+
+  AuxE1 = sqrt(epsilon(0)) / k0 / epsilon(Nlayer-1);
+  EixE1(Nlayer-1) = HiyH1y(Nlayer-1) * kiz(Nlayer-1) * AuxE1;
+  EpixE1(Nlayer-1) = oI;
+  AuxE2 = epsilon(0) / epsilon(Nlayer-1) * q.real();
+  EizE1(Nlayer-1) = - HiyH1y(Nlayer-1) * AuxE2;
+  EpizE1(Nlayer-1) = oI   ;
+
+  // s-polarisation
+  EiyE1y(Nlayer-1) = ts;
+  EpiyE1y(Nlayer-1) = oI;
+
+  AuxH1 = 1.0 / (k0 * sqrt(epsilon(0)));
+  HixH1(Nlayer-1) = - EiyE1y(Nlayer-1) * kiz(Nlayer-1) * AuxH1;
+  HpixH1(Nlayer-1) = oI;
+  AuxH2 = q.real();
+  HizH1(Nlayer-1) = EiyE1y(Nlayer-1) * AuxH2;
+  HpizH1(Nlayer-1) = oI;
+    
+
+  // loop downwards to compute all field amplitudes
+  for(ii=Nlayer-2; ii>=0; ii--){
+    // p-pol
+    HiyH1y(ii) = Mpi11(ii)*HiyH1y(ii+1) + Mpi12(ii)*HpiyH1y(ii+1);
+    HpiyH1y(ii) = Mpi21(ii)*HiyH1y(ii+1) + Mpi22(ii)*HpiyH1y(ii+1);
+
+    AuxE1 = sqrt(epsilon(0)) / k0 / epsilon(ii);
+    EixE1(ii) = HiyH1y(ii) * kiz(ii) * AuxE1;
+    EpixE1(ii) = - HpiyH1y(ii) * kiz(ii) * AuxE1;
+    AuxE2 = epsilon(0) / epsilon(ii) * q.real();
+    EizE1(ii) = - HiyH1y(ii) * AuxE2;
+    EpizE1(ii) = - HpiyH1y(ii) * AuxE2;
+
+    // s-pol
+    EiyE1y(ii) = Msi11(ii)*EiyE1y(ii+1) + Msi12(ii)*EpiyE1y(ii+1);
+    EpiyE1y(ii) = Msi21(ii)*EiyE1y(ii+1) + Msi22(ii)*EpiyE1y(ii+1);
+
+    HixH1(ii)  = - EiyE1y(ii) * kiz(ii) * AuxH1;
+    HpixH1(ii) =   EpiyE1y(ii) * kiz(ii) * AuxH1;
+    HizH1(ii)  =   EiyE1y(ii) * AuxH2;
+    HpizH1(ii) =   EpiyE1y(ii) * AuxH2;
+
+  }
+  //  cout << EizE1 << endl;
+
+  // cout <<  EizE1 << endl;
+
+  // normalise the field components to the incident field projection along s- and p-polarisations
+  // p-pol corresponds to psi=0, s-pol to psi=pi/2
+
+  // field at distance z
+  arma::colvec interfaces = cumsum(thickness);
+  int position; // test where we are
+  bool left = true;
+
+  // cout << interfaces.n_elem << endl;
+
+  double d;
+
+  if (z < 0) {
+    // cout << "left side" << endl;
+    position = 0;
+    d = - z;
+    left = true;
+  } else if (z > interfaces(Nlayer-1)){
+    // cout << "right side" << endl;
+    position = Nlayer-2;
+    d = z - interfaces(Nlayer-2);
+    left = false;
+  } else {
+    //  cout << "stack" << endl;
+    left = false;
+    for (ii=0; ii<Nlayer-1; ii++) {
+      if(z >= interfaces(ii) & z < interfaces(ii+1)) position = ii;
+      d = z - interfaces(position);
+    }
+  }
+
+  // arma::cx_mat Einternal(3, Nlayer-1); 
+   arma::cx_vec Einternal(3); 
+   // cout << position << endl;
+
+  if(left) {
+    // d = thickness(position) - z;
+    Einternal(0) = cos(psi)*(EixE1(position)  * exp(I*d*kiz(position)) + EpixE1(position)  * exp(-I*d*kiz(position)));
+    Einternal(1) = sin(psi)*(EiyE1y(position) * exp(I*d*kiz(position)) + EpiyE1y(position) * exp(-I*d*kiz(position)));
+    Einternal(2) = cos(psi)*(EizE1(position)  * exp(I*d*kiz(position)) + EpizE1(position)  * exp(-I*d*kiz(position)));
+  } else {
+    //d = z;
+      Einternal(0) = cos(psi)*(EixE1(position+1)  * exp(I*d*kiz(position+1)) + EpixE1(position+1)  * exp(-I*d*kiz(position+1)));
+      Einternal(1) = sin(psi)*(EiyE1y(position+1) * exp(I*d*kiz(position+1)) + EpiyE1y(position+1) * exp(-I*d*kiz(position+1)));
+      Einternal(2) = cos(psi)*(EizE1(position+1)  * exp(I*d*kiz(position+1)) + EpizE1(position+1)  * exp(-I*d*kiz(position+1)));
+    
+  }
+
+  //cout << position << endl;
+  // double d;
+  // arma::cx_mat Einternal(3, Nlayer-1); 
+  // if(z < 0.0){ // look at left of interfaces
+  //   for(ii=0; ii<Nlayer-1; ii++){
+  //     d = thickness(ii) - z;
+  //     Einternal(0, ii) = cos(psi)*(EixE1(ii)  * exp(I*d*kiz(ii)) + EpixE1(ii)  * exp(-I*d*kiz(ii)));
+  //     Einternal(1, ii) = sin(psi)*(EiyE1y(ii) * exp(I*d*kiz(ii)) + EpiyE1y(ii) * exp(-I*d*kiz(ii)));
+  //     Einternal(2, ii) = cos(psi)*(EizE1(ii)  * exp(I*d*kiz(ii)) + EpizE1(ii)  * exp(-I*d*kiz(ii)));
+  //   }
+  // } else if (z >= 0.0){ // right side
+  //   for(ii=0; ii<Nlayer-1; ii++){
+  //     d = z;
+  //     Einternal(0, ii) = cos(psi)*(EixE1(ii+1)  * exp(I*d*kiz(ii+1)) + EpixE1(ii+1)  * exp(-I*d*kiz(ii+1)));
+  //     Einternal(1, ii) = sin(psi)*(EiyE1y(ii+1) * exp(I*d*kiz(ii+1)) + EpiyE1y(ii+1) * exp(-I*d*kiz(ii+1)));
+  //     Einternal(2, ii) = cos(psi)*(EizE1(ii+1)  * exp(I*d*kiz(ii+1)) + EpizE1(ii+1)  * exp(-I*d*kiz(ii+1)));
+  //   }
+  // }
+
+  return List::create( 
+   _["rs"]  = rs, 
+   _["rp"]  = rp, 
+   _["ts"]  = ts,
+   _["tp"]  = tp,
+   _["E"]  = Einternal ) ;
+
+}
+
 Rcpp::List multilayer(const arma::colvec& k0,				\
 		      const arma::cx_mat& kx,				\
 		      const arma::cx_mat& epsilon,			\
@@ -137,7 +336,7 @@ Rcpp::List multilayer(const arma::colvec& k0,				\
   } 
   arma::cx_mat transmission = 1 / M11;
   arma::cx_mat reflection = M21 % transmission;
-
+    
   return List::create( 
    _["reflection"]  = reflection, 
    _["transmission"]  = transmission
@@ -214,9 +413,6 @@ Rcpp::List recursive_fresnel(const arma::colvec& k0,			\
   	  (1 + rsingle.slice(ii) % r % phase2.slice(ii+1));
   }
   
-  
-  
-
   return List::create( 
 		      _["reflection"]  = r,
 		      _["transmission"]  = t
@@ -227,6 +423,10 @@ Rcpp::List recursive_fresnel(const arma::colvec& k0,			\
 RCPP_MODULE(planar){
   Rcpp::function( "layer_fresnel", &layer_fresnel,					\
 	    "Calculates the reflection and transmission coefficients of a single layer" ) ;
+
+  Rcpp::function( "multilayer_field", &multilayer_field,					\
+	    "Calculates the reflection and transmission coefficients of a multilayer stack" ) ;
+
   Rcpp::function( "multilayer", &multilayer,					\
 	    "Calculates the reflection and transmission coefficients of a multilayer stack" ) ;
 

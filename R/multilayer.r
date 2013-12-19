@@ -130,7 +130,7 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
     AuxE2 <- outer(epsilon[,1] / epsilon[,Nlayer], Re(q))
     Eiz.E1[,,Nlayer] <- - Hiy.H1y[,,Nlayer] * AuxE2
     Epiz.E1[,,Nlayer] <- 0i
-
+    
     ## loop downwards to compute all field amplitudes
     for (ii in seq(Nlayer-1, 1, by=-1)){
        Hiy.H1y[,,ii] <- Mi11[,,ii]*Hiy.H1y[,,ii+1] + Mi12[,,ii]*Hpiy.H1y[,,ii+1]

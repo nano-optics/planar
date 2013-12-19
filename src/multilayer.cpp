@@ -81,7 +81,7 @@ Rcpp::List multilayer_field(const double k0,
 			    const double kx,			
 			    const arma::cx_vec& epsilon,		
 			    const arma::colvec& thickness, 
-			    const double z, const double psi) {
+			    const arma::colvec& z, const double psi) {
   
   // psi is the polarisation angle
   
@@ -198,32 +198,36 @@ Rcpp::List multilayer_field(const double k0,
   }
 
 
-  // field at distance z
-  arma::colvec interfaces = cumsum(thickness);
-  int position; // test in which layer we are
-  double d;
+  // field at distances z
+  arma::cx_mat Einternal(3, z.n_elem); 
+  int jj;
+  for (jj=0; jj<z.n_elem; jj++) {
 
-  if (z < 0) {
-    position = 0;
-    d = - z;
-  } else if (z > interfaces(Nlayer-1)){
-    position = Nlayer-1;
-    d = z - interfaces(Nlayer-2);
-  } else {
-    for (ii=0; ii<Nlayer-1; ii++) {
-      if(z >= interfaces(ii) & z < interfaces(ii+1)) position = ii+1;
-      d = z - interfaces(position-1);
+    arma::colvec interfaces = cumsum(thickness);
+    int position; // test in which layer we are
+    double d, ztmp=z(jj); // current z-position (absolute and relative)
+    
+    if (ztmp < 0) {
+      position = 0;
+      d = - ztmp;
+    } else if (ztmp > interfaces(Nlayer-1)){
+      position = Nlayer-1;
+    d = ztmp - interfaces(Nlayer-2);
+    } else {
+      for (ii=0; ii<Nlayer-1; ii++) {
+	if(ztmp >= interfaces(ii) & ztmp < interfaces(ii+1)) position = ii+1;
+	d = ztmp - interfaces(position-1);
     }
+    }
+    
+    // note: normalise the field components to the incident field projection along s- and p-polarisations
+    // p-pol corresponds to psi=0, s-pol to psi=pi/2
+    
+    Einternal(0,jj) = cos(psi)*(EixE1(position)  * exp(I*d*kiz(position)) + EpixE1(position)  * exp(-I*d*kiz(position)));
+    Einternal(1,jj) = sin(psi)*(EiyE1y(position) * exp(I*d*kiz(position)) + EpiyE1y(position) * exp(-I*d*kiz(position)));
+    Einternal(2,jj) = cos(psi)*(EizE1(position)  * exp(I*d*kiz(position)) + EpizE1(position)  * exp(-I*d*kiz(position)));
   }
 
-  arma::cx_vec Einternal(3); 
-  // note: normalise the field components to the incident field projection along s- and p-polarisations
-  // p-pol corresponds to psi=0, s-pol to psi=pi/2
-  
-   Einternal(0) = cos(psi)*(EixE1(position)  * exp(I*d*kiz(position)) + EpixE1(position)  * exp(-I*d*kiz(position)));
-   Einternal(1) = sin(psi)*(EiyE1y(position) * exp(I*d*kiz(position)) + EpiyE1y(position) * exp(-I*d*kiz(position)));
-   Einternal(2) = cos(psi)*(EizE1(position)  * exp(I*d*kiz(position)) + EpizE1(position)  * exp(-I*d*kiz(position)));
-   
    return List::create( 
 		       _["rs"]  = rs, 
 		       _["rp"]  = rp, 

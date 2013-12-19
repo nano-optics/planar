@@ -8,7 +8,7 @@ epsilon <- c(1.5^2, epsAg(lambda)$epsilon, 1.2^2, 1.0^2)
 thickness <- c(0, 50, 10, 0)
 z <- 10
 psi <- 0
-res <- planar$multilayer_field(k0, kx, epsilon,  thickness, z=70, psi)
+res <- planar$multilayer_field(k0, kx, epsilon,  thickness, z=seq(0,10), psi)
 
 
 simul <- function(angle, psi=0, pol="p"){
@@ -43,22 +43,13 @@ index <- function(d){
   
 }
 
-simul <- function(d, psi=0){
-  angle <- 0.7617526
-  n1 <- sqrt(epsilon[1])
-  res <- planar$multilayer_field(k0, k0*sin(angle)*n1, epsilon,  thickness, d, psi)
-  field <- res$E
-#  field[c(1,2)] <- 0
-#   field[3] <- 0
-  crossprod(field, Conj(field)) # * index(d)^2
-}
+d <- seq(-100, 500, length=100)
+angle <- 0.7617526
+n1 <- sqrt(epsilon[1])
+res <- planar$multilayer_field(k0, k0*sin(angle)*n1, epsilon*0+1,  thickness, d, psi)
+field <- colSums(res$E * Conj(res$E)) # * index(d)^2
 
-td <- seq(-100, 500, length=300)
-plot(td, sapply(td, simul), t="l")
-lines(td, sapply(td, simul, psi=pi/4), lty=2)
-
-# lines(theta*180/pi, sapply(theta, simul, psi=pi/2), lty=2)
-
+plot(d, field, t="l")
 
 
 

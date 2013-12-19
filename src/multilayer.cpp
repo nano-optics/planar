@@ -196,84 +196,41 @@ Rcpp::List multilayer_field(const double k0,
     HpizH1(ii) =   EpiyE1y(ii) * AuxH2;
 
   }
-  //  cout << EizE1 << endl;
 
-  // cout <<  EizE1 << endl;
-
-  // normalise the field components to the incident field projection along s- and p-polarisations
-  // p-pol corresponds to psi=0, s-pol to psi=pi/2
 
   // field at distance z
   arma::colvec interfaces = cumsum(thickness);
-  int position; // test where we are
-  bool left = true;
-
-  // cout << interfaces.n_elem << endl;
-
+  int position; // test in which layer we are
   double d;
 
   if (z < 0) {
-    // cout << "left side" << endl;
     position = 0;
     d = - z;
-    left = true;
   } else if (z > interfaces(Nlayer-1)){
-    // cout << "right side" << endl;
-    position = Nlayer-2;
+    position = Nlayer-1;
     d = z - interfaces(Nlayer-2);
-    left = false;
   } else {
-    //  cout << "stack" << endl;
-    left = false;
     for (ii=0; ii<Nlayer-1; ii++) {
-      if(z >= interfaces(ii) & z < interfaces(ii+1)) position = ii;
-      d = z - interfaces(position);
+      if(z >= interfaces(ii) & z < interfaces(ii+1)) position = ii+1;
+      d = z - interfaces(position-1);
     }
   }
 
-  // arma::cx_mat Einternal(3, Nlayer-1); 
-   arma::cx_vec Einternal(3); 
-   // cout << position << endl;
-
-  if(left) {
-    // d = thickness(position) - z;
-    Einternal(0) = cos(psi)*(EixE1(position)  * exp(I*d*kiz(position)) + EpixE1(position)  * exp(-I*d*kiz(position)));
-    Einternal(1) = sin(psi)*(EiyE1y(position) * exp(I*d*kiz(position)) + EpiyE1y(position) * exp(-I*d*kiz(position)));
-    Einternal(2) = cos(psi)*(EizE1(position)  * exp(I*d*kiz(position)) + EpizE1(position)  * exp(-I*d*kiz(position)));
-  } else {
-    //d = z;
-      Einternal(0) = cos(psi)*(EixE1(position+1)  * exp(I*d*kiz(position+1)) + EpixE1(position+1)  * exp(-I*d*kiz(position+1)));
-      Einternal(1) = sin(psi)*(EiyE1y(position+1) * exp(I*d*kiz(position+1)) + EpiyE1y(position+1) * exp(-I*d*kiz(position+1)));
-      Einternal(2) = cos(psi)*(EizE1(position+1)  * exp(I*d*kiz(position+1)) + EpizE1(position+1)  * exp(-I*d*kiz(position+1)));
-    
-  }
-
-  //cout << position << endl;
-  // double d;
-  // arma::cx_mat Einternal(3, Nlayer-1); 
-  // if(z < 0.0){ // look at left of interfaces
-  //   for(ii=0; ii<Nlayer-1; ii++){
-  //     d = thickness(ii) - z;
-  //     Einternal(0, ii) = cos(psi)*(EixE1(ii)  * exp(I*d*kiz(ii)) + EpixE1(ii)  * exp(-I*d*kiz(ii)));
-  //     Einternal(1, ii) = sin(psi)*(EiyE1y(ii) * exp(I*d*kiz(ii)) + EpiyE1y(ii) * exp(-I*d*kiz(ii)));
-  //     Einternal(2, ii) = cos(psi)*(EizE1(ii)  * exp(I*d*kiz(ii)) + EpizE1(ii)  * exp(-I*d*kiz(ii)));
-  //   }
-  // } else if (z >= 0.0){ // right side
-  //   for(ii=0; ii<Nlayer-1; ii++){
-  //     d = z;
-  //     Einternal(0, ii) = cos(psi)*(EixE1(ii+1)  * exp(I*d*kiz(ii+1)) + EpixE1(ii+1)  * exp(-I*d*kiz(ii+1)));
-  //     Einternal(1, ii) = sin(psi)*(EiyE1y(ii+1) * exp(I*d*kiz(ii+1)) + EpiyE1y(ii+1) * exp(-I*d*kiz(ii+1)));
-  //     Einternal(2, ii) = cos(psi)*(EizE1(ii+1)  * exp(I*d*kiz(ii+1)) + EpizE1(ii+1)  * exp(-I*d*kiz(ii+1)));
-  //   }
-  // }
-
-  return List::create( 
-   _["rs"]  = rs, 
-   _["rp"]  = rp, 
-   _["ts"]  = ts,
-   _["tp"]  = tp,
-   _["E"]  = Einternal ) ;
-
+  arma::cx_vec Einternal(3); 
+  // note: normalise the field components to the incident field projection along s- and p-polarisations
+  // p-pol corresponds to psi=0, s-pol to psi=pi/2
+  
+   Einternal(0) = cos(psi)*(EixE1(position)  * exp(I*d*kiz(position)) + EpixE1(position)  * exp(-I*d*kiz(position)));
+   Einternal(1) = sin(psi)*(EiyE1y(position) * exp(I*d*kiz(position)) + EpiyE1y(position) * exp(-I*d*kiz(position)));
+   Einternal(2) = cos(psi)*(EizE1(position)  * exp(I*d*kiz(position)) + EpizE1(position)  * exp(-I*d*kiz(position)));
+   
+   return List::create( 
+		       _["rs"]  = rs, 
+		       _["rp"]  = rp, 
+		       _["ts"]  = ts,
+		       _["tp"]  = tp,
+		       _["E"]  = Einternal ) ;
+   
 }
 
 Rcpp::List multilayer(const arma::colvec& k0,				\

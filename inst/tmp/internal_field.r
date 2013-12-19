@@ -4,7 +4,7 @@ library(planar)
 lambda <- 633
 k0 <- 2*pi/lambda
 kx <- k0*sin(pi/4)*1.5
-epsilon <- c(1.5^2, epsAg(lambda)$epsilon, 1.1^2, 1.0^2)
+epsilon <- c(1.5^2, epsAg(lambda)$epsilon, 1.2^2, 1.0^2)
 thickness <- c(0, 50, 10, 0)
 z <- 10
 psi <- 0
@@ -38,7 +38,7 @@ lines(theta*180/pi, sapply(theta, simul, psi=pi/2), lty=2)
 index <- function(d){
   if(d<0) return(1.5^2)
   if(d>0 && d <=50) return(epsAg(lambda)$epsilon)
-  if(d>50 && d <=60) return(1.1^2)
+  if(d>50 && d <=60) return(1.2^2)
   if(d>60) return(1.0^2)
   
 }
@@ -48,14 +48,14 @@ simul <- function(d, psi=0){
   n1 <- sqrt(epsilon[1])
   res <- planar$multilayer_field(k0, k0*sin(angle)*n1, epsilon,  thickness, d, psi)
   field <- res$E
-#   field[c(1,2)] <- 0
+#  field[c(1,2)] <- 0
 #   field[3] <- 0
-  crossprod(field, Conj(field)) #* index(d)^2
+  crossprod(field, Conj(field)) # * index(d)^2
 }
 
 td <- seq(-100, 500, length=300)
 plot(td, sapply(td, simul), t="l")
-lines(td, sapply(td, simul), lty=2)
+lines(td, sapply(td, simul, psi=pi/4), lty=2)
 
 # lines(theta*180/pi, sapply(theta, simul, psi=pi/2), lty=2)
 

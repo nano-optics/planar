@@ -124,7 +124,7 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
 
     // to frame F2p
     delta = 0.0; // case of exact normal incidence (no k-parallel)
-    if (kpar != 0.0) delta = asin(ki2(1) / kpar); // safe division
+    if (abs(kpar) <= 2*datum::eps) delta = asin(ki2(1) / kpar); // safe division
     Rz = rotation_z(delta);
     Rzi = rotation_z(-delta);
     ki2p = Rz * ki2;

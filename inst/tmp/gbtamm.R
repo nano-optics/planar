@@ -2,7 +2,6 @@ library(planar)
 library(plyr)
 library(ggplot2)
 
-
 gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/180, psi=0, 
                                  w0=1e4, epsilon = c(1.5^2, epsAg(lambda)$epsilon, 1.0^2, 1.0^2),
                                  thickness = c(0, 50, 10, 0),
@@ -20,6 +19,7 @@ gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/
   
   E <- complex(real = res[1:3], imaginary=res[4:6])
   if(field) return(E)
+  
   Re(crossprod(E, Conj(E)))
 }
 
@@ -75,7 +75,12 @@ struct <- tamm_stack(wavelength = min$wavelength,
                      lambda0=650, N=6, incidence = "left",
                      nH = 1.7, nL = 1.3, dm = 25, 
                      nleft = 1.0, nright = 1.52)
-# 
+# # 
+# struct <- tamm_stack(wavelength = min$wavelength,
+#                      lambda0=650, N=1, incidence = "left",
+#                      nH = 1.0, nL = 1.0, dm = 0, 
+#                      nleft = 1.0, nright = 1.0)
+
 # struct <- list(wavelength=600, epsilon=c(1.1^2, 1.1^2, 1.1^2),
 #                thickness=c(0, 20, 0))
 w0 <- 1e6
@@ -85,7 +90,8 @@ xyz <- as.matrix(expand.grid(x=0,
                                    length=300)))
 res <- adply(xyz, 1, gaussian_near_field2, epsilon=unlist(struct$epsilon), 
              thickness=struct$thickness, wavelength = struct$wavelength,
-             alpha=0, w0=w0, maxEval=500, .progress="text")
+             alpha=0.0, w0=w0, maxEval=500, .progress="text")
+
 xyz <- data.frame(xyz, field=res[[2]])
 
 ggplot(xyz, aes(z, y=field))+

@@ -90,7 +90,7 @@ xyz <- as.matrix(expand.grid(x=0,
                                    length=300)))
 res <- adply(xyz, 1, gaussian_near_field2, epsilon=unlist(struct$epsilon), 
              thickness=struct$thickness, wavelength = struct$wavelength,
-             alpha=0.0, w0=w0, maxEval=500, .progress="text")
+             alpha=0.001, w0=w0, maxEval=500, .progress="text")
 
 xyz <- data.frame(xyz, field=res[[2]])
 
@@ -100,3 +100,30 @@ ggplot(xyz, aes(z, y=field))+
   scale_y_continuous(expand=c(0,0)) +
   labs(x=expression("x /um"), fill=expression("|E|"^2), 
        y=expression("z /um")) 
+
+
+
+
+w0 <- 1e3
+xyz <- as.matrix(expand.grid(x=seq(-1.5*w0, 1.5*w0, length=20), 
+                             y=0,
+                             z=seq(-struct$wavelength, sum(struct$thickness)+struct$wavelength, 
+                                   length=100)))
+res <- adply(xyz, 1, gaussian_near_field2, epsilon=unlist(struct$epsilon), 
+             thickness=struct$thickness, wavelength = struct$wavelength,
+             alpha=0.0, w0=w0, maxEval=500, .progress="text")
+
+xyz <- data.frame(xyz, field=res[[2]])
+
+p <- ggplot(xyz, aes(x, z, fill=field))+
+  geom_raster() +
+  scale_x_continuous(expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0)) +
+  labs(x=expression("x /nm"), fill=expression("|E|"^2), 
+       y=expression("z /nm")) 
+
+
+p
+
+ggsave("tamm1um.pdf",p)
+# save(xyz, file="tamm.rda")

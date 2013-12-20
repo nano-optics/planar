@@ -8,7 +8,7 @@ thickness <- c(0, 50, 10, 0)
 psi <- 0
 angle <- 0.7617526
 angle <- 2*pi/180
-
+require(tamm)
 struct <- tamm_stack(wavelength = 704,
                      lambda0=650, N=6, incidence = "left",
                      nH = 1.7, nL = 1.3, dm = 25, 

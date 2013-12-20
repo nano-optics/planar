@@ -63,6 +63,20 @@ arma::cx_colvec incident_field(const double psi)
   }
 
 
+arma::cx_colvec incident_field2(const double psi, const arma::colvec& s1)
+  {
+   arma::cx_colvec E(3);
+   double s1z = s1(2), s1x=s1(0), s1y=s1(1);
+   double s1z2 = s1z*s1z, s1y2 = s1y*s1y;
+   
+   E(0) = cos(psi)*(s1z + s1y2*(1-s1z)/(1-s1z2)) + sin(psi)*((s1z - 1)*s1x*s1y/(1-s1z2));
+   E(1) = cos(psi)*((s1z - 1)*s1x*s1y/(1-s1z2)) + sin(psi)*(1-s1y2*(1-s1z)/(1-s1z2));
+   E(2) = -s1x*cos(psi) -s1y*sin(psi);
+
+   return (E);
+  }
+
+
 // [[Rcpp::export]]
 arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0, 
 			  const double psi, const double alpha, const double w0, 
@@ -104,17 +118,22 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     ki1(1) = ki*sy;
     double kpar2 = ki1(0)*ki1(0) + ki1(1)*ki1(1);
     ki1(2) = sqrt(ki*ki - kpar2); // only real freqs.
-
+    colvec s1(3);
+    s1(0) = sx;
+    s1(1) = sy;
+    s1(2) = sqrt(root);
     // incident field polarisation and distribution
     ei1 = incident_field(psi);
+    // ei1 = incident_field2(psi, s1);
     a = w0*w0 / (4*datum::pi) * exp(-kpar2*(w0*w0/4));
 
-    // rotations of incident field
-
+    // rotation of incident field
     // to frame F2
     Ry = rotation_y(alpha);
     ki2 = Ry * ki1;
     ei2 = Ry * ei1;
+
+    // outer medium
     ko2(0) = ki2(0);
     ko2(1) = ki2(1);
     //not as above, because of rotation!
@@ -123,8 +142,14 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     ko2(2) = sqrt(ko*ko - kpar2);
 
     // to frame F2p
-    delta = 0.0; // case of exact normal incidence (no k-parallel)
-    if (abs(kpar) <= 2*datum::eps) delta = asin(ki2(1) / kpar); // safe division
+    double sindelta = 0.0; // case of exact normal incidence (no k-parallel)
+    delta = 0.0;
+    if (abs(kpar) >= 10*datum::eps) {
+      sindelta = ki2(1) / kpar;// safe division
+      delta = asin(sindelta); 
+    }
+    // delta = 0.0; // this somehow seems to improve things at alpha=0
+    // there is something fishy about normal incidence
     Rz = rotation_z(delta);
     Rzi = rotation_z(-delta);
     ki2p = Rz * ki2;
@@ -136,7 +161,7 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     ko2p(2) = sqrt(ko*ko - ko2p(0)*ko2p(0) - ko2p(1)*ko2p(1));
 
     // Fresnel coefficients
-    double kx = ki2(0);
+    double kx = ki2p(0); // in the 2p frame, x is in the plane of incidence
     colvec z(1); // multilayer_field expects a vector
     z(0) = r2(2);
 
@@ -145,6 +170,8 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     // cx_double rp = solution["rp"] ;
     // cx_double rs = solution["rs"] ;
     cx_colvec eo2p = solution["E"] ;
+    // Rzi * eo2p is the field rotated back into the fixed R2 frame
+    cx_colvec eo2 =  Rzi * eo2p;
 
     // in-plane component of plane wave
     pw = exp(i*(ko2(0)*r2(0) + ko2(1)*r2(1)));
@@ -152,8 +179,8 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     // rho*ki*ki from Jacobian
     // a is the weight factor
     // pw is the phase factor for in-plane propagation
-    // Rzi * eo2p is the field rotated back into the fixed R2 frame
-    Eo2 = rho*ki*ki * a * pw  * Rzi * eo2p;
+    // eo2 is the field rotated back into the fixed R2 frame
+    Eo2 = rho*ki*ki * a * pw * eo2;
     
     // join real and imaginary part in 6-vector 
     // for cubature

@@ -24,15 +24,11 @@ gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/
 }
 
 
-angle <- 0.00001
-# angle <- 45*pi/180
+angle <- 0.0
 wavelength <- 632.8
 metal <- epsAg(wavelength)$epsilon
-wavelength <- 800
-metal <- (0.180 + 5.12i)^2
 epsilon <- list(1.5^2, metal, 1.0)
-thickness <- c(0, 100, 0)
-
+thickness <- c(0, 50, 0)
 ## first, check the plane wave result
 results <- multilayer(epsilon=epsilon,
                       wavelength=wavelength, thickness=thickness, d=1,
@@ -40,30 +36,27 @@ results <- multilayer(epsilon=epsilon,
 
 maxi <- max(results$Mr.perp[[2]] + results$Mr.par[[2]], na.rm=T)
 spp <- results$angle[which.max(results$Mr.perp[[2]] + results$Mr.par[[2]])]
-print(spp)
+
 simulation <- function(w0=10){
   w0 <- w0*1e3
-  xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=thickness[2]+1))
-  res <- adply(xyz, 1, gaussian_near_field2, 
-               epsilon=unlist(epsilon), thickness=thickness,
+  xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=c(51)))
+  res <- adply(xyz, 1, gaussian_near_field2, #cutoff=2000/w0,
+               epsilon=unlist(epsilon), thickness=thickness, wavelength=wavelength,
                w0=w0, alpha=spp, maxEval=1000)
   data.frame(xyz, field=res[[2]])
 }
 
-
-params <- data.frame(w0=c(10))
+params <- data.frame(w0=c(1e2, 1e3, 1e5))
 all <- mdply(params, simulation, .progress="text")
 
-subset(all, field == max(field))
-
-p <- ggplot(all, aes(x, field, group=w0, colour=factor(w0)))+
+p <- ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
   geom_line()  +
   geom_vline(aes(x=0,y=NULL),lty=2) +
-#   geom_hline(aes(x=0,yintercept=maxi),lty=3) +
-#   annotate("text", label="plane-wave", y=maxi, x=-2.5, vjust=1, fontface="italic") +
+  geom_hline(aes(x=0,yintercept=maxi),lty=3) +
+  annotate("text", label="plane-wave", y=maxi, x=-2.5, vjust=1, fontface="italic") +
   labs(x=expression(x/w[0]), y=expression("|E|"^2), 
        colour=expression(w[0]/mu*m)) +
-#   coord_cartesian(xlim=c(-5,5)) + theme_minimal()+
+  coord_cartesian(xlim=c(-5,5)) + theme_minimal()+
   guides(colour=guide_legend(reverse=TRUE)) +
   theme(panel.background=element_rect(fill=NA)) +
   theme()

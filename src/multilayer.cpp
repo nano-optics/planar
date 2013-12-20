@@ -200,29 +200,36 @@ Rcpp::List multilayer_field(const double k0,
 
   // field at distances z
   arma::cx_mat Einternal(3, z.n_elem); 
+  arma::colvec interfaces = cumsum(thickness);
+  int position=0; // test in which layer we are
+
+  //cout << "interfaces " << interfaces << endl;
   int jj;
   for (jj=0; jj<z.n_elem; jj++) {
 
-    arma::colvec interfaces = cumsum(thickness);
-    int position; // test in which layer we are
     double d, ztmp=z(jj); // current z-position (absolute and relative)
-    
-    if (ztmp < 0) {
+    //cout << ztmp << endl;
+    if (ztmp <= 0.0) {
       position = 0;
-      d = - ztmp;
+      d = ztmp; // already negative btw...
     } else if (ztmp > interfaces(Nlayer-1)){
       position = Nlayer-1;
-    d = ztmp - interfaces(Nlayer-2);
+      d = ztmp - interfaces(Nlayer-2);
     } else {
-      for (ii=0; ii<Nlayer-1; ii++) {
-	if(ztmp >= interfaces(ii) & ztmp < interfaces(ii+1)) position = ii+1;
-	d = ztmp - interfaces(position-1);
+      for (ii=0; ii<Nlayer-2; ii++) {
+	// note: could use sort_index_stable or find
+	if((ztmp >= interfaces(ii)) && (ztmp < interfaces(ii+1))) {
+	  position = ii+1;
+	  //cout << "position " << position << endl;
+	  d = ztmp - interfaces(position-1);
+	  break;
+	}
     }
     }
-    
+    //cout << "d " << d << endl;
     // note: normalise the field components to the incident field projection along s- and p-polarisations
     // p-pol corresponds to psi=0, s-pol to psi=pi/2
-    
+    //cout << position << endl;
     Einternal(0,jj) = cos(psi)*(EixE1(position)  * exp(I*d*kiz(position)) + EpixE1(position)  * exp(-I*d*kiz(position)));
     Einternal(1,jj) = sin(psi)*(EiyE1y(position) * exp(I*d*kiz(position)) + EpiyE1y(position) * exp(-I*d*kiz(position)));
     Einternal(2,jj) = cos(psi)*(EizE1(position)  * exp(I*d*kiz(position)) + EpizE1(position)  * exp(-I*d*kiz(position)));

@@ -1,14 +1,18 @@
 library(planar)
 
-
 lambda <- 633
 k0 <- 2*pi/lambda
 kx <- k0*sin(pi/4)*1.5
-epsilon <- c(1.5^2, epsAg(lambda)$epsilon, 1.2^2, 1.0^2)
+epsilon <- c(1.5^2, epsAg(lambda)$epsilon, 1.0^2, 1.0^2)
 thickness <- c(0, 50, 10, 0)
 z <- 10
 psi <- 0
-res <- planar$multilayer_field(k0, kx, epsilon,  thickness, z=seq(0,10), psi)
+# 
+# gaussian$integrand_gb2(c(0,0), c(0,0,500), k0, psi, 0.0, 5000, 
+#                      epsilon, thickness)
+
+
+res <- planar$multilayer_field(k0, kx, epsilon,  thickness, z=10, psi)
 
 
 simul <- function(angle, psi=0, pol="p"){
@@ -43,11 +47,11 @@ index <- function(d){
   
 }
 
-d <- seq(-100, 500, length=100)
+d <- seq(-10, 100, length=100)
 angle <- 0.7617526
 n1 <- sqrt(epsilon[1])
-res <- planar$multilayer_field(k0, k0*sin(angle)*n1, epsilon*0+1,  thickness, d, psi)
-field <- colSums(res$E * Conj(res$E)) # * index(d)^2
+res <- planar$multilayer_field(k0, k0*sin(angle)*n1, epsilon,  thickness, d, psi)
+field <- colSums(res$E * Conj(res$E)) # * sapply(d,index)^2
 
 plot(d, field, t="l")
 

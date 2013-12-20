@@ -6,6 +6,8 @@
 #include <RcppArmadillo.h>
 #include <iostream>
 
+#include "multilayer.h"
+
 using namespace Rcpp ;
 using namespace RcppArmadillo ;
 using namespace arma ;
@@ -58,6 +60,109 @@ arma::cx_colvec incident_field(const double psi)
     E(2) = 0;
 
     return (E);
+  }
+
+
+// [[Rcpp::export]]
+arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0, 
+			  const double psi, const double alpha, const double w0, 
+			  const cx_vec& epsilon, const vec& thickness)
+  {
+    const int Nlayer = epsilon.n_elem;
+    double delta, rho, theta, sx, sy;
+    const cx_double i = cx_double(0,1);
+    cx_double a, pw;
+  
+    cx_colvec Eo2 = arma::zeros<arma::cx_colvec>(3); // result
+    colvec res = arma::zeros<arma::colvec>(6); // combining real and imag parts
+
+    // intermediate vectors
+    cx_colvec ei1(3), ei2(3), ei2p(3);
+    colvec ki1(3), ki2(3), ki2p(3);
+    cx_colvec ko2(3), ko2p(3);
+    // rotation matrices
+    mat Ry(3, 3), Rz(3, 3), Rzi(3, 3);
+
+    // define convenient wavenumbers
+    cx_double ni =  sqrt(epsilon(0));
+    cx_double no =  sqrt(epsilon(Nlayer-1));
+    double ki = real(ni)*k0; // nonabsorbing incident medium
+    cx_double ko = no * k0; // outer medium, can be absorbing
+    cx_double nini = epsilon(0), nono = epsilon(Nlayer-1);
+
+    // change of variables from polar coordinates
+    rho = rt(0); theta = rt(1);
+    sx = rho * cos(theta);
+    sy = rho * sin(theta);
+
+    // only prop. waves are considered  
+    double root = 1.0 - rho*rho;
+    if( root < 0.0)  return(res);  
+	
+    // work out kz component
+    ki1(0) = ki*sx;
+    ki1(1) = ki*sy;
+    double kpar2 = ki1(0)*ki1(0) + ki1(1)*ki1(1);
+    ki1(2) = sqrt(ki*ki - kpar2); // only real freqs.
+
+    // incident field polarisation and distribution
+    ei1 = incident_field(psi);
+    a = w0*w0 / (4*datum::pi) * exp(-kpar2*(w0*w0/4));
+
+    // rotations of incident field
+
+    // to frame F2
+    Ry = rotation_y(alpha);
+    ki2 = Ry * ki1;
+    ei2 = Ry * ei1;
+    ko2(0) = ki2(0);
+    ko2(1) = ki2(1);
+    //not as above, because of rotation!
+    kpar2 = ki2(0)*ki2(0) + ki2(1)*ki2(1);
+    double kpar = sqrt(kpar2);
+    ko2(2) = sqrt(ko*ko - kpar2);
+
+    // to frame F2p
+    delta = 0.0; // case of exact normal incidence (no k-parallel)
+    if (kpar != 0.0) delta = asin(ki2(1) / kpar); // safe division
+    Rz = rotation_z(delta);
+    Rzi = rotation_z(-delta);
+    ki2p = Rz * ki2;
+    ei2p = Rz * ei2;
+  
+    // wave vector on the outer side
+    ko2p(0) = ki2p(0); 
+    ko2p(1) = ki2p(1);
+    ko2p(2) = sqrt(ko*ko - ko2p(0)*ko2p(0) - ko2p(1)*ko2p(1));
+
+    // Fresnel coefficients
+    double kx = ki2(0);
+    colvec z(1); // multilayer_field expects a vector
+    z(0) = r2(2);
+
+    Rcpp::List solution = multilayer_field(k0, kx, epsilon, thickness, z, psi);
+    
+    // cx_double rp = solution["rp"] ;
+    // cx_double rs = solution["rs"] ;
+    cx_colvec eo2p = solution["E"] ;
+
+    // in-plane component of plane wave
+    pw = exp(i*(ko2(0)*r2(0) + ko2(1)*r2(1)));
+
+    // rho*ki*ki from Jacobian
+    // a is the weight factor
+    // pw is the phase factor for in-plane propagation
+    // Rzi * eo2p is the field rotated back into the fixed R2 frame
+    Eo2 = rho*ki*ki * a * pw  * Rzi * eo2p;
+    
+    // join real and imaginary part in 6-vector 
+    // for cubature
+
+    colvec Er = real(Eo2);
+    colvec Ei = imag(Eo2);
+    res = join_cols(Er, Ei);
+
+    return (res);
   }
 
 
@@ -208,6 +313,9 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
 RCPP_MODULE(gaussian){
 
   Rcpp::function( "integrand_gb", &integrand_gb,			\
+		  "Integrand for the transmitted field under gaussian illumination" ) ;
+
+  Rcpp::function( "integrand_gb2", &integrand_gb2,			\
 		  "Integrand for the transmitted field under gaussian illumination" ) ;
   
 }

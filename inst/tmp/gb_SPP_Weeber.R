@@ -24,7 +24,7 @@ gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/
 }
 
 
-angle <- 0.00001
+angle <- 0.00
 # angle <- 45*pi/180
 wavelength <- 632.8
 metal <- epsAg(wavelength)$epsilon

@@ -122,9 +122,11 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     s1(0) = sx;
     s1(1) = sy;
     s1(2) = sqrt(root);
-    // incident field polarisation and distribution
+    // incident field polarisation
     ei1 = incident_field(psi);
+    // use this expression for a focused beam only?
     // ei1 = incident_field2(psi, s1);
+    // weight factor
     a = w0*w0 / (4*datum::pi) * exp(-kpar2*(w0*w0/4));
 
     // rotation of incident field
@@ -142,14 +144,11 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     ko2(2) = sqrt(ko*ko - kpar2);
 
     // to frame F2p
-    double sindelta = 0.0; // case of exact normal incidence (no k-parallel)
-    delta = 0.0;
-    if (abs(kpar) >= 10*datum::eps) {
-      sindelta = ki2(1) / kpar;// safe division
+    delta = 0.0; // case of exact normal incidence (no k-parallel)
+    if (abs(kpar) >= 2*datum::eps) {
+      double sindelta = ki2(1) / kpar;// safe division
       delta = asin(sindelta); 
     }
-    // delta = 0.0; // this somehow seems to improve things at alpha=0
-    // there is something fishy about normal incidence
     Rz = rotation_z(delta);
     Rzi = rotation_z(-delta);
     ki2p = Rz * ki2;
@@ -165,10 +164,7 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     colvec z(1); // multilayer_field expects a vector
     z(0) = r2(2);
 
-    // the problem at normal incidence is likely to be related to
-    // the fact that psi is not a good description of the electric field orientation
-    // this becomes less important at large angles as E points closer to the correct direction
-    // possible correction: use psi - delta to keep E fixed along x2p (to check)
+    // use psi - delta to keep E fixed along x2p (to check)
     Rcpp::List solution = multilayer_field(k0, kx, epsilon, thickness, z, psi - delta);
     
     // cx_double rp = solution["rp"] ;
@@ -184,6 +180,7 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     // a is the weight factor
     // pw is the phase factor for in-plane propagation
     // eo2 is the field rotated back into the fixed R2 frame
+    // for a focused beam(?), also include 1/sz
     Eo2 = rho*ki*ki * a * pw * eo2;
     
     // join real and imaginary part in 6-vector 

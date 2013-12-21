@@ -27,7 +27,7 @@ gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/
 require(tamm)
 
 m <- ff_simulation(wavelength=seq(300, 1000),  
-                   lambda0=650, N=6, incidence = "left",
+                   lambda0=650, N=8, incidence = "right",
                    nH = 1.7, nL = 1.3, dm = 25, 
                    nleft = 1.0, nright = 1.52)
 
@@ -42,7 +42,7 @@ min <- subset(m, R==min(R))
 
 
 m <- nf_simulation(energy = l2e(min$wavelength),
-                   lambda0=650, N=6, incidence = "left",
+                   lambda0=650, N=8, incidence = "right",
                    nH = 1.7, nL = 1.3, dm = 25, 
                    nleft = 1.0, nright = 1.52, dmax = 1000)
 
@@ -64,25 +64,16 @@ p2 <-
   scale_y_continuous(expression("|E|"^2),expand=c(0,0)) +
   geom_hline(yintercept=0) +
   geom_line(aes(x, value)) +
-  scale_colour_manual("", values=col_palette) +
-  scale_fill_manual("", values=fill_palette) +
-  #   scale_fill_brewer("", palette="Pastel1") +
-  #   scale_colour_brewer("", palette="Set1") +
+    scale_fill_brewer("", palette="Pastel1") +
+    scale_colour_brewer("", palette="Set1") +
   guides(colour="none",fill="none")+
   theme_minimal() 
 
 struct <- tamm_stack(wavelength = min$wavelength,
-                     lambda0=650, N=6, incidence = "left",
+                     lambda0=650, N=8, incidence = "right",
                      nH = 1.7, nL = 1.3, dm = 25, 
                      nleft = 1.0, nright = 1.52)
-# # 
-# struct <- tamm_stack(wavelength = min$wavelength,
-#                      lambda0=650, N=1, incidence = "left",
-#                      nH = 1.0, nL = 1.0, dm = 0, 
-#                      nleft = 1.0, nright = 1.0)
 
-# struct <- list(wavelength=600, epsilon=c(1.1^2, 1.1^2, 1.1^2),
-#                thickness=c(0, 20, 0))
 w0 <- 1e6
 xyz <- as.matrix(expand.grid(x=0, 
                              y=0,
@@ -90,7 +81,7 @@ xyz <- as.matrix(expand.grid(x=0,
                                    length=300)))
 res <- adply(xyz, 1, gaussian_near_field2, epsilon=unlist(struct$epsilon), 
              thickness=struct$thickness, wavelength = struct$wavelength,
-             alpha=0.001, w0=w0, maxEval=500, .progress="text")
+             alpha=0, w0=w0, maxEval=500, .progress="text")
 
 xyz <- data.frame(xyz, field=res[[2]])
 
@@ -102,13 +93,11 @@ ggplot(xyz, aes(z, y=field))+
        y=expression("z /um")) 
 
 
-
-
-w0 <- 1e3
+w0 <- 1e4
 xyz <- as.matrix(expand.grid(x=seq(-1.5*w0, 1.5*w0, length=20), 
                              y=0,
                              z=seq(-struct$wavelength, sum(struct$thickness)+struct$wavelength, 
-                                   length=100)))
+                                   length=200)))
 res <- adply(xyz, 1, gaussian_near_field2, epsilon=unlist(struct$epsilon), 
              thickness=struct$thickness, wavelength = struct$wavelength,
              alpha=0.0, w0=w0, maxEval=500, .progress="text")

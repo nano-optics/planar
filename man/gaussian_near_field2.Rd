@@ -1,11 +1,12 @@
-\name{gaussian_near_field}
-\alias{gaussian_near_field}
-\title{gaussian_near_field}
+\name{gaussian_near_field2}
+\alias{gaussian_near_field2}
+\title{gaussian_near_field2}
 \usage{
-gaussian_near_field(x = 1, y = 1, z = 1, wavelength = 500, alpha = 15
-  * pi/180, psi = 0, w0 = 10000, ni = 1.5, no = 1, nl = no, d = 0,
-  cutoff = min(1, 3 * wavelength/(ni * pi * w0)), maxEval = 3000,
-  tol = 1e-04, field = FALSE)
+gaussian_near_field2(x = 1, y = 1, z = 1, wavelength = 632.8,
+  alpha = 15 * pi/180, psi = 0, w0 = 10000, epsilon = c(1.5^2,
+  epsAg(lambda)$epsilon, 1^2, 1^2), thickness = c(0, 50, 10, 0),
+  cutoff = min(1, 3 * wavelength/(Re(sqrt(epsilon[1])) * pi * w0)),
+  maxEval = 3000, tol = 1e-04, field = FALSE)
 }
 \arguments{
   \item{x}{position}
@@ -22,13 +23,9 @@ gaussian_near_field(x = 1, y = 1, z = 1, wavelength = 500, alpha = 15
 
   \item{w0}{beam waist radius}
 
-  \item{ni}{incident medium (prism) refractive index}
+  \item{epsilon}{vector of permittivities}
 
-  \item{nl}{layer refractive index}
-
-  \item{no}{outer medium (substrate) refractive index}
-
-  \item{d}{thickness of layer}
+  \item{thickness}{thickness corresponding to each medium}
 
   \item{cutoff}{radial integration limit}
 
@@ -54,6 +51,6 @@ waves using integrand_gb
 Baptiste Auguie
 }
 \seealso{
-Other gaussian_beam: \code{\link{gaussian_near_field2}}
+Other gaussian_beam: \code{\link{gaussian_near_field}}
 }
 

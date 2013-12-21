@@ -70,3 +70,48 @@ gaussian_near_field <- function(x=1, y=1, z=1, wavelength=500, alpha = 15*pi/180
   Re(crossprod(E, Conj(E)))
 }
 
+
+
+
+##' Electric field from the transmission of a gaussian beam at a planar interface
+##'
+##' Integration is performed over a spectrum of incident plane waves using integrand_gb
+##' @title gaussian_near_field2
+##' @param x position
+##' @param y position
+##' @param z position
+##' @param wavelength wavelength
+##' @param alpha beam incident angle
+##' @param psi beam polarisation angle
+##' @param w0 beam waist radius
+##' @param epsilon vector of permittivities
+##' @param thickness thickness corresponding to each medium
+##' @param cutoff radial integration limit
+##' @param maxEval passed to adaptIntegrate
+##' @param tol passed to adaptIntegrate
+##' @param field logical: return the electric field (complex vector), or modulus squared
+##' @return data.frame electric field at the x, y, z position
+##' @export
+##' @family gaussian_beam
+##' @author Baptiste Auguie
+gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/180, psi=0, 
+                                 w0=1e4, epsilon = c(1.5^2, epsAg(lambda)$epsilon, 1.0^2, 1.0^2),
+                                 thickness = c(0, 50, 10, 0),
+                                 cutoff = min(1, 3*wavelength/(Re(sqrt(epsilon[1]))*pi*w0)), 
+                                 maxEval = 3000, tol=1e-04, field=FALSE){
+  
+  k0 <- 2*pi/wavelength
+  res <- cubature::adaptIntegrate(gaussian$integrand_gb2,
+                                  lowerLimit=c(0, 0), # rho in [0,1], angle in [0,2*pi]
+                                  upperLimit=c(cutoff, 2*pi), 
+                                  fDim = 6, tol = tol,
+                                  maxEval = maxEval,
+                                  r2 = c(x, y, z), k0=k0, psi= psi, alpha=alpha,
+                                  w0=w0, epsilon=epsilon, thickness=thickness)$integral
+  
+  E <- complex(real = res[1:3], imaginary=res[4:6])
+  if(field) return(E)
+  
+  Re(crossprod(E, Conj(E)))
+}
+

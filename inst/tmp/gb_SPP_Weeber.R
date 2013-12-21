@@ -2,36 +2,10 @@ library(planar)
 library(plyr)
 library(ggplot2)
 
-gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/180, psi=0, 
-                                 w0=1e4, epsilon = c(1.5^2, epsAg(lambda)$epsilon, 1.0^2, 1.0^2),
-                                 thickness = c(0, 50, 10, 0),
-                                 cutoff = min(1, 3*wavelength/(Re(sqrt(epsilon[1]))*pi*w0)), 
-                                 maxEval = 3000, tol=1e-04, field=FALSE){
-  
-  k0 <- 2*pi/wavelength
-  res <- cubature::adaptIntegrate(gaussian$integrand_gb2,
-                                  lowerLimit=c(0, 0), # rho in [0,1], angle in [0,2*pi]
-                                  upperLimit=c(cutoff, 2*pi), 
-                                  fDim = 6, tol = tol,
-                                  maxEval = maxEval,
-                                  r2 = c(x, y, z), k0=k0, psi= psi, alpha=alpha,
-                                  w0=w0, epsilon=epsilon, thickness=thickness)$integral
-  
-  E <- complex(real = res[1:3], imaginary=res[4:6])
-  if(field) return(E)
-  
-  Re(crossprod(E, Conj(E)))
-}
-
-
-angle <- 0.00
-# angle <- 45*pi/180
-wavelength <- 632.8
-metal <- epsAg(wavelength)$epsilon
 wavelength <- 800
 metal <- (0.180 + 5.12i)^2
 epsilon <- list(1.5^2, metal, 1.0)
-thickness <- c(0, 100, 0)
+thickness <- c(0, 50, 0)
 
 ## first, check the plane wave result
 results <- multilayer(epsilon=epsilon,
@@ -41,6 +15,7 @@ results <- multilayer(epsilon=epsilon,
 maxi <- max(results$Mr.perp[[2]] + results$Mr.par[[2]], na.rm=T)
 spp <- results$angle[which.max(results$Mr.perp[[2]] + results$Mr.par[[2]])]
 print(spp)
+
 simulation <- function(w0=10){
   w0 <- w0*1e3
   xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=thickness[2]+1))
@@ -54,17 +29,18 @@ simulation <- function(w0=10){
 params <- data.frame(w0=c(10))
 all <- mdply(params, simulation, .progress="text")
 
-subset(all, field == max(field))
+peak <- subset(all, field == max(field))
+peakx <- peak$x /1000
+peakl <- round(peakx,2)
+peaky <- peak$field
 
-p <- ggplot(all, aes(x, field, group=w0, colour=factor(w0)))+
+p <- ggplot(all, aes(x/1000, field, group=w0, colour=factor(w0)))+
   geom_line()  +
   geom_vline(aes(x=0,y=NULL),lty=2) +
-#   geom_hline(aes(x=0,yintercept=maxi),lty=3) +
-#   annotate("text", label="plane-wave", y=maxi, x=-2.5, vjust=1, fontface="italic") +
-  labs(x=expression(x/w[0]), y=expression("|E|"^2), 
+  annotate("text", label=peakl, y=peaky, x=peakx, hjust=0, vjust=0, fontface="italic") +
+  labs(x=expression(x), y=expression("|E|"^2), 
        colour=expression(w[0]/mu*m)) +
-#   coord_cartesian(xlim=c(-5,5)) + theme_minimal()+
-  guides(colour=guide_legend(reverse=TRUE)) +
+  guides(colour="none") +
   theme(panel.background=element_rect(fill=NA)) +
   theme()
 

@@ -7,6 +7,7 @@ inst/wiki/*.png
 inst/wiki/*.md
 inst/wiki/*.html
 inst/wiki/gaussian/
+inst/tmp/old/
 
 *.gz
 

@@ -27,8 +27,6 @@ Rcpp::List layer_fresnel(const arma::colvec& k0,			\
   // kiz
   arma::cx_mat kiz0 = arma::ones<arma::cx_mat>(Nlambda, Ntheta), kiz1=kiz0, kiz2=kiz0;
   
-  // cout << "here" << "\n";
-
   kiz0  = sqrt(repmat(epsilon.col(0) % k02, 1, Ntheta)  - kx2);
   kiz1  = sqrt(repmat(epsilon.col(1) % k02, 1, Ntheta)  - kx2);
   kiz2  = sqrt(repmat(epsilon.col(2) % k02, 1, Ntheta)  - kx2);
@@ -204,12 +202,10 @@ Rcpp::List multilayer_field(const double k0,
   arma::colvec interfaces = cumsum(thickness);
   int position=0; // test in which layer we are
 
-  //cout << "interfaces " << interfaces << endl;
   int jj;
   for (jj=0; jj<z.n_elem; jj++) {
 
     double d, ztmp=z(jj); // current z-position (absolute and relative)
-    //cout << ztmp << endl;
     if (ztmp <= 0.0) {
       position = 0;
       d = ztmp; // already negative btw...
@@ -221,16 +217,13 @@ Rcpp::List multilayer_field(const double k0,
 	// note: could use sort_index_stable or find
 	if((ztmp >= interfaces(ii)) && (ztmp < interfaces(ii+1))) {
 	  position = ii+1;
-	  //cout << "position " << position << endl;
 	  d = ztmp - interfaces(position-1);
 	  break;
 	}
     }
     }
-    //cout << "d " << d << endl;
     // note: normalise the field components to the incident field projection along s- and p-polarisations
     // p-pol corresponds to psi=0, s-pol to psi=pi/2
-    //cout << position << endl;
     Einternal(0,jj) = cos(psi)*(EixE1(position)  * exp(I*d*kiz(position)) + EpixE1(position)  * exp(-I*d*kiz(position)));
     Einternal(1,jj) = sin(psi)*(EiyE1y(position) * exp(I*d*kiz(position)) + EpiyE1y(position) * exp(-I*d*kiz(position)));
     Einternal(2,jj) = cos(psi)*(EizE1(position)  * exp(I*d*kiz(position)) + EpizE1(position)  * exp(-I*d*kiz(position)));

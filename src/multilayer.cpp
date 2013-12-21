@@ -77,6 +77,7 @@ Rcpp::List layer_fresnel(const arma::colvec& k0,			\
 
 }
 
+
 Rcpp::List multilayer_field(const double k0,				
 			    const double kx,			
 			    const arma::cx_vec& epsilon,		

@@ -165,7 +165,11 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     colvec z(1); // multilayer_field expects a vector
     z(0) = r2(2);
 
-    Rcpp::List solution = multilayer_field(k0, kx, epsilon, thickness, z, psi);
+    // the problem at normal incidence is likely to be related to
+    // the fact that psi is not a good description of the electric field orientation
+    // this becomes less important at large angles as E points closer to the correct direction
+    // possible correction: use psi - delta to keep E fixed along x2p (to check)
+    Rcpp::List solution = multilayer_field(k0, kx, epsilon, thickness, z, psi - delta);
     
     // cx_double rp = solution["rp"] ;
     // cx_double rs = solution["rs"] ;

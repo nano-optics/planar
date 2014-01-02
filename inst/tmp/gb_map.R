@@ -7,10 +7,10 @@ simulation_bottom <- function(w0=1e4, angle=0,
                               thickness = c(0, 50,0)){
   angle <- angle*pi/180
   
-  xyz <- as.matrix(expand.grid(x=seq(-2*w0-15*wavelength*sin(angle),
-                                     2*w0+40*wavelength*sin(angle), length=100), 
+  xyz <- as.matrix(expand.grid(x=seq(-2*w0-10*wavelength*sin(angle),
+                                     2*w0+50*wavelength, length=200), 
                                y=0,
-                               z=seq(-15*wavelength, 2*wavelength, length=100)))
+                               z=seq(-10*wavelength, 2*wavelength, length=200)))
   
   res <- adply(xyz, 1, gaussian_near_field2, epsilon=epsilon, 
                thickness=thickness, wavelength = wavelength,
@@ -27,13 +27,13 @@ simulation_top <- function(w0=1e4, angle=0,
   angle <- angle*pi/180
   
   xyz <- as.matrix(expand.grid(x=seq(-2*w0,
-                                     2*w0+40*wavelength*sin(angle), length=100), 
+                                     2*w0+50*wavelength, length=200), 
                                y=0,
-                               z=seq(-0.1*wavelength, wavelength, length=100)))
+                               z=seq(0, wavelength, length=200)))
   
   res <- adply(xyz, 1, gaussian_near_field2, epsilon=epsilon, 
                thickness=thickness, wavelength = wavelength,
-               alpha=angle, w0=w0, maxEval=500, .progress="text")
+               alpha=angle, w0=w0, maxEval=2000, .progress="text")
   
   data.frame(xyz, field=res[[2]])
 }
@@ -42,7 +42,7 @@ params <- expand.grid(w0=c(5)*1e3,
                       angle=seq(42, 46, by=4))
 
 params <- expand.grid(w0=c(2)*1e3,
-                      angle=c(46))
+                      angle=c(45))
 
 bottom <- mdply(params, simulation_bottom, .progress="none")
 top <- mdply(params, simulation_top, .progress="none")
@@ -51,16 +51,18 @@ top <- mdply(params, simulation_top, .progress="none")
 # xyz <- simulation(w0=1e3, angle=45)
 
 p <- ggplot(bottom, aes(x, z, fill=field))+
-  facet_grid(angle~w0, scales="free")+
+#   facet_grid(angle~w0, scales="free")+
   geom_raster(interpolate=TRUE) +
   geom_raster(data=top, interpolate=TRUE) +
   scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(expand=c(0,0)) +
   labs(x=expression("x /nm"), fill=expression("|E|"^2), 
-       y=expression("z /nm")) 
+       y=expression("z /nm")) +
+  coord_equal()
 
 p
 
+ggsave("gb_2um_45deg.png", p, width=20, height=4)
 # 
 # 
 # plot_one <- function(d)

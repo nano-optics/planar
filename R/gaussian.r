@@ -77,9 +77,7 @@ gaussian_near_field <- function(x=1, y=1, z=1, wavelength=500, alpha = 15*pi/180
 ##'
 ##' Integration is performed over a spectrum of incident plane waves using integrand_gb
 ##' @title gaussian_near_field2
-##' @param x position
-##' @param y position
-##' @param z position
+##' @param xyz position
 ##' @param wavelength wavelength
 ##' @param alpha beam incident angle
 ##' @param psi beam polarisation angle
@@ -94,7 +92,7 @@ gaussian_near_field <- function(x=1, y=1, z=1, wavelength=500, alpha = 15*pi/180
 ##' @export
 ##' @family gaussian_beam
 ##' @author Baptiste Auguie
-gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/180, psi=0, 
+gaussian_near_field2 <- function(xyz, wavelength=632.8, alpha = 15*pi/180, psi=0, 
                                  w0=1e4, epsilon = c(1.5^2, epsAg(lambda)$epsilon, 1.0^2, 1.0^2),
                                  thickness = c(0, 50, 10, 0),
                                  cutoff = min(1, 3*wavelength/(Re(sqrt(epsilon[1]))*pi*w0)), 
@@ -106,7 +104,7 @@ gaussian_near_field2 <- function(x=1, y=1, z=1, wavelength=632.8, alpha = 15*pi/
                                   upperLimit=c(cutoff, 2*pi), 
                                   fDim = 6, tol = tol,
                                   maxEval = maxEval,
-                                  r2 = c(x, y, z), k0=k0, psi= psi, alpha=alpha,
+                                  r2 = xyz, k0=k0, psi= psi, alpha=alpha,
                                   w0=w0, epsilon=epsilon, thickness=thickness)$integral
   
   E <- complex(real = res[1:3], imaginary=res[4:6])

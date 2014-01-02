@@ -7,6 +7,8 @@ metal <- (0.180 + 5.12i)^2
 epsilon <- list(1.5^2, metal, 1.0)
 thickness <- c(0, 50, 0)
 
+alpha=0.7480731
+
 ## first, check the plane wave result
 results <- multilayer(epsilon=epsilon,
                       wavelength=wavelength, thickness=thickness, d=1,
@@ -19,9 +21,9 @@ print(spp)
 simulation <- function(w0=10){
   w0 <- w0*1e3
   xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=thickness[2]+1))
-  res <- adply(xyz, 1, gaussian_near_field2, 
+  res <- adply(xyz, 1, gaussian_near_field2, wavelength=wavelength,
                epsilon=unlist(epsilon), thickness=thickness,
-               w0=w0, alpha=spp, maxEval=1000)
+               w0=w0, alpha=alpha, maxEval=2000)
   data.frame(xyz, field=res[[2]])
 }
 

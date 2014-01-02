@@ -12,11 +12,11 @@ simulation_bottom <- function(w0=1e4, angle=0,
                                y=0,
                                z=seq(-10*wavelength, 2*wavelength, length=200)))
   
-  res <- adply(xyz, 1, gaussian_near_field2, epsilon=epsilon, 
-               thickness=thickness, wavelength = wavelength,
-               alpha=angle, w0=w0, maxEval=500, .progress="text")
+  res <- gaussian_near_field2(xyz, wavelength=wavelength,
+                              epsilon=unlist(epsilon), thickness=thickness,
+                              w0=w0, alpha=alpha, maxEval=500)
   
-  data.frame(xyz, field=res[[2]])
+  data.frame(xyz, field=res)
 }
 
 
@@ -31,11 +31,11 @@ simulation_top <- function(w0=1e4, angle=0,
                                y=0,
                                z=seq(0, wavelength, length=200)))
   
-  res <- adply(xyz, 1, gaussian_near_field2, epsilon=epsilon, 
-               thickness=thickness, wavelength = wavelength,
-               alpha=angle, w0=w0, maxEval=2000, .progress="text")
+  res <- gaussian_near_field2(xyz, wavelength=wavelength,
+                              epsilon=unlist(epsilon), thickness=thickness,
+                              w0=w0, alpha=alpha, maxEval=500)
   
-  data.frame(xyz, field=res[[2]])
+  data.frame(xyz, field=res)
 }
 
 params <- expand.grid(w0=c(5)*1e3,
@@ -62,7 +62,7 @@ p <- ggplot(bottom, aes(x, z, fill=field))+
 
 p
 
-ggsave("gb_2um_45deg.png", p, width=20, height=4)
+# ggsave("gb_2um_45deg.png", p, width=20, height=4)
 # 
 # 
 # plot_one <- function(d)

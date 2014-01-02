@@ -21,10 +21,10 @@ print(spp)
 simulation <- function(w0=10){
   w0 <- w0*1e3
   xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=thickness[2]+1))
-  res <- adply(xyz, 1, gaussian_near_field2, wavelength=wavelength,
+  res <- gaussian_near_field2(xyz, wavelength=wavelength,
                epsilon=unlist(epsilon), thickness=thickness,
-               w0=w0, alpha=alpha, maxEval=2000)
-  data.frame(xyz, field=res[[2]])
+               w0=w0, alpha=alpha, maxEval=1000)
+  data.frame(xyz, field=res)
 }
 
 

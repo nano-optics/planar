@@ -13,6 +13,31 @@ using namespace Rcpp ;
 using namespace RcppArmadillo ;
 using namespace arma ;
 using namespace std;
+  
+void progress_bar(double x, double N)
+  {
+    // how wide you want the progress meter to be
+    int totaldotz=40;
+    double fraction = x / N;
+    // part of the progressmeter that's already "full"
+    int dotz = round(fraction * totaldotz);
+    
+    // create the "meter"
+    int ii=0;
+     Rprintf("%3.0f%% [",fraction*100);
+    // part  that's full already
+    for ( ; ii < dotz;ii++) {
+      Rcpp::Rcout << "=";
+    }
+    // remaining part (spaces)
+    for ( ; ii < totaldotz;ii++) {
+       Rprintf(" ");
+    }
+    // and back to line begin - 
+    // do not forget the fflush to avoid output buffering problems!
+    Rprintf("]\r");
+    // fflush(stdout);
+  }
 
 arma::mat rotation_y(const double alpha)
   {
@@ -87,11 +112,7 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
     double delta, rho, theta, sx, sy;
     const cx_double i = cx_double(0,1);
     cx_double a, pw;
-    // cout << k0 << endl;
-    // cout << psi << endl;
-    // cout << alpha << endl;
-    // cout << w0 << endl;
-    // cout << epsilon << endl;
+
     cx_colvec Eo2 = arma::zeros<arma::cx_colvec>(3); // result
     colvec res = arma::zeros<arma::colvec>(6); // combining real and imag parts
 
@@ -361,12 +382,7 @@ int fwrap(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fv
   colvec res(fval, 6, false);
   colvec xx(2);
   xx[0] = x[0]; xx[1]=x[1];
-  // xx.print();
-  // cout << mydata.thickness << endl;
-  //cout << mydata.r2 << endl;
-// const colvec& rt, const colvec& r2, const double k0, 
-// 			  const double psi, const double alpha, const double w0, 
-// 			  const cx_vec& epsilon, const vec& thickness
+
   res = integrand_gb2(xx, mydata.r2, mydata.k0, mydata.psi, mydata.alpha, mydata.w0, mydata.epsilon, mydata.thickness);
   
   return 0;
@@ -375,7 +391,8 @@ int fwrap(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fv
 // [[Rcpp::export]]
 arma::cx_mat gb_field(const mat& r2, const double k0, 
 		      const double psi, const double alpha, const double w0, 
-		      const cx_vec& epsilon, const vec& thickness)
+		      const cx_vec& epsilon, const vec& thickness, 
+		      const int maxEval, const double tol, bool progress)
   {
 
     const int ndim = 2;
@@ -405,18 +422,25 @@ arma::cx_mat gb_field(const mat& r2, const double k0,
     vec tmp(integral_pt, fdim, false);
     int ii;
     for (ii=0; ii< N; ii++){
+      if(progress){
+	progress_bar(ii,N);
+      }
       mydata.r2 = strans(r2.row(ii));
+
    /* int hcubature(unsigned fdim, integrand f, void *fdata, */
    /*               unsigned dim, const double *xmin, const double *xmax,  */
    /*               size_t maxEval, double reqAbsError, double reqRelError,  */
    /*               error_norm norm, */
    /*               double *val, double *err); */
 
-      hcubature(fdim, fwrap, &mydata, ndim, xmin, xmax, 2000, 0, 1e-4, ERROR_INDIVIDUAL, integral_pt, error_pt);
+      hcubature(fdim, fwrap, &mydata, ndim, xmin, xmax, maxEval, 0, tol, ERROR_INDIVIDUAL, integral_pt, error_pt);
       result(0,ii) = cx_double(tmp(0), tmp(3));
       result(1,ii) = cx_double(tmp(1), tmp(4));
       result(2,ii) = cx_double(tmp(2), tmp(5));
     }
+
+    if(progress)
+      Rcpp::Rcout << "\n";
 
     return (result);
   }

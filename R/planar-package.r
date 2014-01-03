@@ -32,8 +32,8 @@ NULL
 ##' @export
 ##' @details
 ##' \itemize{
-##'  \item{multilayer}{reflection and transmission of a multilayer using a transfer matrix formalism}
-##'  \item{recursive_fresnel}{reflection and transmission of a multilayer using recursive application of Fresnel coefficients}
+##'  \item{multilayer}{ reflection and transmission of a multilayer using a transfer matrix formalism}
+##'  \item{recursive_fresnel}{ reflection and transmission of a multilayer using recursive application of Fresnel coefficients}
 ##' }
 ##' @examples
 ##' show( planar )
@@ -47,7 +47,7 @@ NULL
 ##' @export
 ##' @details
 ##' \itemize{
-##'  \item{integrand_gb}{integrand for gaussian beam excitation at a planar interface}
+##'  \item{integrand_gb}{ integrand for gaussian beam excitation at a planar interface}
 ##' }
 ##' @examples
 ##' show( gaussian )

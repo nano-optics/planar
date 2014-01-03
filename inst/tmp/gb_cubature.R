@@ -1,3 +1,5 @@
+## test the speed gain of using cubature at c++ level
+
 library(planar)
 library(plyr)
 library(ggplot2)

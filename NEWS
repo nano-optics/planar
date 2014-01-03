@@ -1,3 +1,18 @@
+planar 1.5.1
+
+USER VISIBLE CHANGES:
+
+* new function to calculate the near field under gaussian beam illumination
+
+* slight changes to the interface of field_profile
+
+LOW LEVEL:
+
+* rewrote the gaussian beam code to use multilayer matrix transfer method
+
+* link to cubature at c++ level to perform the gaussian beam integration
+
+
 planar 1.5
 
 USER VISIBLE CHANGES:

@@ -230,7 +230,6 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
 
     double delta, rho, theta, sx, sy;
     cx_double i = cx_double(0,1), a, pw, pwr, ko, kl;
-
     bool reflected = r2(2) < 0.0; // reflected side of the interface
   
     cx_colvec Eo2 = arma::zeros<arma::cx_colvec>(3); // result
@@ -327,12 +326,12 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     tp  = ( tp01 * tp12 * phase1 ) / ( 1.0 + rp01 * rp12 * phase2 );
     ts  = ( ts01 * ts12 * phase1 ) / ( 1.0 + rs01 * rs12 * phase2 );
 
-    // internal field in layer not implemented
-    // TODO: factor out the field calculation using transfer matrices
-    // to deal with arbitrary number of layers etc.
+    // Note: internal field in layer not implemented
+    // this means that 0 <= r2(2) < d is meaningless
+    // use the other function (transfer matrix) for full internal field
+    // with arbitrary number of layers (slower)
 
-    // reflection from layer 
-    // note: field is calculated outside of the layer, not inside
+    // reflection from layer (z < 0)
     if(reflected) {
       rp  = ( rp01 + rp12 * phase2 ) / ( 1.0 + rp01 * rp12 * phase2 );
       rs  = ( rs01 + rs12 * phase2 ) / ( 1.0 + rs01 * rs12 * phase2 );
@@ -345,28 +344,34 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
       pwr = exp(i*(ki2(0)*r2(0) + ki2(1)*r2(1) - ki2(2)*r2(2))); // reflected plane wave
       Eo2 = rho*ki*ki * a * (pwr*Rzi*eo2p + pw*Rzi*ei2p); 
     } else {
-      // transmitted field
+      // transmitted field (z >= d)
       eo2p(0) = nini / nono * tp * ko2p(2)/ki2p(2) * ei2p(0);
       eo2p(1) = ts * ei2p(1);
       eo2p(2) = nini / nono * tp * ei2p(2);
       
+      // in this single-layer configuration we are using the interface as the origin
+      double position = r2(2) - d; 
       // incident plane wave
-      pw = exp(i*(ko2(0)*r2(0) + ko2(1)*r2(1) + ko2(2)*r2(2)));
+      pw = exp(i*(ko2(0)*r2(0) + ko2(1)*r2(1) + ko2(2)*position));
       Eo2 = rho*ki*ki * a * pw  * Rzi * eo2p;
     }
 
     // join real and imaginary part in 6-vector 
-    // for cubature::adaptIntegrate
+    // for cubature
 
     colvec Er = real(Eo2);
     colvec Ei = imag(Eo2);
-    colvec res = join_cols(Er, Ei);
+
+    colvec res(6);
+    res[0] = Er[0]; res[1] = Ei[0]; 
+    res[2] = Er[1]; res[3] = Ei[1]; 
+    res[4] = Er[2]; res[5] = Ei[2]; 
 
     return (res);
   }
 
 
-  struct params {
+  struct parameters {
     colvec r2;
     double k0;
     double psi;
@@ -379,13 +384,36 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
 
 /* wrapper of integrand for integration */
 int fwrap(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fval) {
-  params mydata = *((params *) fdata);
+  parameters params = *((parameters *) fdata);
   
   colvec res(fval, 6, false);
   colvec xx(2);
   xx[0] = x[0]; xx[1]=x[1];
 
-  res = integrand_gb2(xx, mydata.r2, mydata.k0, mydata.psi, mydata.alpha, mydata.w0, mydata.epsilon, mydata.thickness);
+// arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
+// 			  const double psi, const double alpha, const double w0, \
+// 			  const double ni, const double no, const cx_double nl, const double d)
+
+  double ni = sqrt(real(params.epsilon[0]));
+  cx_double nl = sqrt(params.epsilon[1]);
+  double no = sqrt(real(params.epsilon[2]));
+  double d = params.thickness[1];
+  double ki = params.k0 * ni;
+
+  res = integrand_gb(xx, params.r2, ki, params.psi, params.alpha, params.w0, ni, no, nl, d);
+  
+  return 0;
+}
+
+/* wrapper of integrand for integration */
+int fwrap2(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fval) {
+  parameters params = *((parameters *) fdata);
+  
+  colvec res(fval, 6, false);
+  colvec xx(2);
+  xx[0] = x[0]; xx[1]=x[1];
+
+  res = integrand_gb2(xx, params.r2, params.k0, params.psi, params.alpha, params.w0, params.epsilon, params.thickness);
   
   return 0;
 }
@@ -410,13 +438,13 @@ arma::cx_mat gb_field(const mat& r2, const double k0,
     double cutoff = 6.0 / (k0 * sqrt(real(epsilon[0])) * w0); 
     double xmin[2] = {0,0}, xmax[2] = {cutoff,2*datum::pi};
 
-    params mydata;
-    mydata.k0=k0;
-    mydata.psi=psi;
-    mydata.alpha=alpha;
-    mydata.w0=w0;
-    mydata.epsilon=epsilon;
-    mydata.thickness=thickness;
+    parameters params;
+    params.k0=k0;
+    params.psi=psi;
+    params.alpha=alpha;
+    params.w0=w0;
+    params.epsilon=epsilon;
+    params.thickness=thickness;
 
     cx_mat result(3,N);
 
@@ -427,7 +455,7 @@ arma::cx_mat gb_field(const mat& r2, const double k0,
       if(progress){
 	progress_bar(ii,N);
       }
-      mydata.r2 = strans(r2.row(ii));
+      params.r2 = strans(r2.row(ii));
 
    /* int hcubature(unsigned fdim, integrand f, void *fdata, */
    /*               unsigned dim, const double *xmin, const double *xmax,  */
@@ -435,7 +463,7 @@ arma::cx_mat gb_field(const mat& r2, const double k0,
    /*               error_norm norm, */
    /*               double *val, double *err); */
 
-      hcubature(fdim, fwrap, &mydata, ndim, xmin, xmax, maxEval, 0, tol, ERROR_PAIRED, integral_pt, error_pt);
+      hcubature(fdim, fwrap, &params, ndim, xmin, xmax, maxEval, 0, tol, ERROR_PAIRED, integral_pt, error_pt);
       result(0,ii) = cx_double(tmp(0), tmp(1));
       result(1,ii) = cx_double(tmp(2), tmp(3));
       result(2,ii) = cx_double(tmp(4), tmp(5));
@@ -448,15 +476,75 @@ arma::cx_mat gb_field(const mat& r2, const double k0,
   }
 
 
+// [[Rcpp::export]]
+arma::cx_mat gb_field2(const mat& r2, const double k0, 
+		      const double psi, const double alpha, const double w0, 
+		      const cx_vec& epsilon, const vec& thickness, 
+		      const int maxEval, const double tol, bool progress)
+  {
+
+    const int ndim = 2;
+    const int fdim = 6;
+    const int N = r2.n_rows;
+    // initialise the vectors to store integration results
+    std::vector<double> integral(fdim);
+    std::vector<double> error(fdim);
+    double* integral_pt = &integral[0];
+    double* error_pt = &error[0];
+  
+    // 3*wavelength/(ni*pi*w0)
+    double cutoff = 6.0 / (k0 * sqrt(real(epsilon[0])) * w0); 
+    double xmin[2] = {0,0}, xmax[2] = {cutoff,2*datum::pi};
+
+    parameters params;
+    params.k0=k0;
+    params.psi=psi;
+    params.alpha=alpha;
+    params.w0=w0;
+    params.epsilon=epsilon;
+    params.thickness=thickness;
+
+    cx_mat result(3,N);
+
+    // initialise an Armadillo vector to use external memory
+    vec tmp(integral_pt, fdim, false);
+    int ii;
+    for (ii=0; ii< N; ii++){
+      if(progress){
+	progress_bar(ii,N);
+      }
+      params.r2 = strans(r2.row(ii));
+
+   /* int hcubature(unsigned fdim, integrand f, void *fdata, */
+   /*               unsigned dim, const double *xmin, const double *xmax,  */
+   /*               size_t maxEval, double reqAbsError, double reqRelError,  */
+   /*               error_norm norm, */
+   /*               double *val, double *err); */
+
+      hcubature(fdim, fwrap2, &params, ndim, xmin, xmax, maxEval, 0, tol, ERROR_PAIRED, integral_pt, error_pt);
+      result(0,ii) = cx_double(tmp(0), tmp(1));
+      result(1,ii) = cx_double(tmp(2), tmp(3));
+      result(2,ii) = cx_double(tmp(4), tmp(5));
+    }
+
+    if(progress)
+      Rcpp::Rcout << "\n";
+
+    return (result);
+  }
+
 RCPP_MODULE(gaussian){
 
   Rcpp::function( "integrand_gb", &integrand_gb,			\
 		  "Integrand for the transmitted field under gaussian illumination" ) ;
 
   Rcpp::function( "integrand_gb2", &integrand_gb2,			\
-		  "Integrand for the transmitted field under gaussian illumination" ) ;
+		  "Integrand for the near field under gaussian illumination" ) ;
 
   Rcpp::function( "gb_field", &gb_field,			\
+		  "Transmitted field under gaussian illumination" ) ;
+
+  Rcpp::function( "gb_field2", &gb_field2,			\
 		  "Near field under gaussian illumination" ) ;
   
 }

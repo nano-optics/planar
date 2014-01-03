@@ -2,18 +2,13 @@
 \alias{gaussian_near_field2}
 \title{gaussian_near_field2}
 \usage{
-gaussian_near_field2(x = 1, y = 1, z = 1, wavelength = 632.8,
-  alpha = 15 * pi/180, psi = 0, w0 = 10000, epsilon = c(1.5^2,
-  epsAg(lambda)$epsilon, 1^2, 1^2), thickness = c(0, 50, 10, 0),
-  cutoff = min(1, 3 * wavelength/(Re(sqrt(epsilon[1])) * pi * w0)),
-  maxEval = 3000, tol = 1e-04, field = FALSE)
+gaussian_near_field2(xyz, wavelength = 632.8, alpha = 15 * pi/180,
+  psi = 0, w0 = 10000, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1^2,
+  1^2), thickness = c(0, 50, 10, 0), maxEval = 3000, tol = 1e-04,
+  progress = FALSE, field = FALSE)
 }
 \arguments{
-  \item{x}{position}
-
-  \item{y}{position}
-
-  \item{z}{position}
+  \item{xyz}{position matrix}
 
   \item{wavelength}{wavelength}
 
@@ -27,11 +22,11 @@ gaussian_near_field2(x = 1, y = 1, z = 1, wavelength = 632.8,
 
   \item{thickness}{thickness corresponding to each medium}
 
-  \item{cutoff}{radial integration limit}
+  \item{maxEval}{passed to cubature}
 
-  \item{maxEval}{passed to adaptIntegrate}
+  \item{tol}{passed to cubature}
 
-  \item{tol}{passed to adaptIntegrate}
+  \item{progress}{logical display progress bar}
 
   \item{field}{logical: return the electric field (complex
   vector), or modulus squared}
@@ -40,12 +35,12 @@ gaussian_near_field2(x = 1, y = 1, z = 1, wavelength = 632.8,
 data.frame electric field at the x, y, z position
 }
 \description{
-Electric field from the transmission of a gaussian beam at
-a planar interface
+Electric field of a gaussian beam close to a planar
+interface
 }
 \details{
 Integration is performed over a spectrum of incident plane
-waves using integrand_gb
+waves using integrand_gb2
 }
 \author{
 Baptiste Auguie

@@ -22,6 +22,7 @@ Baptiste Auguie
 }
 \seealso{
 Other helping_functions: \code{\link{classify}},
-\code{\link{field_profile}}, \code{\link{modify_levels}}
+\code{\link{field_profile}}, \code{\link{internal_field}},
+\code{\link{modify_levels}}
 }
 

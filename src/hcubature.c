@@ -2,6 +2,8 @@
  *
  * Copyright (c) 2005-2013 Steven G. Johnson
  *
+ * Mofified 2014 by Baptiste Auguie to conform with R conventions
+ * 
  * Portions (see comments) based on HIntLib (also distributed under
  * the GNU GPL, v2 or later), copyright (c) 2002-2005 Rudolf Schuerer.
  *     (http://www.cosy.sbg.ac.at/~rschuer/hintlib/)
@@ -32,6 +34,7 @@
 #include <math.h>
 #include <limits.h>
 #include <float.h>
+#include <R.h>
 
 /* Adaptive multidimensional integration on hypercubes (or, really,
    hyper-rectangles) using cubature rules.
@@ -849,8 +852,8 @@ static heap_item heap_pop(heap *h)
      int i, n, child;
 
      if (!(h->n)) {
-	  fprintf(stderr, "attempted to pop an empty heap\n");
-	  exit(EXIT_FAILURE);
+       // changed fprintf and exit to error to make R happy [baptiste, 2014]
+        error("attempted to pop an empty heap\n");
      }
 
      ret = h->items[0];
@@ -910,7 +913,9 @@ static int rulecubature(rule *r, unsigned fdim,
      esterr *ee = NULL;
 
      if (fdim <= 1) norm = ERROR_INDIVIDUAL; /* norm is irrelevant */
-     if (norm < 0 || norm > ERROR_LINF) return FAILURE; /* invalid norm */
+
+     // removed norm < 0 test not meaningful with enum type [baptiste 2014]
+     if (norm > ERROR_LINF) return FAILURE; /* invalid norm */
 
      regions = heap_alloc(1, fdim);
      if (!regions.ee || !regions.items) goto bad;

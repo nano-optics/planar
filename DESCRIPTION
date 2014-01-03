@@ -16,10 +16,10 @@ SystemRequirements: GNU make
 Version: 1.5.1
 VignetteBuilder: knitr
 Depends:
-    Rcpp,
     methods,
     dielectric
 Imports:
+    Rcpp,
     statmod,
     cubature,
     reshape2,

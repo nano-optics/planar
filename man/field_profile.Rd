@@ -38,8 +38,8 @@ perp)
 field profile in a ML stack
 }
 \details{
-runs multilayer and returns the LFIEF as a function of
-distance inside and outside of the structure
+returns the electric field as a function of distance inside
+and outside of the structure
 }
 \author{
 baptiste Auguie
@@ -53,6 +53,7 @@ Elsevier, Amsterdam (2009).
 }
 \seealso{
 Other helping_functions: \code{\link{classify}},
-\code{\link{invert_stack}}, \code{\link{modify_levels}}
+\code{\link{internal_field}}, \code{\link{invert_stack}},
+\code{\link{modify_levels}}
 }
 

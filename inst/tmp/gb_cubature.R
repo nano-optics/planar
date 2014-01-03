@@ -5,8 +5,6 @@ library(plyr)
 library(ggplot2)
 
 
-angle <- 0.00001
-# angle <- 45*pi/180
 wavelength <- 632.8
 metal <- epsAg(wavelength)$epsilon
 epsilon <- list(1.5^2, metal, 1.0)

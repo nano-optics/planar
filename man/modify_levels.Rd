@@ -20,6 +20,7 @@ Baptiste Auguie
 }
 \seealso{
 Other helping_functions: \code{\link{classify}},
-\code{\link{field_profile}}, \code{\link{invert_stack}}
+\code{\link{field_profile}}, \code{\link{internal_field}},
+\code{\link{invert_stack}}
 }
 

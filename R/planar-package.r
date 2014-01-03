@@ -6,7 +6,6 @@
 ##' @docType package
 ##' @useDynLib planar
 ##' @import Rcpp
-##' @import RcppArmadillo
 ##' @import dielectric
 ##' @import methods
 ##' @import plyr 

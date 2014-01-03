@@ -1,0 +1,54 @@
+\name{internal_field}
+\alias{internal_field}
+\title{internal_field}
+\usage{
+internal_field(wavelength = 500, angle = 0, psi = 0, thickness = c(0,
+  20, 140, 20, 0), dmax = 200, res = 1000, epsilon = c(1^2, -12, 1.38^2,
+  -12, 1.46^2), field = FALSE, ...)
+}
+\arguments{
+  \item{wavelength}{wavelength}
+
+  \item{angle}{angle}
+
+  \item{psi}{polarisation angle (0 for TM)}
+
+  \item{dmax}{maximum distance to interface}
+
+  \item{thickness}{vector of layer thickness}
+
+  \item{res}{resolution of sampling points}
+
+  \item{epsilon}{permittivities}
+
+  \item{field}{logical, return complex field vector, or
+  modulus squared}
+
+  \item{...}{further args ignored}
+}
+\value{
+data.frame with position and electric field vector
+}
+\description{
+Internal field in a ML stack
+}
+\details{
+returns the electric field as a function of distance inside
+and outside of the structure
+}
+\author{
+baptiste Auguie
+}
+\references{
+Principles of surface-enhanced Raman spectroscopy and
+related plasmonic effects
+
+Eric C. Le Ru and Pablo G. Etchegoin, published by
+Elsevier, Amsterdam (2009).
+}
+\seealso{
+Other helping_functions: \code{\link{classify}},
+\code{\link{field_profile}}, \code{\link{invert_stack}},
+\code{\link{modify_levels}}
+}
+

@@ -7,8 +7,6 @@ angle <- 0.00001
 # angle <- 45*pi/180
 wavelength <- 632.8
 metal <- epsAg(wavelength)$epsilon
-wavelength <- 800
-metal <- (0.180 + 5.12i)^2
 epsilon <- list(1.5^2, metal, 1.0)
 thickness <- c(0, 100, 0)
 
@@ -27,13 +25,13 @@ simulation <- function(w0=10){
   
   res <- gaussian_near_field2(xyz, wavelength=wavelength,
                               epsilon=unlist(epsilon), thickness=thickness,
-                              w0=w0, alpha=spp, maxEval=1000, progress=TRUE)
+                              w0=w0, alpha=spp, maxEval=1000, tol=1e-2, progress=TRUE)
   
   data.frame(xyz, field=res)
 }
 
 
-params <- data.frame(w0=c(10, 50, 100, 1000))
+params <- data.frame(w0=c(10, 50, 100, 1000, 5000))
 all <- mdply(params, simulation)
 
 subset(all, field == max(field))

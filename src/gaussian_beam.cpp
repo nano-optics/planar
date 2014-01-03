@@ -214,8 +214,10 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
 
     colvec Er = real(Eo2);
     colvec Ei = imag(Eo2);
-    res = join_cols(Er, Ei);
-
+    //res = join_cols(Er, Ei);
+    res[0] = Er[0]; res[1] = Ei[0]; 
+    res[2] = Er[1]; res[3] = Ei[1]; 
+    res[4] = Er[2]; res[5] = Ei[2]; 
     return (res);
   }
 
@@ -433,10 +435,10 @@ arma::cx_mat gb_field(const mat& r2, const double k0,
    /*               error_norm norm, */
    /*               double *val, double *err); */
 
-      hcubature(fdim, fwrap, &mydata, ndim, xmin, xmax, maxEval, 0, tol, ERROR_INDIVIDUAL, integral_pt, error_pt);
-      result(0,ii) = cx_double(tmp(0), tmp(3));
-      result(1,ii) = cx_double(tmp(1), tmp(4));
-      result(2,ii) = cx_double(tmp(2), tmp(5));
+      hcubature(fdim, fwrap, &mydata, ndim, xmin, xmax, maxEval, 0, tol, ERROR_PAIRED, integral_pt, error_pt);
+      result(0,ii) = cx_double(tmp(0), tmp(1));
+      result(1,ii) = cx_double(tmp(2), tmp(3));
+      result(2,ii) = cx_double(tmp(4), tmp(5));
     }
 
     if(progress)

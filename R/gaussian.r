@@ -64,7 +64,7 @@ gaussian_near_field <- function(x=1, y=1, z=1, wavelength=500, alpha = 15*pi/180
                                   r2 = c(x, y, z), ki=ki, psi= psi, alpha=alpha,
                                   w0=w0, ni=ni, no=no, nl=nl, d=d)$integral
   
-  E <- complex(real = res[1:3], imaginary=res[4:6])
+  E <- complex(real = res[c(1,3,5)], imaginary=res[c(2,4,6)])
   if(field) return(E)
   
   Re(crossprod(E, Conj(E)))

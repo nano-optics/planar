@@ -21,3 +21,7 @@ inst/tmp/old/
 
 
 inst/tmp/testdipole.r
+
+vignettes/gaussian.md
+
+vignettes/gaussian.html

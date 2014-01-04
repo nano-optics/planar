@@ -1,3 +1,29 @@
+
+test_complex <- function(x){
+  !isTRUE(all.equal(Im(x), 0))
+}
+##' epsilon_medium
+##'
+##' characterise the layers of a structure 
+##' @title epsilon_medium
+##' @param epsilon 
+##' @return factor
+##' @export
+##' @family user_level conversion utility
+##' @author baptiste Auguie
+epsilon_medium <- function(epsilon = list(3.5, 1, 3, 1, 12+1i, 3, 3.5)){
+  
+  is.metal <- sapply(epsilon, test_complex)
+  metals <- unlist(unique(epsilon[is.metal]))
+  dielectrics <- sort(unlist(unique(epsilon[!is.metal])))
+  
+  dnames <- paste0("n", seq_along(dielectrics))[match(epsilon, dielectrics)]
+  mnames <- paste0("metal", seq_along(metals))[match(epsilon, metals)]
+  
+  factor(ifelse(is.na(dnames), mnames, dnames))
+  
+}
+
 ##' field profile in a ML stack
 ##'
 ##' returns the electric field as a function of distance inside and outside of the structure
@@ -46,7 +72,14 @@ field_profile <- function(wavelength=500, angle=0, polarisation='p',
                            M.perp=Mperp)), all)
   
   names(all) <- paste("layer", seq_along(res$dist))
-  melt(all, id=1)
+  m <- melt(all, id=1)
+  
+  ll = as.list(unique(m$L1))
+  names(ll) = epsilon_medium(epsilon)
+  m$material <- factor(m$L1)
+  levels(m$material) = ll
+  
+  m
 }
 
 ##' Internal field in a ML stack
@@ -76,14 +109,25 @@ internal_field <- function(wavelength=500, angle=0, psi=0,
                            epsilon=c(1^2, -12 , 1.38^2, -12 , 1.46^2), 
                            field = FALSE, ...){
   k0 <- 2*pi/wavelength
-  positions <- c(-dmax, thickness)
-  positions[length(positions)] <- cumsum(thickness) + dmax
+  positions <- c(-dmax, cumsum(thickness))
+  positions[length(positions)] <- sum(thickness) + dmax
   n1 <- Re(sqrt(epsilon[1]))
-  d <- unique(c(mapply(seq, positions[-length(positions)], positions[-1], length=res)))
+  ## at least 10 points 
+  ## stepsize <- min(c(diff(range(positions)) / res, 0.1*diff(positions)))
+  stepsize <- diff(range(positions)) / res
+  probes <- mapply(seq, positions[-length(positions)], positions[-1], 
+                   MoreArgs=list(by=stepsize))
+  id <- rep(seq_along(probes), sapply(probes, length))
+  d <- unlist(probes)
   E <- planar$multilayer_field(k0, k0*sin(angle)*n1, unlist(epsilon),  
-                          thickness, d, psi)
+                          thickness, d, psi)$E
   if(field)
     return(E)
   
-  data.frame(x = d, I = Re(colSums(E*Conj(E))))
+  ll = as.list(unique(id))
+  names(ll) = epsilon_medium(epsilon)
+  material <- factor(id)
+  levels(material) = ll
+  
+  data.frame(x = d, I = Re(colSums(E*Conj(E))), id=id, material=material)
 }

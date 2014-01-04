@@ -14,6 +14,7 @@ using namespace RcppArmadillo ;
 using namespace arma ;
 using namespace std;
   
+
 void progress_bar(double x, double N)
   {
     // how wide you want the progress meter to be
@@ -214,7 +215,9 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
 
     colvec Er = real(Eo2);
     colvec Ei = imag(Eo2);
-    //res = join_cols(Er, Ei);
+    // res = join_cols(Er, Ei);
+    // now interlace Re and Im to 
+    // use paired convergence test in cubature
     res[0] = Er[0]; res[1] = Ei[0]; 
     res[2] = Er[1]; res[3] = Ei[1]; 
     res[4] = Er[2]; res[5] = Ei[2]; 
@@ -233,6 +236,8 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     bool reflected = r2(2) < 0.0; // reflected side of the interface
   
     cx_colvec Eo2 = arma::zeros<arma::cx_colvec>(3); // result
+    colvec res = arma::zeros<arma::colvec>(6); // combining real and imag parts
+
     cx_colvec ei1(3), ei2(3), ei2p(3), eo2p(3);
     colvec ki1(3), ki2(3), ki2p(3);
     cx_colvec ko2(3), ko2p(3), kl2p(3);
@@ -242,45 +247,53 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     ko = no / ni * ki; // outer medium
     kl = nl / ni *ki; // layer
     cx_double tp, ts, rp, rs, ap, bp, as, bs;
-    // temporary variables for internal field calculations
-    cx_double Kp, Ks, Mp11, Ms11, Mp21, Ms21, Hy, Hyp;
 
     // change of variables from polar coordinates
     rho = rt(0); theta = rt(1);
     sx = rho * cos(theta);
     sy = rho * sin(theta);
 
+    // only prop. waves are considered  
     double root = 1.0 - rho*rho;
-
-    if( root < 0.0) // only prop. waves are considered
-      {    
-	colvec Er = real(Eo2);
-	colvec Ei = imag(Eo2);
-	colvec res = join_cols(Er, Ei);
-	return(res); 
-      }
-
+    if( root < 0.0)  return(res);  
+ 
     // work out kz component
     ki1(0) = ki*sx;
     ki1(1) = ki*sy;
-    ki1(2) = sqrt(ki*ki - ki1(0)*ki1(0) - ki1(1)*ki1(1)); // only real freqs.
-
-    // incident field polarisation and distribution
+    double kpar2 = ki1(0)*ki1(0) + ki1(1)*ki1(1);
+    ki1(2) = sqrt(ki*ki - kpar2); // only real freqs.
+    colvec s1(3);
+    s1(0) = sx;
+    s1(1) = sy;
+    s1(2) = sqrt(root);
+    // incident field polarisation
     ei1 = incident_field(psi);
-    a = w0*w0 / (4*datum::pi) * exp(-(ki1(0)*ki1(0) + ki1(1)*ki1(1))*(w0*w0/4));
+    // use this expression for a focused beam only?
+    // ei1 = incident_field2(psi, s1);
+    // weight factor
+    a = w0*w0 / (4*datum::pi) * exp(-kpar2*(w0*w0/4));
 
-    // rotations of incident field
-
+   // rotation of incident field
     // to frame F2
     Ry = rotation_y(alpha);
     ki2 = Ry * ki1;
     ei2 = Ry * ei1;
+
+    // outer medium
     ko2(0) = ki2(0);
     ko2(1) = ki2(1);
-    ko2(2) = sqrt(ko*ko - ko2(0)*ko2(0) - ko2(1)*ko2(1));
-    
+    //not as above, because of rotation!
+    kpar2 = ki2(0)*ki2(0) + ki2(1)*ki2(1);
+    double kpar = sqrt(kpar2);
+    ko2(2) = sqrt(ko*ko - kpar2);
+
     // to frame F2p
-    delta = asin(ki2(1) / sqrt(ki2(0)*ki2(0) + ki2(1)*ki2(1)));
+    delta = 0.0; // case of exact normal incidence (no k-parallel)
+    if (abs(kpar) >= 2*datum::eps) {
+      double sindelta = ki2(1) / kpar;// safe division
+      delta = asin(sindelta); 
+    }
+
     Rz = rotation_z(delta);
     Rzi = rotation_z(-delta);
     ki2p = Rz * ki2;
@@ -362,7 +375,6 @@ arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
     colvec Er = real(Eo2);
     colvec Ei = imag(Eo2);
 
-    colvec res(6);
     res[0] = Er[0]; res[1] = Ei[0]; 
     res[2] = Er[1]; res[3] = Ei[1]; 
     res[4] = Er[2]; res[5] = Ei[2]; 
@@ -419,7 +431,7 @@ int fwrap2(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *f
 }
 
 // [[Rcpp::export]]
-arma::cx_mat gb_field(const mat& r2, const double k0, 
+arma::cx_mat field_gb(const mat& r2, const double k0, 
 		      const double psi, const double alpha, const double w0, 
 		      const cx_vec& epsilon, const vec& thickness, 
 		      const int maxEval, const double tol, bool progress)
@@ -477,7 +489,7 @@ arma::cx_mat gb_field(const mat& r2, const double k0,
 
 
 // [[Rcpp::export]]
-arma::cx_mat gb_field2(const mat& r2, const double k0, 
+arma::cx_mat field_gb2(const mat& r2, const double k0, 
 		      const double psi, const double alpha, const double w0, 
 		      const cx_vec& epsilon, const vec& thickness, 
 		      const int maxEval, const double tol, bool progress)
@@ -541,10 +553,10 @@ RCPP_MODULE(gaussian){
   Rcpp::function( "integrand_gb2", &integrand_gb2,			\
 		  "Integrand for the near field under gaussian illumination" ) ;
 
-  Rcpp::function( "gb_field", &gb_field,			\
+  Rcpp::function( "field_gb", &field_gb,			\
 		  "Transmitted field under gaussian illumination" ) ;
 
-  Rcpp::function( "gb_field2", &gb_field2,			\
+  Rcpp::function( "field_gb2", &field_gb2,			\
 		  "Near field under gaussian illumination" ) ;
   
 }

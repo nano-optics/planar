@@ -1,11 +1,10 @@
-\name{field_profile}
-\alias{field_profile}
-\title{field_profile}
+\name{lfief}
+\alias{lfief}
+\title{lfief}
 \usage{
-field_profile(wavelength = 500, angle = 0, polarisation = "p",
-  thickness = c(0, 20, 140, 20, 0), dmax = 200, res = 1000,
-  res2 = res/10, epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2),
-  displacement = FALSE, ...)
+lfief(wavelength = 500, angle = 0, polarisation = "p", thickness = c(0,
+  20, 140, 20, 0), dmax = 200, res = 1000, res2 = res/10,
+  epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2), displacement = FALSE, ...)
 }
 \arguments{
   \item{wavelength}{wavelength}
@@ -35,11 +34,11 @@ long format data.frame with positions and LFEF (para and
 perp)
 }
 \description{
-field profile in a ML stack
+Local field intensity enhancement factors in a multilayer
 }
 \details{
-returns the electric field as a function of distance inside
-and outside of the structure
+returns the LFIEFs as a function of distance inside and
+outside of the structure
 }
 \author{
 baptiste Auguie

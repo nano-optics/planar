@@ -209,7 +209,7 @@ Rcpp::List multilayer_field(const double k0,
     if (ztmp <= 0.0) {
       position = 0;
       d = ztmp; // already negative btw...
-    } else if (ztmp > interfaces(Nlayer-1)){
+    } else if (ztmp >= interfaces(Nlayer-1)){
       position = Nlayer-1;
       d = ztmp - interfaces(Nlayer-2);
     } else {

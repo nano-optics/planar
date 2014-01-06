@@ -2,11 +2,12 @@
 test_complex <- function(x){
   !isTRUE(all.equal(Im(x), 0))
 }
+
 ##' epsilon_medium
 ##'
-##' characterise the layers of a structure 
+##' characterise the layers of a structure with unique labels for metals and dielectrics
 ##' @title epsilon_medium
-##' @param epsilon 
+##' @param epsilon list of real or complex values
 ##' @return factor
 ##' @export
 ##' @family user_level conversion utility
@@ -24,10 +25,11 @@ epsilon_medium <- function(epsilon = list(3.5, 1, 3, 1, 12+1i, 3, 3.5)){
   
 }
 
-##' field profile in a ML stack
+##' Local field intensity enhancement factors in a multilayer
 ##'
-##' returns the electric field as a function of distance inside and outside of the structure
-##' @title field_profile
+##' returns the LFIEFs as a function of distance inside and outside of the structure
+##' @title lfief
+##' @alias field_profile
 ##' @export
 ##' @param wavelength wavelength
 ##' @param angle angle
@@ -46,7 +48,7 @@ epsilon_medium <- function(epsilon = list(3.5, 1, 3, 1, 12+1i, 3, 3.5)){
 ##' Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
 ##' 
 ##' Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
-field_profile <- function(wavelength=500, angle=0, polarisation='p',
+lfief <- function(wavelength=500, angle=0, polarisation='p',
                           thickness = c(0, 20, 140, 20, 0), 
                           dmax=200,  res=1e3, res2=res/10,
                           epsilon=list(1^2, -12 , 1.38^2, -12 , 1.46^2), 

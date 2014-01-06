@@ -16,10 +16,10 @@ require(plyr)
 
 
 ## ----simulation----------------------------------------------------------
-m <- field_profile(wavelength=633, angle=44*pi/180, polarisation='p',
-                   thickness=c(0, 50, 0), dmax=400, res=5000,
-                   epsilon=list(1.5^2, -12+1i, 1.0^2), 
-                   displacement=TRUE)
+m <- lfief(wavelength=633, angle=44*pi/180, polarisation='p',
+           thickness=c(0, 50, 0), dmax=400, res=5000,
+           epsilon=list(1.5^2, -12+1i, 1.0^2), 
+           displacement=TRUE)
 m$L1 <- factor(m$L1, labels=c("glass", "metal", "air"))
 str(m)
 

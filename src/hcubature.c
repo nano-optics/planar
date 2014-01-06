@@ -914,8 +914,7 @@ static int rulecubature(rule *r, unsigned fdim,
 
      if (fdim <= 1) norm = ERROR_INDIVIDUAL; /* norm is irrelevant */
 
-     // removed norm < 0 test not meaningful with enum type [baptiste 2014]
-     if (norm > ERROR_LINF) return FAILURE; /* invalid norm */
+     if (norm < 0 || norm > ERROR_LINF) return FAILURE; /* invalid norm */
 
      regions = heap_alloc(1, fdim);
      if (!regions.ee || !regions.items) goto bad;

@@ -105,9 +105,9 @@ arma::cx_colvec incident_field2(const double psi, const arma::colvec& s1)
 
 
 // [[Rcpp::export]]
-arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0, 
-			  const double psi, const double alpha, const double w0, 
-			  const cx_vec& epsilon, const vec& thickness)
+arma::colvec integrand_gb_ml(const colvec& rt, const colvec& r2, const double k0, 
+				const double psi, const double alpha, const double w0, 
+				const cx_vec& epsilon, const vec& thickness)
   {
     const int Nlayer = epsilon.n_elem;
     double delta, rho, theta, sx, sy;
@@ -226,8 +226,8 @@ arma::colvec integrand_gb2(const colvec& rt, const colvec& r2, const double k0,
 
 
 // [[Rcpp::export]]
-arma::colvec integrand_gb(const colvec& rt, const colvec& r2, const double ki, \
-			  const double psi, const double alpha, const double w0, \
+arma::colvec integrand_gb_layer(const colvec& rt, const colvec& r2, const double ki, 
+			  const double psi, const double alpha, const double w0, 
 			  const double ni, const double no, const cx_double nl, const double d)
   {
 
@@ -412,7 +412,7 @@ int fwrap(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fv
   double d = params.thickness[1];
   double ki = params.k0 * ni;
 
-  res = integrand_gb(xx, params.r2, ki, params.psi, params.alpha, params.w0, ni, no, nl, d);
+  res = integrand_gb_layer(xx, params.r2, ki, params.psi, params.alpha, params.w0, ni, no, nl, d);
   
   return 0;
 }
@@ -425,13 +425,13 @@ int fwrap2(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *f
   colvec xx(2);
   xx[0] = x[0]; xx[1]=x[1];
 
-  res = integrand_gb2(xx, params.r2, params.k0, params.psi, params.alpha, params.w0, params.epsilon, params.thickness);
+  res = integrand_gb_ml(xx, params.r2, params.k0, params.psi, params.alpha, params.w0, params.epsilon, params.thickness);
   
   return 0;
 }
 
 // [[Rcpp::export]]
-arma::cx_mat field_gb(const mat& r2, const double k0, 
+arma::cx_mat field_gb_layer(const mat& r2, const double k0, 
 		      const double psi, const double alpha, const double w0, 
 		      const cx_vec& epsilon, const vec& thickness, 
 		      const int maxEval, const double tol, bool progress)
@@ -489,7 +489,7 @@ arma::cx_mat field_gb(const mat& r2, const double k0,
 
 
 // [[Rcpp::export]]
-arma::cx_mat field_gb2(const mat& r2, const double k0, 
+arma::cx_mat field_gb_ml(const mat& r2, const double k0, 
 		      const double psi, const double alpha, const double w0, 
 		      const cx_vec& epsilon, const vec& thickness, 
 		      const int maxEval, const double tol, bool progress)
@@ -547,16 +547,16 @@ arma::cx_mat field_gb2(const mat& r2, const double k0,
 
 RCPP_MODULE(gaussian){
 
-  Rcpp::function( "integrand_gb", &integrand_gb,			\
+  Rcpp::function( "integrand_gb_layer", &integrand_gb_layer,			\
 		  "Integrand for the transmitted field under gaussian illumination" ) ;
 
-  Rcpp::function( "integrand_gb2", &integrand_gb2,			\
+  Rcpp::function( "integrand_gb_ml", &integrand_gb_ml,			\
 		  "Integrand for the near field under gaussian illumination" ) ;
 
-  Rcpp::function( "field_gb", &field_gb,			\
+  Rcpp::function( "field_gb_layer", &field_gb_layer,			\
 		  "Transmitted field under gaussian illumination" ) ;
 
-  Rcpp::function( "field_gb2", &field_gb2,			\
+  Rcpp::function( "field_gb_ml", &field_gb_ml,			\
 		  "Near field under gaussian illumination" ) ;
   
 }

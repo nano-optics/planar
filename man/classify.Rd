@@ -27,8 +27,8 @@ describing the original columns
 Baptiste Auguie
 }
 \seealso{
-Other helping_functions: \code{\link{field_profile}},
-\code{\link{internal_field}}, \code{\link{invert_stack}},
+Other helping_functions: \code{\link{internal_field}},
+\code{\link{invert_stack}}, \code{\link{lfief}},
 \code{\link{modify_levels}}
 }
 

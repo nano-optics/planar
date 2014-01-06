@@ -48,7 +48,7 @@ Elsevier, Amsterdam (2009).
 }
 \seealso{
 Other helping_functions: \code{\link{classify}},
-\code{\link{field_profile}}, \code{\link{invert_stack}},
+\code{\link{invert_stack}}, \code{\link{lfief}},
 \code{\link{modify_levels}}
 }
 

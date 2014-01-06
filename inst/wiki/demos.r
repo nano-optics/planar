@@ -7,3 +7,4 @@ plyr::l_ply(lf, try_run)
 #plyr::l_ply(gsub("rmd$", "r", lf), file.copy, "../../demo/", overwrite=TRUE)
  
 # cat(gsub("\\.rmd$", "      \n", lf), sep="")
+

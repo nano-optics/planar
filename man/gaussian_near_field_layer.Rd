@@ -1,9 +1,9 @@
-\name{gaussian_near_field}
-\alias{gaussian_near_field}
-\title{gaussian_near_field}
+\name{gaussian_near_field_layer}
+\alias{gaussian_near_field_layer}
+\title{gaussian_near_field_layer}
 \usage{
-gaussian_near_field(xyz, wavelength = 500, alpha = 15 * pi/180, psi = 0,
-  w0 = 10000, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1^2),
+gaussian_near_field_layer(xyz, wavelength = 500, alpha = 15 * pi/180,
+  psi = 0, w0 = 10000, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1^2),
   thickness = c(0, 50, 0), maxEval = 3000, tol = 1e-04,
   progress = FALSE, field = FALSE)
 }
@@ -46,6 +46,6 @@ waves
 Baptiste Auguie
 }
 \seealso{
-Other gaussian_beam: \code{\link{gaussian_near_field2}}
+Other gaussian_beam: \code{\link{gaussian_near_field_ml}}
 }
 

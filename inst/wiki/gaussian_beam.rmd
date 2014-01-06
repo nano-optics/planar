@@ -1,7 +1,7 @@
 ## Near-field profile under gaussian-beam illumination
 _baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
 ```{r demo, message=FALSE, echo=FALSE}
-knitr::read_demo("gaussian_beam", package="planar")
+knitr::read_chunk("gaussian_beam.R")
 ```
 Using the angular spectrum decomposition of a gaussian beam in a bundle of plane waves, the near-field profile is calculated on the transmitted side of a thin metal film illuminated under total internal reflection.
 

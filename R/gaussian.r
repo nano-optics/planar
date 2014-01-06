@@ -7,7 +7,7 @@
   
   k0 <- 2*pi/wavelength
   ki <- k0*ni
-  res <- cubature::adaptIntegrate(gaussian$integrand_gb,
+  res <- cubature::adaptIntegrate(gaussian$integrand_gb_layer,
                                   lowerLimit=c(0, 0), # rho in [0,1], angle in [0,2*pi]
                                   upperLimit=c(cutoff, 2*pi), 
                                   fDim = 6, tol = tol,
@@ -26,7 +26,7 @@
 ##' Electric field from the transmission of a gaussian beam at a planar interface
 ##'
 ##' Integration is performed over a spectrum of incident plane waves
-##' @title gaussian_near_field
+##' @title gaussian_near_field_layer
 ##' @param xyz position
 ##' @param wavelength wavelength
 ##' @param alpha beam incident angle
@@ -42,14 +42,14 @@
 ##' @export
 ##' @family gaussian_beam
 ##' @author Baptiste Auguie
-gaussian_near_field <- function(xyz, wavelength=500, alpha = 15*pi/180, psi=0, 
+gaussian_near_field_layer <- function(xyz, wavelength=500, alpha = 15*pi/180, psi=0, 
                            w0=1e4, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1.0^2),
                            thickness = c(0, 50, 0),
                            maxEval = 3000, tol=1e-04, 
                            progress = FALSE, field=FALSE){
   
   k0 <- 2*pi/wavelength
-  E <- gaussian$gb_field(xyz, k0, psi, alpha, w0, epsilon, thickness,
+  E <- gaussian$field_gb_layer(xyz, k0, psi, alpha, w0, epsilon, thickness,
                           as.integer(maxEval), tol, progress)
   
   if(field) return(E)
@@ -63,7 +63,7 @@ gaussian_near_field <- function(xyz, wavelength=500, alpha = 15*pi/180, psi=0,
 ##' Electric field of a gaussian beam close to a planar interface
 ##'
 ##' Integration is performed over a spectrum of incident plane waves using integrand_gb2
-##' @title gaussian_near_field2
+##' @title gaussian_near_field_ml
 ##' @param xyz position matrix
 ##' @param wavelength wavelength
 ##' @param alpha beam incident angle
@@ -79,13 +79,13 @@ gaussian_near_field <- function(xyz, wavelength=500, alpha = 15*pi/180, psi=0,
 ##' @export
 ##' @family gaussian_beam
 ##' @author Baptiste Auguie
-gaussian_near_field2 <- function(xyz, wavelength=632.8, alpha = 15*pi/180, psi=0, 
+gaussian_near_field_ml <- function(xyz, wavelength=632.8, alpha = 15*pi/180, psi=0, 
                                  w0=1e4, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1.0^2, 1.0^2),
                                  thickness = c(0, 50, 10, 0),
                                  maxEval = 3000, tol=1e-04, progress=FALSE, field=FALSE){
   
   k0 <- 2*pi/wavelength
-  E <- gaussian$gb_field2(xyz, k0, psi, alpha, w0, epsilon, thickness,
+  E <- gaussian$field_gb_ml(xyz, k0, psi, alpha, w0, epsilon, thickness,
                          as.integer(maxEval), tol, progress)
 
   if(field) return(E)

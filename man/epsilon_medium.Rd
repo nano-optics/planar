@@ -5,7 +5,7 @@
 epsilon_medium(epsilon = list(3.5, 1, 3, 1, 12 + (0+1i), 3, 3.5))
 }
 \arguments{
-  \item{epsilon}{}
+  \item{epsilon}{list of real or complex values}
 }
 \value{
 factor
@@ -14,7 +14,8 @@ factor
 epsilon_medium
 }
 \details{
-characterise the layers of a structure
+characterise the layers of a structure with unique labels
+for metals and dielectrics
 }
 \author{
 baptiste Auguie

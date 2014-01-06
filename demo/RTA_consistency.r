@@ -1,5 +1,5 @@
 
-## ----, echo=FALSE,results='hide'-----------------------------------------
+## ----load, echo=FALSE,results='hide'-----------------------------------------
 library(knitr)
 library(ggplot2)
 opts_chunk$set(fig.path="rtaconsistency/",
@@ -8,7 +8,7 @@ library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 
 
-## ----, results='hide'----------------------------------------------------
+## ----setup, results='hide'----------------------------------------------------
 library(planar)
 library(ggplot2)
 library(plyr)

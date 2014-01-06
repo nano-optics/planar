@@ -1,5 +1,5 @@
 
-## ----, echo=FALSE,results='hide'-----------------------------------------
+## ----load, echo=FALSE,results='hide'-----------------------------------------
 library(knitr)
 library(ggplot2)
 library(planar)

@@ -6,7 +6,7 @@
 Exposes C++ function integrand_gb
 }
 \details{
-\itemize{ \item{integrand_gb}{integrand for gaussian beam
+\itemize{ \item{integrand_gb}{ integrand for gaussian beam
 excitation at a planar interface} }
 }
 \examples{

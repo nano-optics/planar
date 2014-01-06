@@ -1,6 +1,7 @@
 export(classify)
 export(dipole)
 export(dipole_direct)
+export(epsilon_medium)
 export(field_profile)
 export(gaussian)
 export(gaussian_near_field)

@@ -1,5 +1,5 @@
 
-## ----, echo=FALSE,results='hide'-----------------------------------------
+## ----load, echo=FALSE,results='hide'-----------------------------------------
 library(knitr)
 library(ggplot2)
 opts_chunk$set(fig.path="kretschmannreflectivity/", fig.width=10,
@@ -10,7 +10,7 @@ library(RColorBrewer)
 col <- brewer.pal(3,"PRGn")
 
 
-## ----, results='hide'----------------------------------------------------
+## ----setup, results='hide'----------------------------------------------------
 library(planar)
 library(ggplot2)
 require(reshape2)
@@ -18,7 +18,7 @@ library(gridExtra)
 require(plyr)
 
 
-## ------------------------------------------------------------------------
+## ----simulation------------------------------------------------------------------------
 wvl <- 632.8
 gold <- epsAu(wvl)
 results <- recursive_fresnelcpp(epsilon=list(1.5^2, gold$epsilon, 1.0),

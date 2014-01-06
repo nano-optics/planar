@@ -1,5 +1,5 @@
 
-## ----, echo=FALSE,results='hide', message=FALSE--------------------------
+## ----load, echo=FALSE,results='hide', message=FALSE--------------------------
 library(knitr)
 library(planar)
 library(dielectric)
@@ -12,7 +12,7 @@ library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 
 
-## ----, results='hide'----------------------------------------------------
+## ----setup, results='hide'----------------------------------------------------
 ## from left to right
 ## incident glass | metal | water
 ## local field enhancement for the excitation of the fluorophore

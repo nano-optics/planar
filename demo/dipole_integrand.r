@@ -1,5 +1,5 @@
 
-## ----, echo=FALSE,results='hide', message=FALSE--------------------------
+## ----load, echo=FALSE,results='hide', message=FALSE--------------------------
 library(knitr)
 library(planar)
 library(dielectric)
@@ -13,7 +13,7 @@ library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 
 
-## ----, results='hide', fig.width=10--------------------------------------
+## ----setup, results='hide', fig.width=10--------------------------------------
 
 integrand <- function(d=1, q, material=epsAg, wavelength=500,...){
   mat <- material(wavelength)

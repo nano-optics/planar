@@ -1,6 +1,9 @@
 
 lf <- list.files(pattern = "rmd$")
-#plyr::l_ply(lf, knitr::knit2html)
-plyr::l_ply(lf, knitr::purl)
+try_run <- function(x)
+  try(knitr::knit2html(x))
+plyr::l_ply(lf, try_run)
+# plyr::l_ply(lf, knitr::purl)
 #plyr::l_ply(gsub("rmd$", "r", lf), file.copy, "../../demo/", overwrite=TRUE)
-
+ 
+# cat(gsub("\\.rmd$", "      \n", lf), sep="")

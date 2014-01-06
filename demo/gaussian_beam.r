@@ -1,5 +1,5 @@
 
-## ----, echo=FALSE,results='hide'-----------------------------------------
+## ----load, echo=FALSE,results='hide'-----------------------------------------
 library(knitr)
 library(ggplot2)
 library(rgl)
@@ -14,7 +14,7 @@ library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 
 
-## ----, results='hide', echo=FALSE----------------------------------------
+## ----setup, results='hide', echo=FALSE----------------------------------------
 library(planar)
 library(ggplot2)
 library(plyr)
@@ -23,7 +23,7 @@ library(plyr)
 ## ----depth---------------------------------------------------------------
 xyz <- as.matrix(expand.grid(x=seq(0,1e4,length=20), y=0, z=seq(1, 500, length=50)))
 res <- adply(xyz, 1, gaussian_near_field, d=50, nl=sqrt(epsAu(633)$epsilon),
-             wavelength=633, w0=5e3, ni=1.5+0i, alpha=45, maxEval=1000)
+             wavelength=633, w0=5e3, ni=1.5, alpha=45, maxEval=1000)
 xyz <- data.frame(xyz, field=res[[2]])
 ggplot(xyz, aes(z, field, colour=x, group=x))+
   geom_line() + scale_y_log10()+
@@ -70,7 +70,7 @@ ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
 w0 <- 1000
 xyz <- as.matrix(expand.grid(x=seq(-5*w0, 15*w0,length=100), y=0, z=seq(0, 500, by=50)))
 res <- adply(xyz, 1, gaussian_near_field, d=50, nl=sqrt(epsAu(633)$epsilon),
-             wavelength=633, w0=w0, ni=1.5+0i, alpha=44.5*pi/180, maxEval=2000)
+             wavelength=633, w0=w0, ni=1.5, alpha=44.5*pi/180, maxEval=2000)
 xyz <- data.frame(xyz, field=res[[2]])
 
 ggplot(xyz, aes(x, field, colour=z, group=z))+
@@ -86,7 +86,7 @@ xyz <- as.matrix(expand.grid(x=seq(-3*w0, 5*w0, length=50),
                              y=seq(-3*w0, 3*w0, length=50),
                              z=10))
 res <- adply(xyz, 1, gaussian_near_field, d=50, nl=sqrt(epsAu(633)$epsilon),
-             wavelength=633, w0=w0, ni=1.5+0i, alpha=44.5*pi/180, maxEval=500)
+             wavelength=633, w0=w0, ni=1.5, alpha=44.5*pi/180, maxEval=500)
 xyz <- data.frame(xyz, field=res[[2]])
 
   ggplot(xyz, aes(x/1e3, y/1e3, fill=field))+
@@ -108,7 +108,7 @@ xyz <- as.matrix(expand.grid(x=x,
                              z=z))
                              
 res <- adply(xyz, 1, gaussian_near_field, d=50, nl=sqrt(epsAu(633)$epsilon),
-             wavelength=633, w0=w0, ni=1.5+0i, alpha=44.5*pi/180, maxEval=500)
+             wavelength=633, w0=w0, ni=1.5, alpha=44.5*pi/180, maxEval=500)
 xyz <- data.frame(xyz, field=res[[2]])
 
 col <- heat.colors(100)[cut(xyz$field, 100)]

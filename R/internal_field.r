@@ -29,7 +29,7 @@ epsilon_medium <- function(epsilon = list(3.5, 1, 3, 1, 12+1i, 3, 3.5)){
 ##'
 ##' returns the LFIEFs as a function of distance inside and outside of the structure
 ##' @title lfief
-##' @alias field_profile
+##' @aliases field_profile
 ##' @export
 ##' @param wavelength wavelength
 ##' @param angle angle

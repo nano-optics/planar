@@ -1,4 +1,5 @@
 \name{lfief}
+\alias{field_profile}
 \alias{lfief}
 \title{lfief}
 \usage{

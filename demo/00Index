@@ -4,6 +4,7 @@ dipole_integrand      Visualisation of the power loss as a function of in-plane 
 field_multilayer      Local field enhancement factors for a dipole near or inside a multilayer
 fluorescence_enhancement      Fluorescence enhancement vs distance in the Kretschmann configuration
 gaussian_beam      Near-field profile under gaussian-beam illumination
+internal_field_comparison      Consistency check between modulus of E squared and LFIEFs
 kretschmann_reflectivity      Surface plasmon-polaritons in the Kretschmann configuration
 kretschmann_sensing      Sensing in the Kretschmann configuration
 LFIEF_patterns      Dipole radiation patterns

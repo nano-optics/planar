@@ -71,7 +71,7 @@ simulation <- function(w0=10){
 }
 
 params <- data.frame(w0=c(2, 5, 10, 50, 1e2, 500, 1e3))
-all <- mdply(params, simulation, .progress="text")
+all <- mdply(params, simulation)
 
 ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
   geom_line() + 

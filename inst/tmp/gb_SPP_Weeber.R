@@ -2,47 +2,52 @@ library(planar)
 library(plyr)
 library(ggplot2)
 
-wavelength <- 800
-metal <- (0.180 + 5.12i)^2
-epsilon <- list(1.5^2, metal, 1.0)
-thickness <- c(0, 50, 0)
+simulation <- function(d, probe=50, w0=10e3) {
+  
+  s <- list(wavelength=800, thickness=c(0,d,0),
+                           epsilon=list(1.52^2, (0.180 + 5.12i)^2, 1.0^2))
 
-alpha=0.7480731
-
-## first, check the plane wave result
-results <- multilayer(epsilon=epsilon,
-                      wavelength=wavelength, thickness=thickness, d=1,
-                      angle=seq(0, pi/2, length=2e3), polarisation='p')
-
-maxi <- max(results$Mr.perp[[2]] + results$Mr.par[[2]], na.rm=T)
-spp <- results$angle[which.max(results$Mr.perp[[2]] + results$Mr.par[[2]])]
-print(spp)
-
-simulation <- function(w0=10){
-  w0 <- w0*1e3
-  xyz <- as.matrix(expand.grid(x=seq(-5*w0, 5*w0+5000,length=100), y=0, z=thickness[2]+1))
-  res <- gaussian_near_field2(xyz, wavelength=wavelength,
-               epsilon=unlist(epsilon), thickness=thickness,
-               w0=w0, alpha=alpha, maxEval=1000)
-  data.frame(xyz, field=res)
+  pw <- multilayer(epsilon=s$epsilon,
+                   wavelength=s$wavelength, thickness=s$thickness, d=probe,
+                   angle=seq(0, pi/2, length=2e3), polarisation='p')
+  
+  maxi <- max(pw$Mr.perp[[2]] + pw$Mr.par[[2]], na.rm=T)
+  spp <- pw$angle[which.max(pw$Mr.perp[[2]] + pw$Mr.par[[2]])]
+  
+  xyz <- as.matrix(expand.grid(x=seq(-50e3, 150e3,length=100), y=0, z=s$thickness[2]+probe))
+  
+  res <- gaussian_near_field_ml(xyz, wavelength=s$wavelength,
+                                epsilon=unlist(s$epsilon), thickness=s$thickness,
+                                w0=w0, alpha=spp, tol=1e-3, maxEval=0)
+  data.frame(xyz, field=res/max(res))
 }
 
+params <- data.frame(d=c(50, 100))
+all <- mdply(params, simulation)
 
-params <- data.frame(w0=c(10))
-all <- mdply(params, simulation, .progress="text")
+bare <- simulation(0, 50)
 
-peak <- subset(all, field == max(field))
+peak <- function(d){
+peak <- subset(d, field == max(field))
 peakx <- peak$x /1000
 peakl <- round(peakx,2)
 peaky <- peak$field
+data.frame(peakx=peakx, peakl=peakl, peaky=peaky)
+}
 
-p <- ggplot(all, aes(x/1000, field, group=w0, colour=factor(w0)))+
+ann <- ddply(all, "d", peak)
+
+p <- ggplot(all, aes(x/1000, field))+ facet_grid(d~., scales="free")+
   geom_line()  +
+  geom_line(data=bare, linetype="dotted") +
   geom_vline(aes(x=0,y=NULL),lty=2) +
-  annotate("text", label=peakl, y=peaky, x=peakx, hjust=0, vjust=0, fontface="italic") +
+  geom_blank(data=ann, aes(y=peaky*1.1, x=peakx)) +
+  geom_text(data=ann, aes(label=peakl, y=peaky, x=peakx), hjust=0, vjust=0, fontface="italic") +
+  scale_y_continuous(expand=c(0,0)) +
   labs(x=expression(x), y=expression("|E|"^2), 
        colour=expression(w[0]/mu*m)) +
   guides(colour="none") +
+  theme_minimal()+
   theme(panel.background=element_rect(fill=NA)) +
   theme()
 

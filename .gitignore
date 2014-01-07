@@ -8,6 +8,9 @@ inst/wiki/*.md
 inst/wiki/*.html
 inst/wiki/gaussian/
 inst/tmp/old/
+vignettes/gaussian/
+vignettes/figure/
+
 
 *.gz
 

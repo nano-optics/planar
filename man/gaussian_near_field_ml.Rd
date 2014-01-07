@@ -4,8 +4,8 @@
 \usage{
 gaussian_near_field_ml(xyz, wavelength = 632.8, alpha = 15 * pi/180,
   psi = 0, w0 = 10000, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1^2,
-  1^2), thickness = c(0, 50, 10, 0), maxEval = 3000, tol = 1e-04,
-  progress = FALSE, field = FALSE)
+  1^2), thickness = c(0, 50, 10, 0), maxEval = 3000, reqAbsError = 0,
+  tol = 1e-04, progress = FALSE, field = FALSE)
 }
 \arguments{
   \item{xyz}{position matrix}
@@ -23,6 +23,8 @@ gaussian_near_field_ml(xyz, wavelength = 632.8, alpha = 15 * pi/180,
   \item{thickness}{thickness corresponding to each medium}
 
   \item{maxEval}{passed to cubature}
+
+  \item{reqAbsError}{passed to cubature}
 
   \item{tol}{passed to cubature}
 

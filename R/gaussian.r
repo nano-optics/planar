@@ -35,6 +35,7 @@
 ##' @param epsilon vector of permittivities
 ##' @param thickness thickness corresponding to each medium
 ##' @param maxEval passed to adaptIntegrate
+##' @param reqAbsError passed to cubature
 ##' @param tol passed to adaptIntegrate
 ##' @param progress logical: display progress bar
 ##' @param field logical: return the electric field (complex vector), or modulus squared
@@ -45,12 +46,12 @@
 gaussian_near_field_layer <- function(xyz, wavelength=500, alpha = 15*pi/180, psi=0, 
                            w0=1e4, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1.0^2),
                            thickness = c(0, 50, 0),
-                           maxEval = 3000, tol=1e-04, 
+                           maxEval = 3000, reqAbsError=0.0, tol=1e-04, 
                            progress = FALSE, field=FALSE){
   
   k0 <- 2*pi/wavelength
   E <- gaussian$field_gb_layer(xyz, k0, psi, alpha, w0, epsilon, thickness,
-                          as.integer(maxEval), tol, progress)
+                          as.integer(maxEval), as.double(reqAbsError), tol, progress)
   
   if(field) return(E)
   
@@ -72,6 +73,7 @@ gaussian_near_field_layer <- function(xyz, wavelength=500, alpha = 15*pi/180, ps
 ##' @param epsilon vector of permittivities
 ##' @param thickness thickness corresponding to each medium
 ##' @param maxEval passed to cubature
+##' @param reqAbsError passed to cubature
 ##' @param tol passed to cubature
 ##' @param progress logical display progress bar
 ##' @param field logical: return the electric field (complex vector), or modulus squared
@@ -82,11 +84,11 @@ gaussian_near_field_layer <- function(xyz, wavelength=500, alpha = 15*pi/180, ps
 gaussian_near_field_ml <- function(xyz, wavelength=632.8, alpha = 15*pi/180, psi=0, 
                                  w0=1e4, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1.0^2, 1.0^2),
                                  thickness = c(0, 50, 10, 0),
-                                 maxEval = 3000, tol=1e-04, progress=FALSE, field=FALSE){
+                                 maxEval = 3000, reqAbsError = 0.0, tol=1e-04, progress=FALSE, field=FALSE){
   
   k0 <- 2*pi/wavelength
   E <- gaussian$field_gb_ml(xyz, k0, psi, alpha, w0, epsilon, thickness,
-                         as.integer(maxEval), tol, progress)
+                         as.integer(maxEval), as.double(reqAbsError), tol, progress)
 
   if(field) return(E)
   

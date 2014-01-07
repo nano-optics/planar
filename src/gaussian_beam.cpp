@@ -434,7 +434,7 @@ int fwrap2(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *f
 arma::cx_mat field_gb_layer(const mat& r2, const double k0, 
 		      const double psi, const double alpha, const double w0, 
 		      const cx_vec& epsilon, const vec& thickness, 
-		      const int maxEval, const double tol, bool progress)
+		      const int maxEval, const double reqAbsError, const double tol, bool progress)
   {
 
     const int ndim = 2;
@@ -475,7 +475,7 @@ arma::cx_mat field_gb_layer(const mat& r2, const double k0,
    /*               error_norm norm, */
    /*               double *val, double *err); */
 
-      hcubature(fdim, fwrap, &params, ndim, xmin, xmax, maxEval, 0, tol, ERROR_PAIRED, integral_pt, error_pt);
+      hcubature(fdim, fwrap, &params, ndim, xmin, xmax, maxEval, reqAbsError, tol, ERROR_PAIRED, integral_pt, error_pt);
       result(0,ii) = cx_double(tmp(0), tmp(1));
       result(1,ii) = cx_double(tmp(2), tmp(3));
       result(2,ii) = cx_double(tmp(4), tmp(5));
@@ -492,7 +492,7 @@ arma::cx_mat field_gb_layer(const mat& r2, const double k0,
 arma::cx_mat field_gb_ml(const mat& r2, const double k0, 
 		      const double psi, const double alpha, const double w0, 
 		      const cx_vec& epsilon, const vec& thickness, 
-		      const int maxEval, const double tol, bool progress)
+		      const int maxEval, const double reqAbsError, const double tol, bool progress)
   {
 
     const int ndim = 2;
@@ -533,7 +533,7 @@ arma::cx_mat field_gb_ml(const mat& r2, const double k0,
    /*               error_norm norm, */
    /*               double *val, double *err); */
 
-      hcubature(fdim, fwrap2, &params, ndim, xmin, xmax, maxEval, 0, tol, ERROR_PAIRED, integral_pt, error_pt);
+      hcubature(fdim, fwrap2, &params, ndim, xmin, xmax, maxEval, reqAbsError, tol, ERROR_PAIRED, integral_pt, error_pt);
       result(0,ii) = cx_double(tmp(0), tmp(1));
       result(1,ii) = cx_double(tmp(2), tmp(3));
       result(2,ii) = cx_double(tmp(4), tmp(5));

@@ -11,33 +11,28 @@ Using the angular spectrum decomposition of a gaussian beam in a bundle of plane
 ```{r setup, results='hide', echo=FALSE}
 ```
 
+First, we model the structure with plane-wave illumination, and find the angle corresponding to maximum field enhancement (coupling to SPPs in the Kretschmann configuration).
+
+```{r pw}
+```
 ## Depth profile
 
 ```{r depth}
 ```
-We observe that the field decays exponentially away from the interface with the same characteristic distance across the beam profile.
+We observe that the field decays exponentially away from the gold/dielectric interface ($z>50$nm) with the same characteristic distance across the beam profile. The discontinuity at $z=100$nm occurs because of the transition between two dielectrics with slightly different refractive index (1.1 and 1.0, respectively).
 
 ## Coupling to SPPs
 
-The detrimental effect of the beam size on the field enhancement can be quite dramatic, as soon as the spread of incident angles causes the coupling to SPPs to deteriorate. Here we simulate the LFIEF for silver, with a beam waist varying from 1mm down to 1 micron.
+The detrimental effect of the beam size on the field enhancement can be quite dramatic, as soon as the spread of incident angles causes the coupling to SPPs to deteriorate. Here we simulate the LFIEF for silver, with a beam waist varying from 1mm down to 2 microns.
 
 ```{r waist}
 ```
 
-## Beam shift
-Under total-internal reflection, the beam undergoes a spatial displacement known as Goos-Hanshen shift. The centre of the beam is displaced from the origin. With the metal layer, we can also excite SPPs which will propagate along the interface as far as tens of microns, depending on the losses.
-
-```{r GH}
-```
-
 ## 2D map
 
-We can calculate the field at a grid of points in 2D or 3D. Here is the result for a slice at $z=10$nm.
+We can calculate the field at a grid of points in 2D or 3D. Here is the result for a slice at $z=51$nm, for a beam waist of 2 microns (poor coupling).
 
 ```{r map}
-```
-
-```{r volume, rgl=TRUE}
 ```
 
 

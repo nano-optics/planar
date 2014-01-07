@@ -15,7 +15,7 @@ We consider a planar interface, possibly with multiple layers, illuminated by a 
 
 ![Illustration of the different reference frames used in the derivation. (a) The central ray of the gaussian beam makes an angle $\alpha$ with the normal to the interface. (b) The polarisation is described by the angle $\Psi$ between the electric field and the $x_1$ axis; values of $\Psi=0,90$ correspond to $p-$ and $s-$ polarisations, respectively. (c) A rotation of angle $\delta$ brings the frame of reference $F_2'$ to coincide with the plane of incidence of a given plane wave.](frames.png)
 
-Following Novotny, we start with the angular spectrum representation of the incident beam with wavevector $\mathbf{k}_i$. In a frame $F_1$ attached to the central ray as depicted in Fig.~1, the electric field at a point $\mathbf{r}_1$, is written as a collection of plane waves (Novotny Eq. 3.9 p. 47, Eq. 3.27, p.54),
+Following Novotny, we start with the angular spectrum representation of the incident beam with wavevector $\mathbf{k}_i$. In a frame $F_1$ attached to the central ray as depicted in Fig.~1, the electric field at a point $\mathbf{r}_1$, is expanded as (Novotny Eq. 3.9 p. 47, Eq. 3.27, p.54),
 $$
 \mathbf{E}_1(\mathbf{r}_1) = \iint a(k_{i1x},k_{i1y}) \exp\left(i \mathbf{k}_{i1} \cdot \mathbf{r}_1 \right)\mathbf{\hat e}_1(\mathbf{r}_1,\mathbf{k}_{i1})\mathrm{d} k_{i1x}\mathrm{d} k_{i1y},
 $$
@@ -23,9 +23,9 @@ where
 $$
 a(\mathbf{k}_1) = \frac{w_0^2}{4\pi} e^{ -\frac{w_0^2}{4}(k_{1x}^2 + k_{1y}^2)}
 $$
-describes the gaussian field profile with waist $w_0$, and $\mathbf{\hat e}_1 = \left(\cos \psi ; \sin \psi ; 0\right)^t$ keeps track of the electric field direction. Note that for a focused beam, the electric field direction would not be constant (see e.g Eq.~3 of Burghardt et al.), and the angular spectrum decomposition would contain a factor $k/k_z$ (close to 1 in the paraxial approximation).
+describes the gaussian field profile with waist $w_0$, and $\mathbf{\hat e}_1 = \left(\cos \psi ; \sin \psi ; 0\right)^t$ describes the electric field direction. Note that for a focused beam, the electric field direction would not be constant (see e.g Eq.~3 of Burghardt et al.), and the angular spectrum decomposition would contain a factor $k/k_z$ (close to 1 in the paraxial approximation).
 
-### Reference frame
+### Rotation of reference frames
 
 The transmitted electric field should be expressed in a reference frame attached to the planar interface (independent of the incident angle), we thus define a rotation matrix around the axis $y_1$.
 $$
@@ -69,10 +69,12 @@ t^s E_{2'y}\\
 $$
 The wave vector of the transmitted, potentially evanescent plane wave is given by $\mathbf{k}_{o2'}  = \left(k_{i2'x}, k_{i2'y}, \sqrt{k_o^2 - (k_{i2'x}^2+k_{i2'y}^2)}\right)$.
 
-The electric field is finally transformed back into the reference frame $F_{2}$ by a rotation of $R_z(-\delta)$, before the integration is performed, in polar coordinates, 
+The electric field is finally transformed back into the reference frame $F_{2}$ by a rotation of $R_z(-\delta)$. 
+
+The integration over the distribution of incident plane waves is performed in polar coordinates, 
 
 $$
-\mathbf{E}_{o2}(\mathbf{r}_2) = \int_0^{2\pi} \int_0^1 a(\rho,\theta) \mathbf{E}_{o2} (\mathbf{r}_{2}) \rho \mathrm{d} \rho \mathrm{d} \theta,
+\mathbf{E}_{o2}(\mathbf{r}_2) = \int_0^{2\pi} \int_0^1 a(\rho,\theta) \mathbf{E}_{o2} (\mathbf{r}_{2}, \rho, \theta) \rho k_i^2 \mathrm{d}\rho \mathrm{d} \theta,
 $$
 
 with 
@@ -83,7 +85,7 @@ k_{ix1} &=k_i \rho\cos\theta\\
 k_{iy1} &=k_i \rho\sin\theta\\
 \end{aligned}\right..
 $$
-In practice, and to reduce the computation time, the range of integration for $\rho$ is restricted to $[0,  6/(k_i w_0)]$, as the gaussian weight of the integrand is reduced to a factor $\exp(-9)~10^{-4}$.
+In practice, and to reduce the computation time, the range of integration for $\rho$ is restricted to $[0,  6/(k_i w_0)]$; this cutoff value for $\rho$ was chosen such that the corresponding weight factor $e^{ -\frac{w_0^2}{4}k_i^2\rho^2}$ in the integrand is reduced by a factor $\exp(-3^2)\sim 10^{-4}$  compared to the central ray.
 
 ### Numerical implementation and code considerations
 
@@ -118,13 +120,13 @@ cx_mat field_gb_layer(const mat& r2,
                       bool progress)
 ```
 
-returning a $N\times 3$ complex matrix of electric fields. If points in r2 lie before the interface (negative z), the electric field is calculated as the sum of the reflected and incident fields. It should be noted, however, that points lying inside the multilayer structure ($0<z<d_{\mathrm{max}}$) will not return the correct electric field, which cannot be (easily) inferred from the Fresnel coefficients alone. To compute the electric field at every point in space, a transfer matrix method can be used instead. This was implemented in the functions `integrand_gb_ml` and `field_gb_ml`, calling `multilayer_field` for the transfer matrix calculation.
+returning a $N\times 3$ complex matrix of electric fields. If points in r2 lie before the interface (negative z), the electric field is calculated as the sum of the reflected and incident fields. It should be noted, however, that points lying inside the multilayer structure ($0<z<d_{\mathrm{max}}$) will not return the correct electric field, which cannot be (easily) inferred from the Fresnel coefficients alone. To compute the electric field at every point in space, a transfer matrix method can be used instead. This was implemented in the functions `integrand_gb_ml` and `field_gb_ml`, calling `multilayer_field` for the transfer matrix calculation, at the expense of a computional time ($\sim 1.5$ times slower).
 
 ### Validation of the results
 
 Surprisingly few results are available in the literature. We can first check that the limit of large beam waist agrees with the simpler case of plane-wave illumination.
 
-```{r pw, message=FALSE, echo=FALSE}
+```{r pw, message=FALSE, echo=FALSE, fig.cap="Evolution of the near-field profile as a function of beam waist. The electric field is calculated at a fixed distance of 1nm from the metal surface. The (average) incident angle is kept constant, corresponding to the condition of optimum coupling for plane-wave illumination."}
 library(planar)
 library(ggplot2)
 library(plyr)
@@ -174,7 +176,7 @@ ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
 
 A similar calculation was also performed by Weeber et al. (Phys Rev B 83, 115433 (2011)), though they used a simplified 1D parametrisation of the gaussian beam, thus neglecting saggital ("off-axis") rays. Because SPPs are only excited with TM-polarised light, however, their influence on the results is minimal. Below we reproduce the beam-shift discussed in their work.
 
-```{r weeber, echo=FALSE}
+```{r weeber, echo=FALSE, fig.cap="Simulation of the electric field in the Kretschmann-Raether configuration. A gold layer (n=0.180 + 5.12i) surrounded by glass (n=1.52) and air is illuminated with TM-polarised light from the glass side. The electric field is calculated as a function of position along the interface (x) at a distance of 50nm (top panel) and 100nm (bottom panel) from the interface. The dotted curves correspond to the same simulation without a gold film."}
 library(planar)
 library(plyr)
 library(ggplot2)

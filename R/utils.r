@@ -1,17 +1,60 @@
+test_complex <- function (x) any(Im(x) != 0)
 
-##' invert the description of a multilayer to simulate the opposite direction of incidence
+is.metal <- function(x){
+  if(is.character(x)) return(TRUE)
+  Im(x) != 0
+}
+
+order_metal <- function(x){
+  order(unlist(lapply(x, function(m) ifelse(is.character(m), m, mean(m)))))
+}
+
+##' epsilon_label
 ##'
-##' inverts list of epsilon and thickness of layers
-##' @title invert_stack
-##' @param p list
-##' @return list
+##' characterise the layers of a structure with unique labels for metals and dielectrics
+##' @title epsilon_label
+##' @param epsilon list of real or complex values
+##' @param names optional unique character names in order of appearance
+##' @return factor
 ##' @export
-##' @family helping_functions
-##' @author Baptiste Auguie
-invert_stack <- function(p){
-  p[["epsilon"]] <- rev(p[["epsilon"]])
-  p[["thickness"]] <- rev(p[["thickness"]])
-  p
+##' @family user_level conversion utility
+##' @author baptiste Auguie
+epsilon_label <- function(epsilon = list(3.5, 1, 3, 1, "epsAu", 3, 3.5),
+                          names=NULL){
+  test_metal <- sapply(epsilon, is.metal)
+  metals <- unique(epsilon[test_metal])
+  dielectrics <- unique(epsilon[!test_metal])
+  
+  if(length(dielectrics)){
+    sort_d <- order(unlist(lapply(dielectrics, mean)))
+    dielectrics <- dielectrics[sort_d]
+    
+    dnames <- paste0("n", seq_along(dielectrics))[match(epsilon, 
+                                                        dielectrics)]
+  } else dnames <- rep(NA, length(epsilon))
+  
+  if(length(metals)){
+    sort_m <- order_metal(metals)
+    metals <- metals[sort_m]
+    
+    mnames <- paste0("metal", seq_along(metals))[match(epsilon, 
+                                                       metals)]
+  } else mnames <- c()
+  
+  f <- ifelse(is.na(dnames), mnames, dnames)
+  uf <- unique(f)
+  if(!is.null(names) && length(names) == length(uf))
+    return(factor(f, levels=uf, labels=names))
+  
+  factor(f, levels=uf)
+}
+
+epsilon_dispersion <- function(epsilon, wavelength=seq(400, 1000)){
+  dispersive <- sapply(epsilon, is.character)
+  if(!any(dispersive)) return(epsilon)
+  replacement <- lapply(epsilon[dispersive], do.call, list(wavelength))
+  epsilon[dispersive] <- lapply(replacement, "[[", "epsilon")
+  epsilon
 }
 
 ##' relabel factors
@@ -74,6 +117,7 @@ Curry <- function (FUN, ...)
 ##' @author Baptiste Auguie
 raman_shift <- function(wavelength = 632.8, shift = 520, stokes = TRUE){
 
-  if(stokes) 1 / (1/wavelength - shift * 1e-7) else 1 / (1/wavelength + shift * 1e-7)
+  if(stokes) 1 / (1/wavelength - shift * 1e-7) else 
+    1 / (1/wavelength + shift * 1e-7)
 
 }

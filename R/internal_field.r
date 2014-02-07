@@ -1,30 +1,3 @@
-
-test_complex <- function(x){
-  !isTRUE(all.equal(Im(x), 0))
-}
-
-##' epsilon_medium
-##'
-##' characterise the layers of a structure with unique labels for metals and dielectrics
-##' @title epsilon_medium
-##' @param epsilon list of real or complex values
-##' @return factor
-##' @export
-##' @family user_level conversion utility
-##' @author baptiste Auguie
-epsilon_medium <- function(epsilon = list(3.5, 1, 3, 1, 12+1i, 3, 3.5)){
-  
-  is.metal <- sapply(epsilon, test_complex)
-  metals <- unlist(unique(epsilon[is.metal]))
-  dielectrics <- sort(unlist(unique(epsilon[!is.metal])))
-  
-  dnames <- paste0("n", seq_along(dielectrics))[match(epsilon, dielectrics)]
-  mnames <- paste0("metal", seq_along(metals))[match(epsilon, metals)]
-  
-  factor(ifelse(is.na(dnames), mnames, dnames))
-  
-}
-
 ##' Local field intensity enhancement factors in a multilayer
 ##'
 ##' returns the LFIEFs as a function of distance inside and outside of the structure
@@ -77,7 +50,7 @@ lfief <- function(wavelength=500, angle=0, polarisation='p',
   m <- melt(all, id=1)
   
   ll = as.list(unique(m$L1))
-  names(ll) = epsilon_medium(epsilon)
+  names(ll) = epsilon_label(epsilon)
   m$material <- factor(m$L1)
   levels(m$material) = ll
   
@@ -127,7 +100,7 @@ internal_field <- function(wavelength=500, angle=0, psi=0,
     return(E)
   
   ll = as.list(unique(id))
-  names(ll) = epsilon_medium(epsilon)
+  names(ll) = epsilon_label(epsilon)
   material <- factor(id)
   levels(material) = ll
   

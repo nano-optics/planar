@@ -1,17 +1,20 @@
-\name{epsilon_medium}
-\alias{epsilon_medium}
-\title{epsilon_medium}
+\name{epsilon_label}
+\alias{epsilon_label}
+\title{epsilon_label}
 \usage{
-epsilon_medium(epsilon = list(3.5, 1, 3, 1, 12 + (0+1i), 3, 3.5))
+epsilon_label(epsilon = list(3.5, 1, 3, 1, "epsAu", 3, 3.5), names = NULL)
 }
 \arguments{
   \item{epsilon}{list of real or complex values}
+
+  \item{names}{optional unique character names in order of
+  appearance}
 }
 \value{
 factor
 }
 \description{
-epsilon_medium
+epsilon_label
 }
 \details{
 characterise the layers of a structure with unique labels

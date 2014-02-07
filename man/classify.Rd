@@ -28,7 +28,6 @@ Baptiste Auguie
 }
 \seealso{
 Other helping_functions: \code{\link{internal_field}},
-\code{\link{invert_stack}}, \code{\link{lfief}},
-\code{\link{modify_levels}}
+\code{\link{lfief}}, \code{\link{modify_levels}}
 }
 

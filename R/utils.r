@@ -49,6 +49,17 @@ epsilon_label <- function(epsilon = list(3.5, 1, 3, 1, "epsAu", 3, 3.5),
   factor(f, levels=uf)
 }
 
+
+##' epsilon_dispersion
+##'
+##' apply a function to a range of wavelength and return dielectric function
+##' @title epsilon_dispersion
+##' @param epsilon list of real or complex values
+##' @param wavelength numeric vector
+##' @return list
+##' @export
+##' @family utility
+##' @author baptiste Auguie
 epsilon_dispersion <- function(epsilon, wavelength=seq(400, 1000)){
   dispersive <- sapply(epsilon, is.character)
   if(!any(dispersive)) return(epsilon)

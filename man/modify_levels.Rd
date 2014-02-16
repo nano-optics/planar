@@ -19,7 +19,8 @@ relabel factors
 Baptiste Auguie
 }
 \seealso{
-Other helping_functions: \code{\link{classify}},
-\code{\link{internal_field}}, \code{\link{lfief}}
+Other helping_functions: \code{\link{classify}};
+\code{\link{field_profile}}, \code{\link{lfief}};
+\code{\link{internal_field}}; \code{\link{invert_stack}}
 }
 

@@ -1,11 +1,11 @@
-\name{tamm_stack}
-\alias{tamm_stack}
-\title{tamm_stack}
+\name{tamm_stack_ir}
+\alias{tamm_stack_ir}
+\title{tamm_stack_ir}
 \usage{
-tamm_stack(lambda0 = 630, n1 = 1.28, n2 = 1.72, d1 = lambda0/4/n1,
+tamm_stack_ir(lambda0 = 950, n1 = 3, n2 = 3.7, d1 = lambda0/4/n1,
   d2 = lambda0/4/n2, N = 2 * pairs, pairs = 4, dx1 = 0, dx2 = 0,
-  dm = 50, metal = "epsAu", position = c("after", "before"),
-  incidence = c("left", "right"), nleft = 1.5, nright = 1, ...)
+  dm = 50, metal = "epsAu", position = "after", incidence = "left",
+  nleft = n2, nright = 1, ...)
 }
 \arguments{
   \item{lambda0}{central wavelength of the stopband}
@@ -57,6 +57,6 @@ baptiste Auguie
 \seealso{
 Other stack user_level: \code{\link{dbr_stack}};
 \code{\link{embed_stack}}; \code{\link{layer_stack}};
-\code{\link{tamm_stack_ir}}
+\code{\link{tamm_stack}}
 }
 

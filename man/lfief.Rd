@@ -52,7 +52,8 @@ Eric C. Le Ru and Pablo G. Etchegoin, published by
 Elsevier, Amsterdam (2009).
 }
 \seealso{
-Other helping_functions: \code{\link{classify}},
-\code{\link{internal_field}}, \code{\link{modify_levels}}
+Other helping_functions: \code{\link{classify}};
+\code{\link{internal_field}}; \code{\link{invert_stack}};
+\code{\link{modify_levels}}
 }
 

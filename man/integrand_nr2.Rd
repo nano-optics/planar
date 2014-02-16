@@ -31,8 +31,8 @@ interface. Transformed part I2 from u=0 to ucut
 baptiste Auguie
 }
 \seealso{
-Other integrands dipole: \code{\link{integrand_mtot}},
-\code{\link{integrand_nr1}}, \code{\link{integrand_nr3}},
+Other integrands dipole: \code{\link{integrand_mtot}};
+\code{\link{integrand_nr1}}; \code{\link{integrand_nr3}};
 \code{\link{integrand_rad}}
 }
 

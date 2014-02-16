@@ -2,11 +2,11 @@
 \alias{layer_stack}
 \title{layer_stack}
 \usage{
-layer_stack(epsilon = list("epsAu"), thickness = 50, ...)
+layer_stack(epsilon = "epsAu", thickness = 50, ...)
 }
 \arguments{
-  \item{epsilon}{list of dielectric function (numeric,
-  character, or complex)}
+  \item{epsilondielectric}{function (numeric, character, or
+  complex)}
 
   \item{thickness}{layer thickness in nm}
 
@@ -25,7 +25,8 @@ returns a stack describing a single layer
 baptiste Auguie
 }
 \seealso{
-Other stack user_level: \code{\link{dbr_stack}},
-\code{\link{embed_stack}}, \code{\link{tamm_stack}}
+Other stack user_level: \code{\link{dbr_stack}};
+\code{\link{embed_stack}}; \code{\link{tamm_stack_ir}};
+\code{\link{tamm_stack}}
 }
 

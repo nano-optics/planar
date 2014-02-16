@@ -30,8 +30,8 @@ multilayer interface.
 baptiste Auguie
 }
 \seealso{
-Other integrands dipole: \code{\link{integrand_mtot}},
-\code{\link{integrand_nr1}}, \code{\link{integrand_nr2}},
+Other integrands dipole: \code{\link{integrand_mtot}};
+\code{\link{integrand_nr1}}; \code{\link{integrand_nr2}};
 \code{\link{integrand_nr3}}
 }
 

@@ -26,8 +26,8 @@ Integrand without transformation of variables
 baptiste Auguie
 }
 \seealso{
-Other integrands dipole: \code{\link{integrand_nr1}},
-\code{\link{integrand_nr2}}, \code{\link{integrand_nr3}},
+Other integrands dipole: \code{\link{integrand_nr1}};
+\code{\link{integrand_nr2}}; \code{\link{integrand_nr3}};
 \code{\link{integrand_rad}}
 }
 

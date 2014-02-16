@@ -35,7 +35,8 @@ periodic structure of dielectric layers
 baptiste Auguie
 }
 \seealso{
-Other stack user_level: \code{\link{embed_stack}},
-\code{\link{layer_stack}}, \code{\link{tamm_stack}}
+Other stack user_level: \code{\link{embed_stack}};
+\code{\link{layer_stack}}; \code{\link{tamm_stack_ir}};
+\code{\link{tamm_stack}}
 }
 

@@ -1,3 +1,18 @@
+##' invert the description of a multilayer to simulate the opposite direction of incidence
+##'
+##' inverts list of epsilon and thickness of layers
+##' @title invert_stack
+##' @param p list
+##' @return list
+##' @export
+##' @family helping_functions
+##' @author Baptiste Auguie
+invert_stack <- function(p){
+  p[["epsilon"]] <- rev(p[["epsilon"]])
+  p[["thickness"]] <- rev(p[["thickness"]])
+  p
+}
+
 ##' Multilayer Fresnel coefficients
 ##'
 ##' solves the EM problem of a multilayered interface
@@ -353,5 +368,96 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
        angle=angle, q=q, 
        reflection=reflection, transmission=transmission,
        R=R, T=T, A=A)
+}
+
+##' Multilayer Fresnel coefficients
+##'
+##' solves the EM problem of a multilayered interface
+##' @title multilayerfull
+##' @export
+##' @param wavelength [vector] wavelength in nm
+##' @param k0 [vector] wavevector in nm^-1
+##' @param angle [vector] incident angles in radians
+##' @param q [vector] normalised incident in-plane wavevector
+##' @param epsilon list of N+2 dielectric functions, each of length 1 or length(wavelength)
+##' @param thickness vector of N+2 layer thicknesses, first and last are dummy
+##' @param psi [numeric] polarisation angle
+##' @param z [vector] positions to calculate the electric field intensity
+##' @param ... unused
+##' @return fresnel coefficients and field profiles
+##' @author baptiste Auguie
+multilayerfull <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
+                          angle = asin(q), q = sin(angle),
+                          epsilon = list(incident=1.5^2, 1.33),
+                          thickness = c(0, 0),
+                          psi = 0, z=0, ...){
+  
+  
+  kx <- outer(k0*sqrt(epsilon[[1]]), q) # kx = q*k0
+  epsilon = do.call(cbind, epsilon)
+  
+  Nlayer <- length(thickness)
+  Nlambda <- length(k0)
+  Nq <- length(q)
+  
+  ## checks
+  stopifnot(thickness[1]==0L,
+            thickness[Nlayer]==0L)
+  
+  stopifnot(Nlayer == ncol(epsilon),
+            nrow(epsilon) == length(k0),
+            nrow(kx) == length(k0),
+            ncol(kx) == length(q))
+  
+  ## call the C++ function
+  res <- planar$multilayerfull(as.vector(k0), 
+                               as.matrix(kx), 
+                               as.matrix(epsilon),
+                               as.vector(thickness), 
+                               as.vector(z),
+                               as.double(psi))
+  
+  ts <- drop(res$ts)
+  rs <- drop(res$rs)  
+  tp <- drop(res$tp)
+  rp <- drop(res$rp)
+  I <- drop(res$I)
+  
+  ## T is nt*cos(Ot)*|Et|^2 / ni*cos(Oi)*|Ei|^2
+  ## for s-pol, |Et|^2 / |Ei|^2 = |ts|^2, 
+  ## hence T = nt/ni * cos(Ot)/cos(Oi) * |ts|^2
+  ## for p-pol, |Et|^2 / |Ei|^2 = (ni/nt)^2 * |tp|^2, 
+  ## hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
+  
+  # ratio of refractive indices
+  index.ratio <- matrix(Re(sqrt(epsilon[,1])/sqrt(epsilon[,Nlayer])), 
+                        nrow=Nlambda, ncol=Nq)
+  # ratio of cosines
+  qq <- matrix(q, nrow=Nlambda, ncol=Nq, byrow=TRUE)
+  m <- Re(sqrt(1 - (index.ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
+  
+    rhop <- index.ratio
+    rhos <- 1 / rhop
+  
+  dim(ts) <- dim(tp) <- dim(m) # case 1-dims were dropped
+  Rp <- Mod(rp)^2
+  Rs <- Mod(rs)^2
+  Tp <- rhop * m * Mod(tp)^2
+  Ts <- rhos * m * Mod(ts)^2
+  Tp <- drop(Tp)
+  tp <- drop(tp)
+  Ts <- drop(Ts)
+  ts <- drop(ts)
+  
+  Ap <- 1 - Rp - Tp
+  As <- 1 - Rs - Ts
+  
+  list(wavelength=wavelength, k0 = k0, 
+       angle=angle, q=q, 
+       rs=rs, ts=ts,
+       rp=rp, tp=tp,
+       Rp=Rp, Tp=Tp, Ap=Ap,
+       Rs=Rs, Ts=Ts, As=As,  
+       I = I)
 }
 

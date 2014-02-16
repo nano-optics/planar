@@ -430,34 +430,29 @@ multilayerfull <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   ## hence T = ni/nt * cos(Ot)/cos(Oi) * |tp|^2
   
   # ratio of refractive indices
-  index.ratio <- matrix(Re(sqrt(epsilon[,1])/sqrt(epsilon[,Nlayer])), 
+  ratio <- matrix(Re(sqrt(epsilon[,1])/sqrt(epsilon[,Nlayer])), 
                         nrow=Nlambda, ncol=Nq)
   # ratio of cosines
   qq <- matrix(q, nrow=Nlambda, ncol=Nq, byrow=TRUE)
-  m <- Re(sqrt(1 - (index.ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
+  m <- Re(sqrt(1 - (ratio * qq)^2 + 0i)/sqrt(1 - qq^2 + 0i))
   
-    rhop <- index.ratio
-    rhos <- 1 / rhop
+  rhop <- sqrt(ratio)
+  rhos <- 1 / rhop
   
   dim(ts) <- dim(tp) <- dim(m) # case 1-dims were dropped
-  Rp <- Mod(rp)^2
-  Rs <- Mod(rs)^2
-  Tp <- rhop * m * Mod(tp)^2
-  Ts <- rhos * m * Mod(ts)^2
-  Tp <- drop(Tp)
+  R <- Mod(cos(psi)*rp + sin(psi)*rs)^2
+  T <- m * Mod(cos(psi)*rhop*tp + sin(psi)*rhos*ts)^2
+  T <- drop(T)
   tp <- drop(tp)
-  Ts <- drop(Ts)
   ts <- drop(ts)
   
-  Ap <- 1 - Rp - Tp
-  As <- 1 - Rs - Ts
+  A <- 1 - R - T
   
   list(wavelength=wavelength, k0 = k0, 
        angle=angle, q=q, 
        rs=rs, ts=ts,
        rp=rp, tp=tp,
-       Rp=Rp, Tp=Tp, Ap=Ap,
-       Rs=Rs, Ts=Ts, As=As,  
+       R=R, T=T, A=A,
        I = I)
 }
 

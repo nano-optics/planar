@@ -34,5 +34,5 @@ Suggests:
     lattice,
     knitr,
     testthat
-RcppModules: planar, gaussian
+RcppModules: planar, gaussian, collection
 Encoding: UTF-8

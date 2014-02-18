@@ -1,0 +1,45 @@
+\name{collection_ml}
+\alias{collection_ml}
+\title{collection_ml}
+\usage{
+collection_ml(xyz, wavelength = 632.8, omega = 15 * pi/180, psi = 0,
+  epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1^2, 1^2), thickness = c(0,
+  50, 10, 0), maxEval = 3000, reqAbsError = 0, tol = 1e-04,
+  progress = FALSE)
+}
+\arguments{
+  \item{xyz}{position matrix}
+
+  \item{wavelength}{wavelength}
+
+  \item{omega}{collection angle}
+
+  \item{psi}{polarisation angle}
+
+  \item{epsilon}{vector of permittivities}
+
+  \item{thickness}{thickness corresponding to each medium}
+
+  \item{maxEval}{passed to cubature}
+
+  \item{reqAbsError}{passed to cubature}
+
+  \item{tol}{passed to cubature}
+
+  \item{progress}{logical display progress bar}
+}
+\value{
+data.frame intensity at the x, y, z position
+}
+\description{
+Light intensity from the transmission of a bunch of plane
+waves at a planar interface
+}
+\details{
+Integration is performed over the solid angle defined by
+omega
+}
+\author{
+Baptiste Auguie
+}
+

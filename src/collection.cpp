@@ -164,9 +164,9 @@ arma::vec field_collection(const mat& r2, const double k0,
     const int fdim = 1;
     const int N = r2.n_rows;
     // initialise the vectors to store integration results
-    std::vector<double> integral(fdim);
+    double integral;
     std::vector<double> error(fdim);
-    double* integral_pt = &integral[0];
+    double* integral_pt = &integral;
     double* error_pt = &error[0];
   
     double xmin[2] = {omega[0],0}, xmax[2] = {omega[1],2*datum::pi};
@@ -180,7 +180,6 @@ arma::vec field_collection(const mat& r2, const double k0,
     vec result(N);
 
     // initialise an Armadillo vector to use external memory
-    vec tmp(integral_pt, fdim, false);
     int ii;
     for (ii=0; ii< N; ii++){
       if(progress){
@@ -194,8 +193,8 @@ arma::vec field_collection(const mat& r2, const double k0,
    /*               error_norm norm, */
    /*               double *val, double *err); */
 
-      hcubature(fdim, fwrapcoll, &params, ndim, xmin, xmax, maxEval, reqAbsError, tol, ERROR_PAIRED, integral_pt, error_pt);
-      result(ii) = tmp(0);
+      hcubature(fdim, fwrapcoll, &params, ndim, xmin, xmax, maxEval, reqAbsError, tol, ERROR_INDIVIDUAL, integral_pt, error_pt);
+      result(ii) = integral;
     }
 
     if(progress)
@@ -206,8 +205,9 @@ arma::vec field_collection(const mat& r2, const double k0,
 
 RCPP_MODULE(collection){
 
-  Rcpp::function( "field_collection", &field_collection,
+  Rcpp::function( "integrand_collection", &integrand_collection,
 		  "Integrand for the collection" ) ;
-
+  Rcpp::function( "field_collection", &field_collection,
+		  "Integral for the collection" ) ;
 
 }

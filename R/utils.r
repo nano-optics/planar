@@ -42,7 +42,7 @@ epsilon_label <- function(epsilon = list(3.5, 1, 3, 1, "epsAu", 3, 3.5),
   } else mnames <- c()
   
   f <- ifelse(is.na(dnames), mnames, dnames)
-  uf <- unique(f)
+  uf <- sort(unique(f))
   if(!is.null(names) && length(names) == length(uf))
     return(factor(f, levels=uf, labels=names))
   

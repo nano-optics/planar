@@ -13,21 +13,14 @@ vignettes/figure/
 
 
 *.gz
-
 *.out
-
 *.log
-
 *.aux
-
 *.tex
-
 *.Rproj
 
 
 inst/tmp/testdipole.r
-
 vignettes/gaussian.md
-
 vignettes/gaussian.html
 .Rproj.user

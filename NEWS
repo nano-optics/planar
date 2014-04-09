@@ -1,8 +1,12 @@
 planar 1.5.1
 
-USER VISIBLE CHANGES:
+NEW FEATURES
 
-* new function to calculate the near field under gaussian beam illumination
+* full field profile under gaussian beam illumination (reflection and transmission)
+
+* new functions multilayerfull and multilayer_field calculating internal field for a given incident field
+
+USER VISIBLE CHANGES:
 
 * slight changes to the interface of field_profile
 

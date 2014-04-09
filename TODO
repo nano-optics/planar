@@ -3,12 +3,6 @@ ENHANCEMENTS
 
 * calculate both s- and p-polarisation at once in recursive_fresnelcpp
 
-NEW FEATURES
-
-* full field profile under gaussian beam illumination (reflection and transmission)
-
-* C/armadillo interface to cubature for more efficient integration
-
 CLEANUP
 
 * tests using testthat

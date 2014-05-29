@@ -96,6 +96,7 @@ recursive_fresnel <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   
   if(polarisation == "p"){
     rho <- index.ratio 
+    reflection <- -reflection # sign convention was for H
   } else {
     rho <- 1 / index.ratio
   }
@@ -181,6 +182,7 @@ recursive_fresnelcpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   
   if(polarisation == 0L){
     rho <- index.ratio
+    reflection <- -reflection # sign convention was for H
   } else {
     rho <- 1 / index.ratio
   }

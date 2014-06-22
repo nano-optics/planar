@@ -96,13 +96,18 @@ internal_field <- function(wavelength=500, angle=0, psi=0,
   d <- unlist(probes)
   E <- planar$multilayer_field(k0, k0*sin(angle)*n1, unlist(epsilon),  
                           thickness, d, psi)$E
-  if(field)
-    return(E)
   
   ll = as.list(unique(id))
   names(ll) = epsilon_label(epsilon)
   material <- factor(id)
   levels(material) = ll
   
-  data.frame(x = d, I = Re(colSums(E*Conj(E))), id=id, material=material)
+  if(field) {
+    result <- data.frame(x = d, Ex = E[1,], Ey=E[2,], Ez=E[3,], 
+                         id=id, material=material)
+  } else
+  {
+    result <- data.frame(x = d, I = Re(colSums(E*Conj(E))), id=id, material=material)
+  }
+  result
 }

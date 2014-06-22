@@ -62,7 +62,7 @@ epsilon_label <- function(epsilon = list(3.5, 1, 3, 1, "epsAu", 3, 3.5),
 ##' @author baptiste Auguie
 epsilon_dispersion <- function(epsilon, wavelength=seq(400, 1000)){
   dispersive <- sapply(epsilon, is.character)
-  if(!any(dispersive)) return(epsilon)
+  if(!any(dispersive)) return(as.list(epsilon))
   replacement <- lapply(epsilon[dispersive], do.call, list(wavelength))
   epsilon[dispersive] <- lapply(replacement, "[[", "epsilon")
   epsilon

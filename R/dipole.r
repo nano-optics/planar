@@ -32,7 +32,7 @@ integrand_rad <- function(d = 10, angle, wavelength,
   cost <- cos(angle)
   sint <- sin(angle)
   
-  rp <- recursive_fresnelcpp(wavelength=wavelength,
+  rp <- -1*recursive_fresnelcpp(wavelength=wavelength,
                            q = sint,
                            epsilon=epsilon,
                            thickness=thickness,
@@ -87,7 +87,7 @@ integrand_nr1 <- function(d=10, u, wavelength,
   Nlambda <- length(k0)
   Nq <- length(u)
   
-  rp <- recursive_fresnelcpp(wavelength=wavelength,
+  rp <- -1*recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 - u^2),
                            epsilon=epsilon,
                            thickness=thickness,
@@ -136,7 +136,7 @@ integrand_nr2 <- function(d=10, u, wavelength,
   Nlambda <- length(k0)
   Nq <- length(u)
   
-  rp <- recursive_fresnelcpp(wavelength=wavelength,
+  rp <- -1*recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 + u^2),
                            epsilon=epsilon,
                            thickness=thickness,
@@ -199,7 +199,7 @@ integrand_nr3 <- function(d=10, u, ucut, wavelength,
   Jac <-  matrix(1 / (1 - u)^2, Nlambda, Nq, byrow=TRUE)
   
   
-  rp <- recursive_fresnelcpp(wavelength=wavelength,
+  rp <- -1*recursive_fresnelcpp(wavelength=wavelength,
                            q = sqrt(1 + t^2),
                            epsilon=epsilon,
                            thickness=thickness,

@@ -49,7 +49,8 @@ distance <- function(d=1, material="silver", ...){
 
 
 ## ----simulation, message=TRUE, fig.width=10------------------------------
-params <- expand.grid(d=c(1,5,10), material=c("silver", "gold"), stringsAsFactors = FALSE)
+params <- expand.grid(d=c(1,5,10), material=c("silver", "gold"), 
+                      stringsAsFactors = FALSE)
 all <- mdply(params, distance)
 
 ggplot(all, aes(wavelength, value, colour=factor(d), linetype=orientation))+

@@ -4,6 +4,7 @@ Title: Multilayer optics
 LinkingTo: Rcpp, RcppArmadillo
 Type: Package
 URL: https://github.com/baptiste/planar
+DOI: http://dx.doi.org/10.5281/zenodo.11419
 LazyLoad: yes
 Authors@R: c(person("Baptiste", "Auguie", email = "baptiste.auguie@gmail.com",
     role = c("aut", "cre"), comment = "Some functions ported from the original
@@ -16,7 +17,7 @@ Description: Solves the electromagnetic problem of reflection and transmission
     computed are the decay rates and emission profile for a dipolar emitter
     near a multilayer structure.
 SystemRequirements: GNU make
-Version: 1.5.1
+Version: 1.5.2
 VignetteBuilder: knitr
 Depends:
     methods,

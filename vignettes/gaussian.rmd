@@ -5,9 +5,16 @@ Near-field profile under gaussian-beam illumination
 %\VignetteEngine{knitr::knitr}
 -->
 ```{r demo, message=FALSE, echo=FALSE}
-require(knitr)
+library(knitr)
+
 opts_chunk$set(cache=TRUE, cache.path="gaussian/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
+
+library(planar)
+library(ggplot2)
+library(grid)
+library(plyr)
+
 ```
 We consider a planar interface, possibly with multiple layers, illuminated by a gaussian beam from an incident medium ($i$). We seek to calculate the near-field profile in the outer medium ($o$).
 
@@ -127,11 +134,6 @@ returning a $N\times 3$ complex matrix of electric fields. If points in r2 lie b
 Surprisingly few results are available in the literature. We can first check that the limit of large beam waist agrees with the simpler case of plane-wave illumination.
 
 ```{r pw, message=FALSE, echo=FALSE, fig.cap="Evolution of the near-field profile as a function of beam waist. The electric field is calculated at a fixed distance of 1nm from the metal surface. The (average) incident angle is kept constant, corresponding to the condition of optimum coupling for plane-wave illumination."}
-library(planar)
-library(ggplot2)
-library(plyr)
-theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
-
 struct <- list(wavelength=632.8,
                thickness=c(0,50,0),
                epsilon=c(1.5^2, epsAu(632.8)$epsilon, 1.0^2))
@@ -177,9 +179,6 @@ ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
 A similar calculation was also performed by Weeber et al. (Phys Rev B 83, 115433 (2011)), though they used a simplified 1D parametrisation of the gaussian beam, thus neglecting saggital ("off-axis") rays. Because SPPs are only excited with TM-polarised light, however, their influence on the results is minimal. Below we reproduce the beam-shift discussed in their work.
 
 ```{r weeber, echo=FALSE, fig.cap="Simulation of the electric field in the Kretschmann-Raether configuration. A gold layer (n=0.180 + 5.12i) surrounded by glass (n=1.52) and air is illuminated with TM-polarised light from the glass side. The electric field is calculated as a function of position along the interface (x) at a distance of 50nm (top panel) and 100nm (bottom panel) from the interface. The dotted curves correspond to the same simulation without a gold film."}
-library(planar)
-library(plyr)
-library(ggplot2)
 
 simulation <- function(d, probe=50, w0=10e3) {
   

@@ -47,7 +47,8 @@ multilayer <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   epsilon = do.call(cbind, epsilon)
   ## case pure scalars
   if(nrow(epsilon) == 1L)
-    epsilon <- matrix(epsilon, nrow=length(k0), ncol=length(thickness), byrow=TRUE)
+    epsilon <- matrix(epsilon, nrow=length(k0), 
+                      ncol=length(thickness), byrow=TRUE)
   
   ## define constants
   Nlambda <- length(k0)
@@ -318,6 +319,10 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
   
   kx <- outer(k0*sqrt(epsilon[[1]]), q) # kx = q*k0
   epsilon = do.call(cbind, epsilon)
+  ## case pure scalars
+  if(nrow(epsilon) == 1L)
+    epsilon <- matrix(epsilon, nrow=length(k0), 
+                      ncol=length(thickness), byrow=TRUE)
   polarisation = if(polarisation == "p") 0L else 1L
   
   Nlayer <- length(thickness)

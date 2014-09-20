@@ -1,7 +1,7 @@
 library(planar)
 library(ggplot2)
 library(plyr)
-
+library(reshape2)
 reflection_cell_normal <- function(lambda = NULL, k0 = 2*pi/lambda,
                                    n = list(incident=1.33, 1.5),
                                    thickness = c(30, 50)){

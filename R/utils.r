@@ -56,14 +56,17 @@ epsilon_label <- function(epsilon = list(3.5, 1, 3, 1, "epsAu", 3, 3.5),
 ##' @title epsilon_dispersion
 ##' @param epsilon list of real or complex values
 ##' @param wavelength numeric vector
+##' @param envir environment to look for functions
 ##' @return list
 ##' @export
 ##' @family utility
 ##' @author baptiste Auguie
-epsilon_dispersion <- function(epsilon, wavelength=seq(400, 1000)){
+epsilon_dispersion <- function(epsilon, wavelength=seq(400, 1000),
+                               envir = parent.frame()){
   dispersive <- sapply(epsilon, is.character)
   if(!any(dispersive)) return(as.list(epsilon))
-  replacement <- lapply(epsilon[dispersive], do.call, list(wavelength))
+  replacement <- lapply(epsilon[dispersive], 
+                        do.call, list(wavelength), envir = envir)
   epsilon[dispersive] <- lapply(replacement, "[[", "epsilon")
   epsilon
 }

@@ -3,12 +3,15 @@
 \alias{epsilon_dispersion}
 \title{epsilon_dispersion}
 \usage{
-epsilon_dispersion(epsilon, wavelength = seq(400, 1000))
+epsilon_dispersion(epsilon, wavelength = seq(400, 1000),
+  envir = parent.frame())
 }
 \arguments{
   \item{epsilon}{list of real or complex values}
 
   \item{wavelength}{numeric vector}
+
+  \item{envir}{environment to look for functions}
 }
 \value{
 list

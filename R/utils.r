@@ -119,19 +119,4 @@ Curry <- function (FUN, ...)
     function(...) do.call(FUN, c(.orig, list(...)))
 }
 
-##' Raman shift
-##'
-##' Raman shift conversion to absolute wavelength
-##' @title raman_shift
-##' @export
-##' @param wavelength wavelength (nm)
-##' @param shift Raman shift (cm-1)
-##' @param stokes logical Stokes or Anti-Stokes
-##' @return wavelength of the Raman peak in nm
-##' @author Baptiste Auguie
-raman_shift <- function(wavelength = 632.8, shift = 520, stokes = TRUE){
 
-  if(stokes) 1 / (1/wavelength - shift * 1e-7) else 
-    1 / (1/wavelength + shift * 1e-7)
-
-}

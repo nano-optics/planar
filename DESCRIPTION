@@ -19,6 +19,7 @@ Description: Solves the electromagnetic problem of reflection and transmission
 SystemRequirements: GNU make
 Version: 1.5.2
 VignetteBuilder: knitr
+LazyData: true
 Depends:
     methods,
     dielectric

@@ -120,3 +120,21 @@ Curry <- function (FUN, ...)
 }
 
 
+##' raman_shift
+##'
+##' converts Raman shift to wavelength
+##' @title sort_factor
+##' @param laser 
+##' @param shift 
+##' @return matrix
+##' @export
+##' @author Baptiste Auguie
+raman_shift <- function(laser=c(514, 632.8), shift = c(520, 610)){
+  
+  res <- as.matrix(
+    vapply(laser, function(lambda) 1 / (1 / lambda - shift *1e-7 ), shift))
+  rownames(res) <- as.character(shift)
+  colnames(res) <- as.character(laser)
+  res
+  
+}

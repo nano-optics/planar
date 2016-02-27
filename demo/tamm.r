@@ -10,6 +10,12 @@ autoplot(dbr)
 # prettier palette
 palette(palette_tamm)
 
+scale_colour_discrete <- function(...) 
+  scale_colour_brewer(..., palette="Set1")
+
+scale_fill_discrete <- function(...) 
+  scale_fill_manual(..., values=palette())
+
 tamm <- tamm_stack_ir(pairs=13, dm=100)
 (p <- autoplot(tamm))
 

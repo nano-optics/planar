@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Decay rates of a dipole near a planar multilayer stack</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>Decay rates of a dipole near a planar multilayer stack</h1>
+
+<!-- 
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{decay_rates}
+-->
+
+<p>Following (Le Ru, Etchegoin, p. 571), and (Novotny, Hecht pp. 335&ndash;360), the enhancement factor for the total decay rate for a dipole perpendicular to the interface is</p>
+
+<p>\[
+  M^\perp_\text{tot} = 1 + \frac 3 2 \int_0^\infty \Re\left\{ \frac{q^3}{\sqrt{1 - q^2}} r^p (q) \exp\left(2 i k_1 d\sqrt{1 - q^2} \right)\right\}\text{d}q 
+\]</p>
+
+<p>The integrand diverges as \(q\to 1\), it is therefore advantageous to perform the substitution \(u:=\sqrt{1 - q^2}\). In order to maintain a real path of integration, the integral is first split into a radiative region (\(0\leq q\leq 1\), \(u:=\sqrt{1 - q^2}\geq 0\)), and an evanescent region (\(1\leq q\leq \infty\), \(-i u:=\sqrt{q^2 - 1}\geq 0\)). After some algebraic manipulation, we obtain,
+\[
+  M^\perp_\text{tot} = 1 + \frac 3 2 \left(I_1 + I_2\right)
+\]
+where
+\[
+  \begin{split}
+I_1 + I_2 =& \int_0^1 \left[1 - u^2\right]\cdot\Re\left\{ r^p (\sqrt{1 - u^2}) \exp\left(2 id k_1 u\right)\right\}\text{d}u \ & +\int_0^\infty \left[1 + u^2\right]\cdot\exp\left(-2d k_1  u\right)\cdot\Im\left\{ r^p (\sqrt{1 + u^2}) \right\}\text{d}u 
+  \end{split}
+\]
+Similarly, for the parallel dipole
+\[
+  M^\parallel_\text{tot} = 1 + \frac 3 4 \int_0^\infty \Re\left\{ \left[ \frac{r^s(q)}{\sqrt{1 - q^2}} - r^p (q) \sqrt{1 - q^2}\right] \cdot q\cdot\exp\left(2 i k_1 d\sqrt{1 - q^2} \right)\right\}\text{d}q  \label{eq:Mstot1}
+\]
+which can be rewritten as,
+\[
+  M^\parallel_\text{tot} = 1 + \frac 3 4 \left(I^\parallel_1 + I^\parallel_2\right)
+\]
+where
+\[
+  \begin{split}
+I^\parallel_1 + I^\parallel_2 =& \int_0^1 \Re\left\{\left[r^s (\sqrt{1 - u^2})  - u^2\cdot r^p (\sqrt{1 - u^2}) \right] \exp\left(2 id k_1 u\right)\right\}\text{d}u \ & 
++\int_0^\infty \exp\left(-2d k_1  u\right)\cdot \Im\left\{r^s (\sqrt{1 + u^2}) + u^2\cdot r^p (\sqrt{1 + u^2}) \right\}\text{d}u 
+  \end{split}
+\]</p>
+
+</body>
+
+</html>

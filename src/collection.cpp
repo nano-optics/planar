@@ -1,53 +1,66 @@
-// 
+// [[Rcpp::depends(RcppArmadillo)]]
+
+//
 // collection of light emitted from a multilayer
 // within finite solid angle
-// we use reciprocity, ie solve the problem of excitation by multiple 
+// we use reciprocity, ie solve the problem of excitation by multiple
 // plane waves and add the field intensities (incoherent)
-// 
+//
 
 #include <RcppArmadillo.h>
 #include <iostream>
 
 #include "multilayer.h"
-#include "gaussian.h"
+#include "incidence.h"
+#include "utils.h"
 #include "cubature.h"
 
 using namespace Rcpp ;
 using namespace RcppArmadillo ;
 using namespace arma ;
 using namespace std;
-  
 
 
+
+//
+// Integrand for collection over a range of scattering angles
+//
+// rt
+// r2
+// k0
+// psi
+// epsilon
+// thickness
+// returns a scalar intensity
 // [[Rcpp::export]]
-double integrand_collection(const colvec& rt, 
-			    const colvec& r2, 
-			    const double k0, 
-			    const double psi, 
-			    const cx_vec& epsilon, 
-			    const vec& thickness)
+double integrand_collection(const arma::colvec& rt,
+			    const arma::colvec& r2,
+			    const double k0,
+			    const double psi,
+			    const arma::cx_vec& epsilon,
+			    const arma::vec& thickness)
   {
     const int Nlayer = epsilon.n_elem;
     double delta, rho, theta, sx, sy;
-    const cx_double i = cx_double(0,1);
-    cx_double a, pw;
+    const arma::cx_double i = arma::cx_double(0,1);
+    arma::cx_double a, pw;
 
-    cx_colvec Eo2 = arma::zeros<arma::cx_colvec>(3); // result
-    double res = 0.0; 
+    arma::cx_colvec Eo2 = arma::zeros<arma::cx_colvec>(3); // result
+    double res = 0.0;
 
     // intermediate vectors
-    cx_colvec ei1(3), ei2(3), ei2p(3);
-    colvec ki1(3), ki2(3), ki2p(3);
-    cx_colvec ko2(3), ko2p(3);
+    arma::cx_colvec ei1(3), ei2(3), ei2p(3);
+    arma::colvec ki1(3), ki2(3), ki2p(3);
+    arma::cx_colvec ko2(3), ko2p(3);
     // rotation matrices
-    mat Ry(3, 3), Rz(3, 3), Rzi(3, 3);
+    arma::mat Ry(3, 3), Rz(3, 3), Rzi(3, 3);
 
     // define convenient wavenumbers
-    cx_double ni =  sqrt(epsilon(0));
-    cx_double no =  sqrt(epsilon(Nlayer-1));
+    arma::cx_double ni =  sqrt(epsilon(0));
+    arma::cx_double no =  sqrt(epsilon(Nlayer-1));
     double ki = real(ni)*k0; // nonabsorbing incident medium
-    cx_double ko = no * k0; // outer medium, can be absorbing
-    cx_double nini = epsilon(0), nono = epsilon(Nlayer-1);
+    arma::cx_double ko = no * k0; // outer medium, can be absorbing
+    arma::cx_double nini = epsilon(0), nono = epsilon(Nlayer-1);
 
     // change of variables from polar coordinates
     rho = sin(rt(0)); theta = rt(1);
@@ -55,7 +68,7 @@ double integrand_collection(const colvec& rt,
     sy = rho * sin(theta);
 
     double root = 1.0 - rho*rho;
-	
+
     // work out kz component
     ki1(0) = ki*sx;
     ki1(1) = ki*sy;
@@ -67,7 +80,7 @@ double integrand_collection(const colvec& rt,
     s1(2) = sqrt(root);
     // incident field polarisation
     ei1 = incident_field2(psi, s1);
-  
+
     // rotation of incident field
     // to frame F2
     // useless, we're already in F2
@@ -87,15 +100,15 @@ double integrand_collection(const colvec& rt,
     delta = 0.0; // case of exact normal incidence (no k-parallel)
     if (abs(kpar) >= 2*datum::eps) {
       double sindelta = ki2(1) / kpar;// safe division
-      delta = asin(sindelta); 
+      delta = asin(sindelta);
     }
     Rz = rotation_z(delta);
     Rzi = rotation_z(-delta);
     ki2p = Rz * ki2;
     ei2p = Rz * ei2;
-  
+
     // wave vector on the outer side
-    ko2p(0) = ki2p(0); 
+    ko2p(0) = ki2p(0);
     ko2p(1) = ki2p(1);
     ko2p(2) = sqrt(ko*ko - ko2p(0)*ko2p(0) - ko2p(1)*ko2p(1));
 
@@ -105,14 +118,14 @@ double integrand_collection(const colvec& rt,
     z(0) = r2(2);
 
     // use psi - delta to keep E fixed along x2p (to check)
-    Rcpp::List solution = multilayer_field(k0, kx, epsilon, thickness, 
+    Rcpp::List solution = multilayer_field(k0, kx, epsilon, thickness,
 					   z, psi - delta);
-    
+
     // cx_double rp = solution["rp"] ;
     // cx_double rs = solution["rs"] ;
-    cx_colvec eo2p = solution["E"] ;
+    arma::cx_colvec eo2p = solution["E"] ;
     // Rzi * eo2p is the field rotated back into the fixed R2 frame
-    cx_colvec eo2 =  Rzi * eo2p;
+    arma::cx_colvec eo2 =  Rzi * eo2p;
 
     // in-plane component of plane wave
     pw = exp(i*(ko2(0)*r2(0) + ko2(1)*r2(1)));
@@ -123,39 +136,53 @@ double integrand_collection(const colvec& rt,
 
     //Eo2 = rho*ki*ki/s1(2) * pw * eo2;
     Eo2 = pw * eo2;
-    
+
     res = real(cdot(Eo2, Eo2));
     return (res);
   }
 
   struct collparams {
-    colvec r2;
+    arma::colvec r2;
     double k0;
     double psi;
-    cx_colvec epsilon;
-    colvec thickness;
+    arma::cx_colvec epsilon;
+    arma::colvec thickness;
   } ;
 
 
 /* wrapper of integrand for integration */
-int fwrapcoll(unsigned ndim, const double *x, void *fdata, 
+int fwrapcoll(unsigned ndim, const double *x, void *fdata,
 	      unsigned fdim, double *fval) {
   collparams params = *((collparams *) fdata);
-  
-  colvec res(fval, 1, false);
-  colvec xx(2);
+
+  arma::colvec res(fval, 1, false);
+  arma::colvec xx(2);
   xx[0] = x[0]; xx[1]=x[1];
 
-  res = integrand_collection(xx, params.r2, params.k0, params.psi, 
+  res = integrand_collection(xx, params.r2, params.k0, params.psi,
 			     params.epsilon, params.thickness);
-  
+
   return 0;
 }
 
+//
+// Integrand for collection over a range of scattering angles
+//
+// r2
+// k0
+// psi
+// omega
+// epsilon
+// thickness
+// maxEval
+// reqAbsError
+// tol
+// progress
+// returns a vector of intensities
 // [[Rcpp::export]]
-arma::vec field_collection(const mat& r2, const double k0, 
-			      const double psi, const vec& omega, 
-			      const cx_vec& epsilon, const vec& thickness, 
+arma::vec field_collection(const arma::mat& r2, const double k0,
+			      const double psi, const arma::vec& omega,
+			      const arma::cx_vec& epsilon, const arma::vec& thickness,
 			      const int maxEval, const double reqAbsError,
 			      const double tol, bool progress)
   {
@@ -168,7 +195,7 @@ arma::vec field_collection(const mat& r2, const double k0,
     std::vector<double> error(fdim);
     double* integral_pt = &integral;
     double* error_pt = &error[0];
-  
+
     double xmin[2] = {omega[0],0}, xmax[2] = {omega[1],2*datum::pi};
 
     collparams params;
@@ -177,7 +204,7 @@ arma::vec field_collection(const mat& r2, const double k0,
     params.epsilon=epsilon;
     params.thickness=thickness;
 
-    vec result(N);
+    arma::vec result(N);
 
     // initialise an Armadillo vector to use external memory
     int ii;
@@ -185,7 +212,7 @@ arma::vec field_collection(const mat& r2, const double k0,
       if(progress){
 	progress_bar(ii,N);
       }
-      params.r2 = strans(r2.row(ii));
+      params.r2 = arma::strans(r2.row(ii));
 
    /* int hcubature(unsigned fdim, integrand f, void *fdata, */
    /*               unsigned dim, const double *xmin, const double *xmax,  */
@@ -202,12 +229,3 @@ arma::vec field_collection(const mat& r2, const double k0,
 
     return (result);
   }
-
-RCPP_MODULE(collection){
-
-  Rcpp::function( "integrand_collection", &integrand_collection,
-		  "Integrand for the collection" ) ;
-  Rcpp::function( "field_collection", &field_collection,
-		  "Integral for the collection" ) ;
-
-}

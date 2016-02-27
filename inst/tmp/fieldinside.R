@@ -21,7 +21,7 @@ struct <- tamm_stack(wavelength = 704,
                      nleft = 1.5, nright = 1.0)
 epsilon <- epsilon_dispersion(struct$epsilon, 700)
 
-# a <- planar$multilayer_field(2*pi/700, 0, unlist(epsilon), 
+# a <- cpp_multilayer_field(2*pi/700, 0, unlist(epsilon), 
 #                         struct$thickness, seq(-100, 1000), psi)
 # 
 # b <- multilayerfull(wavelength=700, angle=angle, 

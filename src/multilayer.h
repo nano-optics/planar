@@ -3,10 +3,10 @@
 
 #include <RcppArmadillo.h>
 
-Rcpp::List multilayer_field(const double k0,				
-			    const double kx,			
-			    const arma::cx_vec& epsilon,		
-			    const arma::colvec& thickness, 
+Rcpp::List cpp_multilayer_field(const double k0,				
+			    const double kx,
+			    const arma::cx_vec& epsilon,
+			    const arma::colvec& thickness,
 			    const arma::colvec& z, const double psi);
 
 #endif

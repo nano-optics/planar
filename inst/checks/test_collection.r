@@ -20,7 +20,7 @@ theme_set(theme_minimal() + theme(panel.background=element_rect(fill=NA)))
 # theta <- seq(0,90, length=1e3)
 # 
 # exact <- function(angle){
-# res <- planar$multilayer_field(k0, 
+# res <- cpp_multilayer_field(k0, 
 #                                  k0 * sin(angle*pi/180) * sqrt(epsilon[1]),
 #                                  epsilon, 
 #                                  thickness, 51, psi)$E

@@ -15,19 +15,18 @@
 ##' @return data.frame intensity at the x, y, z position
 ##' @export
 ##' @author Baptiste Auguie
-collection_ml <- function(xyz, wavelength=632.8, omega = c(40, 50)*pi/180, 
-                          psi=0, 
-                          epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 
+collection_ml <- function(xyz, wavelength=632.8, omega = c(40, 50)*pi/180,
+                          psi=0,
+                          epsilon = c(1.5^2, epsAg(wavelength)$epsilon,
                                       1.0^2, 1.0^2),
                           thickness = c(0, 50, 10, 0),
-                          maxEval = 3000, reqAbsError = 0.0, 
+                          maxEval = 3000, reqAbsError = 0.0,
                           tol=1e-04, progress=FALSE){
-  
+
   k0 <- 2*pi/wavelength
-  I <- collection$field_collection(xyz, k0, psi, omega, epsilon, thickness,
-                                   as.integer(maxEval), as.double(reqAbsError), 
+  I <- cpp_field_collection(xyz, k0, psi, omega, epsilon, thickness,
+                                   as.integer(maxEval), as.double(reqAbsError),
                                    tol, progress)
-  
+
   I
 }
-

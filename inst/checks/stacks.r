@@ -259,7 +259,7 @@ simulate_nf <- function(fun = tamm_stack,
   id <- rep(seq_along(probes), sapply(probes, length))
   d <- unlist(probes)
   
-  result <- planar$multilayer_field(k0, k0*sin(angle)*n1, 
+  result <- cpp_multilayer_field(k0, k0*sin(angle)*n1, 
                                     unlist(epsilon),  
                                     s[["thickness"]], d, psi)
   if(field)

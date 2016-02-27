@@ -94,7 +94,7 @@ internal_field <- function(wavelength=500, angle=0, psi=0,
                    MoreArgs=list(by=stepsize))
   id <- rep(seq_along(probes), sapply(probes, length))
   d <- unlist(probes)
-  E <- planar$multilayer_field(k0, k0*sin(angle)*n1, unlist(epsilon),  
+  E <- cpp_multilayer_field(k0, k0*sin(angle)*n1, unlist(epsilon),  
                           thickness, d, psi)$E
   
   ll = as.list(unique(id))

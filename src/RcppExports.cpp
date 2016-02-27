@@ -22,9 +22,9 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// field_collection
-arma::vec field_collection(const arma::mat& r2, const double k0, const double psi, const arma::vec& omega, const arma::cx_vec& epsilon, const arma::vec& thickness, const int maxEval, const double reqAbsError, const double tol, bool progress);
-RcppExport SEXP planar_field_collection(SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP omegaSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP maxEvalSEXP, SEXP reqAbsErrorSEXP, SEXP tolSEXP, SEXP progressSEXP) {
+// cpp_field_collection
+arma::vec cpp_field_collection(const arma::mat& r2, const double k0, const double psi, const arma::vec& omega, const arma::cx_vec& epsilon, const arma::vec& thickness, const int maxEval, const double reqAbsError, const double tol, bool progress);
+RcppExport SEXP planar_cpp_field_collection(SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP omegaSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP maxEvalSEXP, SEXP reqAbsErrorSEXP, SEXP tolSEXP, SEXP progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -38,7 +38,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type reqAbsError(reqAbsErrorSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
-    __result = Rcpp::wrap(field_collection(r2, k0, psi, omega, epsilon, thickness, maxEval, reqAbsError, tol, progress));
+    __result = Rcpp::wrap(cpp_field_collection(r2, k0, psi, omega, epsilon, thickness, maxEval, reqAbsError, tol, progress));
     return __result;
 END_RCPP
 }
@@ -80,9 +80,9 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// field_gb_layer
-arma::cx_mat field_gb_layer(const arma::mat& r2, const double k0, const double psi, const double alpha, const double w0, const arma::cx_vec& epsilon, const arma::vec& thickness, const int maxEval, const double reqAbsError, const double tol, bool progress);
-RcppExport SEXP planar_field_gb_layer(SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP alphaSEXP, SEXP w0SEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP maxEvalSEXP, SEXP reqAbsErrorSEXP, SEXP tolSEXP, SEXP progressSEXP) {
+// cpp_field_gb_layer
+arma::cx_mat cpp_field_gb_layer(const arma::mat& r2, const double k0, const double psi, const double alpha, const double w0, const arma::cx_vec& epsilon, const arma::vec& thickness, const int maxEval, const double reqAbsError, const double tol, bool progress);
+RcppExport SEXP planar_cpp_field_gb_layer(SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP alphaSEXP, SEXP w0SEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP maxEvalSEXP, SEXP reqAbsErrorSEXP, SEXP tolSEXP, SEXP progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -97,13 +97,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type reqAbsError(reqAbsErrorSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
-    __result = Rcpp::wrap(field_gb_layer(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress));
+    __result = Rcpp::wrap(cpp_field_gb_layer(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress));
     return __result;
 END_RCPP
 }
-// field_gb_ml
-arma::cx_mat field_gb_ml(const arma::mat& r2, const double k0, const double psi, const double alpha, const double w0, const arma::cx_vec& epsilon, const arma::vec& thickness, const int maxEval, const double reqAbsError, const double tol, bool progress);
-RcppExport SEXP planar_field_gb_ml(SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP alphaSEXP, SEXP w0SEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP maxEvalSEXP, SEXP reqAbsErrorSEXP, SEXP tolSEXP, SEXP progressSEXP) {
+// cpp_field_gb_ml
+arma::cx_mat cpp_field_gb_ml(const arma::mat& r2, const double k0, const double psi, const double alpha, const double w0, const arma::cx_vec& epsilon, const arma::vec& thickness, const int maxEval, const double reqAbsError, const double tol, bool progress);
+RcppExport SEXP planar_cpp_field_gb_ml(SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP alphaSEXP, SEXP w0SEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP maxEvalSEXP, SEXP reqAbsErrorSEXP, SEXP tolSEXP, SEXP progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -118,13 +118,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type reqAbsError(reqAbsErrorSEXP);
     Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
     Rcpp::traits::input_parameter< bool >::type progress(progressSEXP);
-    __result = Rcpp::wrap(field_gb_ml(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress));
+    __result = Rcpp::wrap(cpp_field_gb_ml(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress));
     return __result;
 END_RCPP
 }
-// layer_fresnel
-Rcpp::List layer_fresnel(const arma::colvec& k0, const arma::cx_mat& kx, const arma::cx_mat& epsilon, const double& thickness);
-RcppExport SEXP planar_layer_fresnel(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP) {
+// cpp_layer_fresnel
+Rcpp::List cpp_layer_fresnel(const arma::colvec& k0, const arma::cx_mat& kx, const arma::cx_mat& epsilon, const double& thickness);
+RcppExport SEXP planar_cpp_layer_fresnel(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -132,13 +132,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::cx_mat& >::type kx(kxSEXP);
     Rcpp::traits::input_parameter< const arma::cx_mat& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const double& >::type thickness(thicknessSEXP);
-    __result = Rcpp::wrap(layer_fresnel(k0, kx, epsilon, thickness));
+    __result = Rcpp::wrap(cpp_layer_fresnel(k0, kx, epsilon, thickness));
     return __result;
 END_RCPP
 }
-// multilayer_field
-Rcpp::List multilayer_field(const double k0, const double kx, const arma::cx_vec& epsilon, const arma::colvec& thickness, const arma::colvec& z, const double psi);
-RcppExport SEXP planar_multilayer_field(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP zSEXP, SEXP psiSEXP) {
+// cpp_multilayer_field
+Rcpp::List cpp_multilayer_field(const double k0, const double kx, const arma::cx_vec& epsilon, const arma::colvec& thickness, const arma::colvec& z, const double psi);
+RcppExport SEXP planar_cpp_multilayer_field(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP zSEXP, SEXP psiSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -148,13 +148,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::colvec& >::type thickness(thicknessSEXP);
     Rcpp::traits::input_parameter< const arma::colvec& >::type z(zSEXP);
     Rcpp::traits::input_parameter< const double >::type psi(psiSEXP);
-    __result = Rcpp::wrap(multilayer_field(k0, kx, epsilon, thickness, z, psi));
+    __result = Rcpp::wrap(cpp_multilayer_field(k0, kx, epsilon, thickness, z, psi));
     return __result;
 END_RCPP
 }
-// multilayerfull
-Rcpp::List multilayerfull(const arma::colvec& k0, const arma::cx_mat& kx, const arma::cx_mat& epsilon, const arma::colvec& thickness, const arma::colvec& z, const double psi);
-RcppExport SEXP planar_multilayerfull(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP zSEXP, SEXP psiSEXP) {
+// cpp_multilayer_full
+Rcpp::List cpp_multilayer_full(const arma::colvec& k0, const arma::cx_mat& kx, const arma::cx_mat& epsilon, const arma::colvec& thickness, const arma::colvec& z, const double psi);
+RcppExport SEXP planar_cpp_multilayer_full(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP zSEXP, SEXP psiSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -164,13 +164,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::colvec& >::type thickness(thicknessSEXP);
     Rcpp::traits::input_parameter< const arma::colvec& >::type z(zSEXP);
     Rcpp::traits::input_parameter< const double >::type psi(psiSEXP);
-    __result = Rcpp::wrap(multilayerfull(k0, kx, epsilon, thickness, z, psi));
+    __result = Rcpp::wrap(cpp_multilayer_full(k0, kx, epsilon, thickness, z, psi));
     return __result;
 END_RCPP
 }
-// multilayer
-Rcpp::List multilayer(const arma::colvec& k0, const arma::cx_mat& kx, const arma::cx_mat& epsilon, const arma::colvec& thickness, const int& polarisation);
-RcppExport SEXP planar_multilayer(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP polarisationSEXP) {
+// cpp_multilayer
+Rcpp::List cpp_multilayer(const arma::colvec& k0, const arma::cx_mat& kx, const arma::cx_mat& epsilon, const arma::colvec& thickness, const int& polarisation);
+RcppExport SEXP planar_cpp_multilayer(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP polarisationSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -179,13 +179,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::cx_mat& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const arma::colvec& >::type thickness(thicknessSEXP);
     Rcpp::traits::input_parameter< const int& >::type polarisation(polarisationSEXP);
-    __result = Rcpp::wrap(multilayer(k0, kx, epsilon, thickness, polarisation));
+    __result = Rcpp::wrap(cpp_multilayer(k0, kx, epsilon, thickness, polarisation));
     return __result;
 END_RCPP
 }
-// recursive_fresnel
-Rcpp::List recursive_fresnel(const arma::colvec& k0, const arma::cx_mat& kx, const arma::cx_mat& epsilon, const arma::colvec& thickness, const int& polarisation);
-RcppExport SEXP planar_recursive_fresnel(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP polarisationSEXP) {
+// cpp_recursive_fresnel
+Rcpp::List cpp_recursive_fresnel(const arma::colvec& k0, const arma::cx_mat& kx, const arma::cx_mat& epsilon, const arma::colvec& thickness, const int& polarisation);
+RcppExport SEXP planar_cpp_recursive_fresnel(SEXP k0SEXP, SEXP kxSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP, SEXP polarisationSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -194,7 +194,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::cx_mat& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const arma::colvec& >::type thickness(thicknessSEXP);
     Rcpp::traits::input_parameter< const int& >::type polarisation(polarisationSEXP);
-    __result = Rcpp::wrap(recursive_fresnel(k0, kx, epsilon, thickness, polarisation));
+    __result = Rcpp::wrap(cpp_recursive_fresnel(k0, kx, epsilon, thickness, polarisation));
     return __result;
 END_RCPP
 }

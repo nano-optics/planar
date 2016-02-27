@@ -54,7 +54,6 @@ arma::colvec integrand_gb_ml(const arma::colvec& rt, const arma::colvec& r2, con
     arma::cx_double no =  sqrt(epsilon(Nlayer-1));
     double ki = real(ni)*k0; // nonabsorbing incident medium
     arma::cx_double ko = no * k0; // outer medium, can be absorbing
-    arma::cx_double nini = epsilon(0), nono = epsilon(Nlayer-1);
 
     // change of variables from polar coordinates
     rho = rt(0); theta = rt(1);
@@ -117,7 +116,7 @@ arma::colvec integrand_gb_ml(const arma::colvec& rt, const arma::colvec& r2, con
     z(0) = r2(2);
 
     // use psi - delta to keep E fixed along x2p (to check)
-    Rcpp::List solution = multilayer_field(k0, kx, epsilon, thickness, z, psi - delta);
+    Rcpp::List solution = cpp_multilayer_field(k0, kx, epsilon, thickness, z, psi - delta);
 
     // cx_double rp = solution["rp"] ;
     // cx_double rs = solution["rs"] ;
@@ -356,7 +355,7 @@ int fwrap2(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *f
 }
 
 // [[Rcpp::export]]
-arma::cx_mat field_gb_layer(const arma::mat& r2, const double k0,
+arma::cx_mat cpp_field_gb_layer(const arma::mat& r2, const double k0,
 		      const double psi, const double alpha, const double w0,
 		      const arma::cx_vec& epsilon, const arma::vec& thickness,
 		      const int maxEval, const double reqAbsError, const double tol, bool progress)
@@ -414,7 +413,7 @@ arma::cx_mat field_gb_layer(const arma::mat& r2, const double k0,
 
 
 // [[Rcpp::export]]
-arma::cx_mat field_gb_ml(const arma::mat& r2, const double k0,
+arma::cx_mat cpp_field_gb_ml(const arma::mat& r2, const double k0,
 		      const double psi, const double alpha, const double w0,
 		      const arma::cx_vec& epsilon, const arma::vec& thickness,
 		      const int maxEval, const double reqAbsError, const double tol, bool progress)

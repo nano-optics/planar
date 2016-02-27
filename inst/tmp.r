@@ -11,11 +11,11 @@
 # 
 # k0 <- 2*pi/lambda
 # kx <- k0*sin(theta)
-# planar$recursive_fresnel(as.vector(k0), as.matrix(kx), 
+# cpp_recursive_fresnel(as.vector(k0), as.matrix(kx), 
 #                          as.matrix(epsilon), 
 #                          as.vector(thickness), as.integer(0L))
 # 
-# planar$multilayer(as.vector(k0), as.matrix(kx), 
+# cpp_multilayer(as.vector(k0), as.matrix(kx), 
 #                          as.matrix(t(epsilon)), 
 #                          as.vector(thickness), as.integer(0L))
 

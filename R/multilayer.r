@@ -339,7 +339,7 @@ multilayercpp <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
             ncol(kx) == length(q))
 
   ## call the C++ function
-  res <- planar$multilayer(as.vector(k0), as.matrix(kx), as.matrix(epsilon),
+  res <- cpp_multilayer(as.vector(k0), as.matrix(kx), as.matrix(epsilon),
                            as.vector(thickness), as.integer(polarisation))
   
   transmission <- drop(res$transmission)
@@ -417,7 +417,7 @@ multilayerfull <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
             ncol(kx) == length(q))
   
   ## call the C++ function
-  res <- planar$multilayerfull(as.vector(k0), 
+  res <- cpp_multilayerfull(as.vector(k0), 
                                as.matrix(kx), 
                                as.matrix(epsilon),
                                as.vector(thickness), 

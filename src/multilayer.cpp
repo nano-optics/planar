@@ -15,7 +15,7 @@ using namespace std;
 
 
 // [[Rcpp::export]]
-Rcpp::List layer_fresnel(const arma::colvec& k0,
+Rcpp::List cpp_layer_fresnel(const arma::colvec& k0,
 			     const arma::cx_mat& kx,
 			     const arma::cx_mat& epsilon,
 			     const double& thickness) {
@@ -80,7 +80,7 @@ Rcpp::List layer_fresnel(const arma::colvec& k0,
 
 
 // [[Rcpp::export]]
-Rcpp::List multilayer_field(const double k0,
+Rcpp::List cpp_multilayer_field(const double k0,
 			    const double kx,
 			    const arma::cx_vec& epsilon,
 			    const arma::colvec& thickness,
@@ -244,7 +244,7 @@ Rcpp::List multilayer_field(const double k0,
 
 
 // [[Rcpp::export]]
-Rcpp::List multilayerfull(const arma::colvec& k0,
+Rcpp::List cpp_multilayer_full(const arma::colvec& k0,
 			  const arma::cx_mat& kx,
 			  const arma::cx_mat& epsilon,
 			  const arma::colvec& thickness,
@@ -435,7 +435,7 @@ Rcpp::List multilayerfull(const arma::colvec& k0,
 }
 
 // [[Rcpp::export]]
-Rcpp::List multilayer(const arma::colvec& k0,
+Rcpp::List cpp_multilayer(const arma::colvec& k0,
 		      const arma::cx_mat& kx,
 		      const arma::cx_mat& epsilon,
 		      const arma::colvec& thickness,
@@ -447,7 +447,6 @@ Rcpp::List multilayer(const arma::colvec& k0,
 
   const arma::colvec& k02 = k0 % k0;
   const arma::cx_mat& kx2 = kx % kx;
-  const arma::cx_double I = arma::cx_double(0,1);
 
   // loop to calculate kiz
   arma::cx_cube kiz = arma::ones<arma::cx_cube>(Nlambda, Ntheta, Nlayer);
@@ -505,7 +504,7 @@ Rcpp::List multilayer(const arma::colvec& k0,
 
 
 // [[Rcpp::export]]
-Rcpp::List recursive_fresnel(const arma::colvec& k0,
+Rcpp::List cpp_recursive_fresnel(const arma::colvec& k0,
 			     const arma::cx_mat& kx,
 			     const arma::cx_mat& epsilon,
 			     const arma::colvec& thickness,

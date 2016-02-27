@@ -5,8 +5,8 @@ integrand_collection <- function(rt, r2, k0, psi, epsilon, thickness) {
     .Call('planar_integrand_collection', PACKAGE = 'planar', rt, r2, k0, psi, epsilon, thickness)
 }
 
-field_collection <- function(r2, k0, psi, omega, epsilon, thickness, maxEval, reqAbsError, tol, progress) {
-    .Call('planar_field_collection', PACKAGE = 'planar', r2, k0, psi, omega, epsilon, thickness, maxEval, reqAbsError, tol, progress)
+cpp_field_collection <- function(r2, k0, psi, omega, epsilon, thickness, maxEval, reqAbsError, tol, progress) {
+    .Call('planar_cpp_field_collection', PACKAGE = 'planar', r2, k0, psi, omega, epsilon, thickness, maxEval, reqAbsError, tol, progress)
 }
 
 integrand_gb_ml <- function(rt, r2, k0, psi, alpha, w0, epsilon, thickness) {
@@ -17,31 +17,31 @@ integrand_gb_layer <- function(rt, r2, ki, psi, alpha, w0, ni, no, nl, d) {
     .Call('planar_integrand_gb_layer', PACKAGE = 'planar', rt, r2, ki, psi, alpha, w0, ni, no, nl, d)
 }
 
-field_gb_layer <- function(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress) {
-    .Call('planar_field_gb_layer', PACKAGE = 'planar', r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress)
+cpp_field_gb_layer <- function(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress) {
+    .Call('planar_cpp_field_gb_layer', PACKAGE = 'planar', r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress)
 }
 
-field_gb_ml <- function(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress) {
-    .Call('planar_field_gb_ml', PACKAGE = 'planar', r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress)
+cpp_field_gb_ml <- function(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress) {
+    .Call('planar_cpp_field_gb_ml', PACKAGE = 'planar', r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress)
 }
 
-layer_fresnel <- function(k0, kx, epsilon, thickness) {
-    .Call('planar_layer_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness)
+cpp_layer_fresnel <- function(k0, kx, epsilon, thickness) {
+    .Call('planar_cpp_layer_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness)
 }
 
-multilayer_field <- function(k0, kx, epsilon, thickness, z, psi) {
-    .Call('planar_multilayer_field', PACKAGE = 'planar', k0, kx, epsilon, thickness, z, psi)
+cpp_multilayer_field <- function(k0, kx, epsilon, thickness, z, psi) {
+    .Call('planar_cpp_multilayer_field', PACKAGE = 'planar', k0, kx, epsilon, thickness, z, psi)
 }
 
-multilayerfull <- function(k0, kx, epsilon, thickness, z, psi) {
-    .Call('planar_multilayerfull', PACKAGE = 'planar', k0, kx, epsilon, thickness, z, psi)
+cpp_multilayer_full <- function(k0, kx, epsilon, thickness, z, psi) {
+    .Call('planar_cpp_multilayer_full', PACKAGE = 'planar', k0, kx, epsilon, thickness, z, psi)
 }
 
-multilayer <- function(k0, kx, epsilon, thickness, polarisation) {
-    .Call('planar_multilayer', PACKAGE = 'planar', k0, kx, epsilon, thickness, polarisation)
+cpp_multilayer <- function(k0, kx, epsilon, thickness, polarisation) {
+    .Call('planar_cpp_multilayer', PACKAGE = 'planar', k0, kx, epsilon, thickness, polarisation)
 }
 
-recursive_fresnel <- function(k0, kx, epsilon, thickness, polarisation) {
-    .Call('planar_recursive_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness, polarisation)
+cpp_recursive_fresnel <- function(k0, kx, epsilon, thickness, polarisation) {
+    .Call('planar_cpp_recursive_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness, polarisation)
 }
 

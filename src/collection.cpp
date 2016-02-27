@@ -60,7 +60,6 @@ double integrand_collection(const arma::colvec& rt,
     arma::cx_double no =  sqrt(epsilon(Nlayer-1));
     double ki = real(ni)*k0; // nonabsorbing incident medium
     arma::cx_double ko = no * k0; // outer medium, can be absorbing
-    arma::cx_double nini = epsilon(0), nono = epsilon(Nlayer-1);
 
     // change of variables from polar coordinates
     rho = sin(rt(0)); theta = rt(1);
@@ -118,7 +117,7 @@ double integrand_collection(const arma::colvec& rt,
     z(0) = r2(2);
 
     // use psi - delta to keep E fixed along x2p (to check)
-    Rcpp::List solution = multilayer_field(k0, kx, epsilon, thickness,
+    Rcpp::List solution = cpp_multilayer_field(k0, kx, epsilon, thickness,
 					   z, psi - delta);
 
     // cx_double rp = solution["rp"] ;
@@ -180,7 +179,7 @@ int fwrapcoll(unsigned ndim, const double *x, void *fdata,
 // progress
 // returns a vector of intensities
 // [[Rcpp::export]]
-arma::vec field_collection(const arma::mat& r2, const double k0,
+arma::vec cpp_field_collection(const arma::mat& r2, const double k0,
 			      const double psi, const arma::vec& omega,
 			      const arma::cx_vec& epsilon, const arma::vec& thickness,
 			      const int maxEval, const double reqAbsError,

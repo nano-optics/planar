@@ -10,3 +10,5 @@ kretschmann_sensing      Sensing in the Kretschmann configuration
 LFIEF_patterns      Dipole radiation patterns
 RTA_consistency      Consistency of results between algorithms
 SPP_dispersion      Dispersion of surface plasmon-polaritons
+tamm      Tamm plasmons
+

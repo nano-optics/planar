@@ -17,23 +17,23 @@ theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 ## incident glass | metal | water
 ## local field enhancement for the excitation of the fluorophore
 
-fluorescence.enhancement <- function(d=seq(1,10),
-                                     lambdaex=632.8,
-                                     shift=1000,
-                                     thetaex=seq(50,55)*pi/180,
-                                     thetafluo=thetaex,
-                                     nPrism = 1.766,
-                                     nWater = 1.33,
-                                     material = "silver",
-                                     polarisation="p",
-                                     thickness = c(0, 50, 0),
-                                     Nquadrature1 = 200, Nquadrature2 = 500,
-                                     Nquadrature3 = 500,
-                                     qcut = NULL, rel.err= 1e-1,
-                                     GL=TRUE){
-
-  lambdafluo <- raman_shift(lambdaex, shift)
-
+model <- function(d=seq(1,10),
+                  lambdaex=632.8,
+                  shift=1000,
+                  thetaex=seq(50,55)*pi/180,
+                  thetafluo=thetaex,
+                  nPrism = 1.766,
+                  nWater = 1.33,
+                  material = "silver",
+                  polarisation="p",
+                  thickness = c(0, 50, 0),
+                  Nquadrature1 = 200, Nquadrature2 = 500,
+                  Nquadrature3 = 500,
+                  qcut = NULL, rel.err= 1e-1,
+                  GL=TRUE){
+  
+  lambdafluo <- as.vector(raman_shift(lambdaex, shift))
+  
   epsilon.ex <- if(material == "silver") epsAg(lambdaex)$epsilon else epsAu(lambdaex)$epsilon 
   epsilon.fluo <- if(material == "silver") epsAg(lambdafluo)$epsilon else epsAu(lambdafluo)$epsilon 
 
@@ -45,7 +45,7 @@ fluorescence.enhancement <- function(d=seq(1,10),
                       polarisation = polarisation,  
                       thickness = thickness, d=d,
                       epsilon = list(nPrism^2, epsilon.fluo, nWater^2))
-
+  
   params <- list(wavelength = lambdafluo,
                  epsilon = list(nWater^2, epsilon.fluo, nPrism^2), # reversed order
                  thickness = thickness, 
@@ -54,8 +54,8 @@ fluorescence.enhancement <- function(d=seq(1,10),
   
   Mtot <-   sapply(d, function(.d){
     dl <- do.call(dipole, c(params, list(d=.d, show.messages = FALSE)))
-    }, simplify=TRUE)
-   
+  }, simplify=TRUE)
+  
   ## incident left -> glass | metal | water
   last <- length(Mex$Mr.perp)
   Mex.perp <-  Mex$Mr.perp[[last]]
@@ -78,7 +78,7 @@ fluorescence.enhancement <- function(d=seq(1,10),
                   Mtot.par = c(Mtot.par),
                   F.perp = c(Mex.perp * Mfluo.perp / Mtot.perp),
                   F.par = c(Mex.par * Mfluo.par / Mtot.par))
-
+  
   
   m <- melt(d, id=c("d", "thetaex"))
   ## reorder the levels
@@ -96,17 +96,18 @@ fluorescence.enhancement <- function(d=seq(1,10),
   m
 }
 
-results <- fluorescence.enhancement(d=seq(1,50, length=300), thetaex=53*pi/180,
-                                    thetafluo=52.3*pi/180,
-                                    Nquadrature1 = 15, Nquadrature2 = 135,
-                                    Nquadrature3 = 135, GL=TRUE)
-            
+
+results <- model(d=seq(1,50, length=300), thetaex=53*pi/180,
+                 thetafluo=52.3*pi/180,
+                 Nquadrature1 = 15, Nquadrature2 = 135,
+                 Nquadrature3 = 135, GL=TRUE)
+
 m <- results
 m$value[m$type == "Mtot" ] <- log10(m$value[m$type == "Mtot" ])
 
 m$variable <- modify_levels(m$variable,
-                             list("log.Mtot.perp"="Mtot.perp",
-                                  "log.Mtot.par"="Mtot.par"))
+                            list("log.Mtot.perp"="Mtot.perp",
+                                 "log.Mtot.par"="Mtot.par"))
 
 
 qplot(d, value, data=m, geom="line", colour=I("blue")) +
@@ -120,10 +121,10 @@ qplot(d, value, data=m, geom="line", colour=I("blue")) +
 
 ## ----angles, fig.width=10------------------------------------------------
 
-results <- fluorescence.enhancement(d=20, thetaex=seq(50, 55,length=300)*pi/180,
-                                 Nquadrature1 = 15, Nquadrature2 = 135,
-                                 Nquadrature3 = 135, GL=TRUE)
-            
+results <- model(d=20, thetaex=seq(50, 55,length=300)*pi/180,
+                 Nquadrature1 = 15, Nquadrature2 = 135,
+                 Nquadrature3 = 135, GL=TRUE)
+
 m <- subset(results, variable %in% c("Mex.perp", "Mfluo.perp"))
 
 qplot(thetaex*180/pi, value, data=m, geom="line", colour=variable) +
@@ -132,12 +133,12 @@ qplot(thetaex*180/pi, value, data=m, geom="line", colour=variable) +
   geom_hline(yintercept=0) + theme_minimal() + 
   theme(panel.background=element_rect(fill=NA))
 
-results <- fluorescence.enhancement(d=seq(1,300, length=300), 
-                                    thetaex=seq(51, 54, length=300)*pi/180,
-                                    thetafluo = 52.3*pi/180,
-                                    Nquadrature1 = 15, Nquadrature2 = 135,
-                                    Nquadrature3 = 135, GL=TRUE)
-            
+results <- model(d=seq(1,300, length=300), 
+                 thetaex=seq(51, 54, length=300)*pi/180,
+                 thetafluo = 52.3*pi/180,
+                 Nquadrature1 = 15, Nquadrature2 = 135,
+                 Nquadrature3 = 135, GL=TRUE)
+
 m <- subset(results, variable == "F.perp")
 ggplot(m, aes(d, thetaex*180/pi, fill=value)) + geom_raster()+
   scale_x_continuous("distance /nm", expand=c(0,0), lim=c(0, max(results$d)))+

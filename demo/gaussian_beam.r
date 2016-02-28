@@ -75,8 +75,8 @@ all <- mdply(params, simulation)
 
 ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
   geom_line() + 
-  geom_vline(aes(x=0,y=NULL),lty=2) +
-  geom_hline(aes(x=0,yintercept=maxi),lty=3) +
+  geom_vline(aes(xintercept=0),lty=2) +
+  geom_hline(aes(yintercept=maxi),lty=3) +
   annotate("text", label="plane-wave", y=maxi, x=-2.5, vjust=1, fontface="italic") +
   labs(x=expression(x/w[0]), y=expression("|E|"^2), 
        colour=expression(w[0]/mu*m)) +

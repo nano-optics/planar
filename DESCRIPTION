@@ -17,7 +17,8 @@ Description: Solves the electromagnetic problem of reflection and transmission
     computed are the decay rates and emission profile for a dipolar emitter
     near a multilayer structure.
 SystemRequirements: GNU make
-Version: 1.5.2
+Version: 1.6
+Encoding: UTF-8
 VignetteBuilder: knitr
 LazyData: true
 Depends:
@@ -28,14 +29,12 @@ Imports:
     statmod,
     cubature,
     reshape2,
-    plyr
+    plyr,
+    ggplot2
 Suggests:
-    ggplot2,
     Hmisc,
     grid,
     gridExtra,
     lattice,
     knitr,
     testthat
-RcppModules: planar, gaussian, collection
-Encoding: UTF-8

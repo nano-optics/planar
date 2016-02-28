@@ -1,10 +1,9 @@
 Package: planar
 Maintainer: Baptiste Auguie <baptiste.auguie@gmail.com>
-Title: Multilayer optics
+Title: Multilayer Optics
 LinkingTo: Rcpp, RcppArmadillo
 Type: Package
 URL: https://github.com/baptiste/planar
-DOI: http://dx.doi.org/10.5281/zenodo.11419
 LazyLoad: yes
 Authors@R: c(person("Baptiste", "Auguie", email = "baptiste.auguie@gmail.com",
     role = c("aut", "cre"), comment = "Some functions ported from the original
@@ -12,10 +11,7 @@ Authors@R: c(person("Baptiste", "Auguie", email = "baptiste.auguie@gmail.com",
     "Johnson", role = c("aut", "cph"), comment = "C code for the cubature
     library"))
 License: GPL-3
-Description: Solves the electromagnetic problem of reflection and transmission
-    of a plane wave or a gaussian beam, at a planar multilayer interface. Also
-    computed are the decay rates and emission profile for a dipolar emitter
-    near a multilayer structure.
+Description: Solves the electromagnetic problem of reflection and transmission at a planar multilayer interface. Also computed are the decay rates and emission profile for a dipolar emitter.
 SystemRequirements: GNU make
 Version: 1.6
 Encoding: UTF-8

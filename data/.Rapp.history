@@ -1,0 +1,2 @@
+load("/Users/baptiste/Documents/github/planar/data/palettes.rda")
+ls()

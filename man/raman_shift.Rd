@@ -7,12 +7,12 @@
 raman_shift(laser = c(514, 632.8), shift = c(520, 610))
 }
 \arguments{
-\item{laser}{}
+\item{laser}{vector of laser wavelengths in nm}
 
-\item{shift}{}
+\item{shift}{vector of Raman shifts in cm-1}
 }
 \value{
-matrix
+matrix of shifted wavelengths (all combinations)
 }
 \description{
 raman_shift

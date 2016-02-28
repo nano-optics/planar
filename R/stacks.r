@@ -156,8 +156,6 @@ dbr_stack <- function(lambda0=630,
 ##' @param d2 even layer thickness in nm
 ##' @param N number of layers, overwrites pairs
 ##' @param pairs number of pairs
-##' @param nx1 real refractive index for last odd layer
-##' @param nx2 real refractive index for last even layer
 ##' @param dx1 variation of last odd layer thickness in nm
 ##' @param dx2 variation of last even layer thickness in nm
 ##' @param dm thickness of metal layer
@@ -226,8 +224,6 @@ tamm_stack <- function(lambda0=630,
 ##' @param d2 even layer thickness in nm
 ##' @param N number of layers, overwrites pairs
 ##' @param pairs number of pairs
-##' @param nx1 real refractive index for last odd layer
-##' @param nx2 real refractive index for last even layer
 ##' @param dx1 variation of last odd layer thickness in nm
 ##' @param dx2 variation of last even layer thickness in nm
 ##' @param dm thickness of metal layer
@@ -273,8 +269,6 @@ tamm_stack_ir <- function(lambda0=950,
 ##' @param d2 even layer thickness in nm
 ##' @param N number of layers, overwrites pairs
 ##' @param pairs number of pairs
-##' @param nx1 real refractive index for last odd layer
-##' @param nx2 real refractive index for last even layer
 ##' @param dx1 variation of last odd layer thickness in nm
 ##' @param dx2 variation of last even layer thickness in nm
 ##' @param dm thickness of metal layer

@@ -39,10 +39,6 @@ tamm_stack_porous(lambda0 = 600, n1 = 1.72, n2 = 1.28,
 \item{nright}{refractive index of outer medium}
 
 \item{...}{ignored}
-
-\item{nx1}{real refractive index for last odd layer}
-
-\item{nx2}{real refractive index for last even layer}
 }
 \value{
 list of class 'stack'

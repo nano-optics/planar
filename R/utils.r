@@ -1,3 +1,5 @@
+
+
 test_complex <- function (x) any(Im(x) != 0)
 
 is.metal <- function(x){
@@ -124,9 +126,9 @@ Curry <- function (FUN, ...)
 ##'
 ##' converts Raman shift to wavelength
 ##' @title sort_factor
-##' @param laser 
-##' @param shift 
-##' @return matrix
+##' @param laser vector of laser wavelengths in nm
+##' @param shift vector of Raman shifts in cm-1
+##' @return matrix of shifted wavelengths (all combinations)
 ##' @export
 ##' @author Baptiste Auguie
 raman_shift <- function(laser=c(514, 632.8), shift = c(520, 610)){

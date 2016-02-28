@@ -40,10 +40,6 @@ tamm_stack(lambda0 = 630, n1 = 1.28, n2 = 1.72, d1 = lambda0/4/n1,
 \item{nright}{refractive index of outer medium}
 
 \item{...}{ignored}
-
-\item{nx1}{real refractive index for last odd layer}
-
-\item{nx2}{real refractive index for last even layer}
 }
 \value{
 list of class 'stack'

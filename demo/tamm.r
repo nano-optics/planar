@@ -1,9 +1,10 @@
 # ---- setup -----
 library(planar)
-opts_chunk$set(fig.path="sppdispersion/",
+opts_chunk$set(fig.path="tamm/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
+
 # prettier palette
 palette(palette_tamm)
 
@@ -14,9 +15,6 @@ scale_fill_discrete <- function(...)
   scale_fill_manual(..., values=palette())
 
 # ---- structure -----
-dbr <- dbr_stack()
-autoplot(dbr)
-
 
 tamm <- tamm_stack_ir(pairs=13, dm=100)
 (p <- autoplot(tamm))

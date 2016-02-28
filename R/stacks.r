@@ -46,11 +46,13 @@ c.stack <- function(..., recursive = FALSE){
   structure(ll, class="stack")
 }
 
+##' @importFrom utils str
 ##' @export
 print.stack <- function(x, ...){
   str(x)
 }
 
+##' @importFrom graphics plot rect
 ##' @export
 plot.stack <- function(x, ...){
   xx <- c(0, cumsum(x[['thickness']]))

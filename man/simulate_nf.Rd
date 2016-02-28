@@ -9,6 +9,10 @@ simulate_nf(..., s = NULL, fun = tamm_stack, wavelength = 630,
   field = FALSE)
 }
 \arguments{
+\item{...}{further arguments passed to fun}
+
+\item{s}{stack (optional)}
+
 \item{fun}{function returning a stack}
 
 \item{wavelength}{numeric vector}
@@ -16,6 +20,8 @@ simulate_nf(..., s = NULL, fun = tamm_stack, wavelength = 630,
 \item{angle}{incident angle in radians}
 
 \item{polarisation}{p or s}
+
+\item{dmax}{maximum distance from stack boundary}
 
 \item{res}{number of points}
 

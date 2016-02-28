@@ -8,6 +8,10 @@ simulate_ff(..., s = NULL, fun = tamm_stack, wavelength = seq(400, 1000),
   angle = 0, polarisation = c("p", "s"))
 }
 \arguments{
+\item{...}{further arguments passed to fun}
+
+\item{s}{stack (optional)}
+
 \item{fun}{function returning a stack}
 
 \item{wavelength}{numeric vector}

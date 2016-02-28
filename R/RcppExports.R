@@ -9,6 +9,14 @@ cpp_field_collection <- function(r2, k0, psi, omega, epsilon, thickness, maxEval
     .Call('planar_cpp_field_collection', PACKAGE = 'planar', r2, k0, psi, omega, epsilon, thickness, maxEval, reqAbsError, tol, progress)
 }
 
+cpp_layer_fresnel <- function(k0, kx, epsilon, thickness) {
+    .Call('planar_cpp_layer_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness)
+}
+
+cpp_recursive_fresnel <- function(k0, kx, epsilon, thickness, polarisation) {
+    .Call('planar_cpp_recursive_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness, polarisation)
+}
+
 integrand_gb_ml <- function(rt, r2, k0, psi, alpha, w0, epsilon, thickness) {
     .Call('planar_integrand_gb_ml', PACKAGE = 'planar', rt, r2, k0, psi, alpha, w0, epsilon, thickness)
 }
@@ -25,23 +33,34 @@ cpp_field_gb_ml <- function(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval,
     .Call('planar_cpp_field_gb_ml', PACKAGE = 'planar', r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress)
 }
 
-cpp_layer_fresnel <- function(k0, kx, epsilon, thickness) {
-    .Call('planar_cpp_layer_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness)
+#' @title Transfer matrix formalism for multilayer stacks
+#' @description Full calculation for multiple wavelengths
+#' @param k0 vector of wavenumbers
+#' @param kx complex matrix of incident k parallel
+#' @param epsilon complex matrix of epsilon
+#' @param thickness vector of thicknesses
+#' @param z vector of positions
+#' @param psi scalar polarisation angle
+#' @param intensity boolean: also return intensities
+#' @return list with rs, rp, ts, tp, I (optional)
+#' @describeIn multilayer full multi
+#' @family multilayer
+cpp_multilayer <- function(k0, kx, epsilon, thickness, z, psi, intensity) {
+    .Call('planar_cpp_multilayer', PACKAGE = 'planar', k0, kx, epsilon, thickness, z, psi, intensity)
 }
 
+#' @title Transfer matrix formalism for multilayer stacks
+#' @description Field calculation for one wavelength
+#' @param k0 vector of wavenumbers
+#' @param kx complex matrix of incident k parallel
+#' @param epsilon complex matrix of epsilon
+#' @param thickness vector of thicknesses
+#' @param z vector of positions
+#' @param psi scalar polarisation angle
+#' @return list with rs, rp, ts, tp, I
+#' @describeIn multilayer full multi
+#' @family multilayer
 cpp_multilayer_field <- function(k0, kx, epsilon, thickness, z, psi) {
     .Call('planar_cpp_multilayer_field', PACKAGE = 'planar', k0, kx, epsilon, thickness, z, psi)
-}
-
-cpp_multilayer_full <- function(k0, kx, epsilon, thickness, z, psi) {
-    .Call('planar_cpp_multilayer_full', PACKAGE = 'planar', k0, kx, epsilon, thickness, z, psi)
-}
-
-cpp_multilayer <- function(k0, kx, epsilon, thickness, polarisation) {
-    .Call('planar_cpp_multilayer', PACKAGE = 'planar', k0, kx, epsilon, thickness, polarisation)
-}
-
-cpp_recursive_fresnel <- function(k0, kx, epsilon, thickness, polarisation) {
-    .Call('planar_cpp_recursive_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness, polarisation)
 }
 

@@ -1,3 +1,18 @@
+##' invert the description of a multilayer to simulate the opposite direction of incidence
+##'
+##' inverts list of epsilon and thickness of layers
+##' @title invert_stack
+##' @param p list
+##' @return list
+##' @export
+##' @family helping_functions
+##' @author Baptiste Auguie
+invert_stack <- function(p){
+  p[["epsilon"]] <- rev(p[["epsilon"]])
+  p[["thickness"]] <- rev(p[["thickness"]])
+  p
+}
+
 
 check_stack <- function(s){
   inherits(s, "stack") && length(s[["thickness"]] == length(s[["epsilon"]]))
@@ -78,7 +93,7 @@ autoplot.stack <- function(object, ...){
 ##' returns a stack describing a single layer
 ##' @title layer_stack
 ##' @export
-##' @param epsilondielectric function (numeric, character, or complex)
+##' @param epsilon dielectric function (numeric, character, or complex)
 ##' @param thickness layer thickness in nm
 ##' @param ... ignored
 ##' @return list of class 'stack'
@@ -162,7 +177,10 @@ dbr_stack <- function(lambda0=630,
 ##' @param metal character name of dielectric function
 ##' @param nleft refractive index of entering medium
 ##' @param nright refractive index of outer medium
+##' @param dleft distance from the left side for visualisation
+##' @param dright distance from the right side for visualisation
 ##' @param position metal position relative to DBR
+##' @param incidence direction of incidence
 ##' @param ... ignored
 ##' @return list of class 'stack'
 ##' @author baptiste Auguie
@@ -231,6 +249,7 @@ tamm_stack <- function(lambda0=630,
 ##' @param nleft refractive index of entering medium
 ##' @param nright refractive index of outer medium
 ##' @param position metal position relative to DBR
+##' @param incidence direction of incidence
 ##' @param ... ignored
 ##' @return list of class 'stack'
 ##' @author baptiste Auguie
@@ -276,6 +295,7 @@ tamm_stack_ir <- function(lambda0=950,
 ##' @param nleft refractive index of entering medium
 ##' @param nright refractive index of outer medium
 ##' @param position metal position relative to DBR
+##' @param incidence direction of incidence
 ##' @param ... ignored
 ##' @return list of class 'stack'
 ##' @author baptiste Auguie

@@ -34,6 +34,8 @@ tamm_stack_porous(lambda0 = 600, n1 = 1.72, n2 = 1.28,
 
 \item{position}{metal position relative to DBR}
 
+\item{incidence}{direction of incidence}
+
 \item{nleft}{refractive index of entering medium}
 
 \item{nright}{refractive index of outer medium}

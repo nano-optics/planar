@@ -3,6 +3,8 @@
 ##' wrapper around recursive_fresnelcpp for a stack structure
 ##' @title simulate_ff
 ##' @param fun function returning a stack
+##' @param ... further arguments passed to fun
+##' @param s stack (optional)
 ##' @param wavelength numeric vector
 ##' @param angle incident angle in radians
 ##' @param polarisation p or s
@@ -44,10 +46,13 @@ simulate_ff <- function(..., s=NULL, fun = tamm_stack,
 ##' wrapper around multilayer_field for a stack structure
 ##' @title simulate_nf
 ##' @param fun function returning a stack
+##' @param ... further arguments passed to fun
+##' @param s stack (optional)
 ##' @param wavelength numeric vector
 ##' @param angle incident angle in radians
 ##' @param polarisation p or s
 ##' @param res number of points
+##' @param dmax maximum distance from stack boundary
 ##' @param field logical, return the real electric field
 ##' @return data.frame
 ##' @export

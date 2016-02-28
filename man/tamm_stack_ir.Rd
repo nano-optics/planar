@@ -34,6 +34,8 @@ tamm_stack_ir(lambda0 = 950, n1 = 3, n2 = 3.7, d1 = lambda0/4/n1,
 
 \item{position}{metal position relative to DBR}
 
+\item{incidence}{direction of incidence}
+
 \item{nleft}{refractive index of entering medium}
 
 \item{nright}{refractive index of outer medium}

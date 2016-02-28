@@ -7,11 +7,11 @@
 layer_stack(epsilon = "epsAu", thickness = 50, ...)
 }
 \arguments{
+\item{epsilon}{dielectric function (numeric, character, or complex)}
+
 \item{thickness}{layer thickness in nm}
 
 \item{...}{ignored}
-
-\item{epsilondielectric}{function (numeric, character, or complex)}
 }
 \value{
 list of class 'stack'

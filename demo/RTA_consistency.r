@@ -29,22 +29,22 @@ RTA_comparison <- function(angle = c(10,80),
   res1 <- multilayer(wavelength, angle=angle_r, epsilon=epsilon, 
                      thickness=thickness, polarisation=polarisation, ...)
   res2 <- multilayercpp(wavelength, angle=angle_r, epsilon=epsilon, 
-                        thickness=thickness, polarisation=polarisation, ...)
+                        thickness=thickness, ...)
   res3 <- recursive_fresnel(wavelength, angle=angle_r, epsilon=epsilon, 
                             thickness=thickness, polarisation=polarisation, ...)
   res4 <- recursive_fresnelcpp(wavelength, angle=angle_r, epsilon=epsilon, 
                                thickness=thickness, polarisation=polarisation, ...)
   
   A1 <- as.vector(res1[["A"]])
-  A2 <- as.vector(res2[["A"]])
+  A2 <- if(polarisation=="p") as.vector(res2[["Ap"]]) else as.vector(res2[["As"]])
   A3 <- as.vector(res3[["A"]])
   A4 <- as.vector(res4[["A"]])
   R1 <- as.vector(res1[["R"]])
-  R2 <- as.vector(res2[["R"]])
+  R2 <- if(polarisation=="p") as.vector(res2[["Rp"]]) else as.vector(res2[["Rs"]])
   R3 <- as.vector(res3[["R"]])
   R4 <- as.vector(res4[["R"]])
   T1 <- as.vector(res1[["T"]])
-  T2 <- as.vector(res2[["T"]])
+  T2 <- if(polarisation=="p") as.vector(res2[["Tp"]]) else as.vector(res2[["Ts"]])
   T3 <- as.vector(res3[["T"]])
   T4 <- as.vector(res4[["T"]])
   

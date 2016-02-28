@@ -15,18 +15,18 @@ using namespace std;
 
 
 
-//' @title Transfer matrix formalism for multilayer stacks
-//' @description Full calculation for multiple wavelengths
-//' @param k0 vector of wavenumbers
-//' @param kx complex matrix of incident k parallel
-//' @param epsilon complex matrix of epsilon
-//' @param thickness vector of thicknesses
-//' @param z vector of positions
-//' @param psi scalar polarisation angle
-//' @param intensity boolean: also return intensities
-//' @return list with rs, rp, ts, tp, I (optional)
-//' @describeIn multilayer full multi
-//' @family multilayer
+// @title Transfer matrix formalism for multilayer stacks
+// @description Full calculation for multiple wavelengths
+// @param k0 vector of wavenumbers
+// @param kx complex matrix of incident k parallel
+// @param epsilon complex matrix of epsilon
+// @param thickness vector of thicknesses
+// @param z vector of positions
+// @param psi scalar polarisation angle
+// @param intensity boolean: also return intensities
+// @return list with rs, rp, ts, tp, I (optional)
+// @describeIn multilayer full multi
+// @family multilayer
 // [[Rcpp::export]]
 Rcpp::List cpp_multilayer(const arma::colvec& k0,
 			  const arma::cx_mat& kx,
@@ -228,17 +228,11 @@ if(intensity){
 }
 
 
-//' @title Transfer matrix formalism for multilayer stacks
-//' @description Field calculation for one wavelength
-//' @param k0 vector of wavenumbers
-//' @param kx complex matrix of incident k parallel
-//' @param epsilon complex matrix of epsilon
-//' @param thickness vector of thicknesses
-//' @param z vector of positions
-//' @param psi scalar polarisation angle
-//' @return list with rs, rp, ts, tp, I
-//' @describeIn multilayer full multi
-//' @family multilayer
+// @title Transfer matrix formalism for multilayer stacks
+// @description Field calculation for one wavelength
+// @return list with rs, rp, ts, tp, I
+// @describeIn multilayer full multi
+// @family multilayer
 // [[Rcpp::export]]
 Rcpp::List cpp_multilayer_field(const double k0,
 			    const double kx,

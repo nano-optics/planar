@@ -412,12 +412,12 @@ multilayerfull <- function(wavelength = 2*pi/k0, k0 = 2*pi/wavelength,
             ncol(kx) == length(q))
   
   ## call the C++ function
-  res <- cpp_multilayerfull(as.vector(k0), 
+  res <- cpp_multilayer(as.vector(k0), 
                                as.matrix(kx), 
                                as.matrix(epsilon),
                                as.vector(thickness), 
                                as.vector(z),
-                               as.double(psi))
+                               as.double(psi), TRUE)
   
   ts <- drop(res$ts)
   rs <- drop(res$rs)  

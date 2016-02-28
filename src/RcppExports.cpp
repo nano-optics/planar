@@ -71,9 +71,9 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// integrand_gb_ml
-arma::colvec integrand_gb_ml(const arma::colvec& rt, const arma::colvec& r2, const double k0, const double psi, const double alpha, const double w0, const arma::cx_vec& epsilon, const arma::vec& thickness);
-RcppExport SEXP planar_integrand_gb_ml(SEXP rtSEXP, SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP alphaSEXP, SEXP w0SEXP, SEXP epsilonSEXP, SEXP thicknessSEXP) {
+// cpp_integrand_gb_ml
+arma::colvec cpp_integrand_gb_ml(const arma::colvec& rt, const arma::colvec& r2, const double k0, const double psi, const double alpha, const double w0, const arma::cx_vec& epsilon, const arma::vec& thickness);
+RcppExport SEXP planar_cpp_integrand_gb_ml(SEXP rtSEXP, SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP alphaSEXP, SEXP w0SEXP, SEXP epsilonSEXP, SEXP thicknessSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -85,13 +85,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type w0(w0SEXP);
     Rcpp::traits::input_parameter< const arma::cx_vec& >::type epsilon(epsilonSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type thickness(thicknessSEXP);
-    __result = Rcpp::wrap(integrand_gb_ml(rt, r2, k0, psi, alpha, w0, epsilon, thickness));
+    __result = Rcpp::wrap(cpp_integrand_gb_ml(rt, r2, k0, psi, alpha, w0, epsilon, thickness));
     return __result;
 END_RCPP
 }
-// integrand_gb_layer
-arma::colvec integrand_gb_layer(const arma::colvec& rt, const arma::colvec& r2, const double ki, const double psi, const double alpha, const double w0, const double ni, const double no, const arma::cx_double nl, const double d);
-RcppExport SEXP planar_integrand_gb_layer(SEXP rtSEXP, SEXP r2SEXP, SEXP kiSEXP, SEXP psiSEXP, SEXP alphaSEXP, SEXP w0SEXP, SEXP niSEXP, SEXP noSEXP, SEXP nlSEXP, SEXP dSEXP) {
+// cpp_integrand_gb_layer
+arma::colvec cpp_integrand_gb_layer(const arma::colvec& rt, const arma::colvec& r2, const double ki, const double psi, const double alpha, const double w0, const double ni, const double no, const arma::cx_double nl, const double d);
+RcppExport SEXP planar_cpp_integrand_gb_layer(SEXP rtSEXP, SEXP r2SEXP, SEXP kiSEXP, SEXP psiSEXP, SEXP alphaSEXP, SEXP w0SEXP, SEXP niSEXP, SEXP noSEXP, SEXP nlSEXP, SEXP dSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -105,7 +105,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const double >::type no(noSEXP);
     Rcpp::traits::input_parameter< const arma::cx_double >::type nl(nlSEXP);
     Rcpp::traits::input_parameter< const double >::type d(dSEXP);
-    __result = Rcpp::wrap(integrand_gb_layer(rt, r2, ki, psi, alpha, w0, ni, no, nl, d));
+    __result = Rcpp::wrap(cpp_integrand_gb_layer(rt, r2, ki, psi, alpha, w0, ni, no, nl, d));
     return __result;
 END_RCPP
 }

@@ -74,7 +74,10 @@ fortify.stack <- function(model, data, ...){
   
 }
 
-##' @importFrom ggplot2 autoplot
+# silly visible binding 
+xmin <- xmax <- material <- NULL
+
+##' @importFrom ggplot2 autoplot aes fortify expand_limits theme scale_x_continuous scale_y_continuous ggplot geom_rect
 ##' @export
 autoplot.stack <- function(object, ...){
   d <- fortify(object, ...)

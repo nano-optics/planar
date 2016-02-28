@@ -30,7 +30,7 @@ using namespace std;
   // thickness
   // returns a scalar intensity
   // [[Rcpp::export]]
-arma::colvec integrand_gb_ml(const arma::colvec& rt, const arma::colvec& r2, const double k0,
+arma::colvec cpp_integrand_gb_ml(const arma::colvec& rt, const arma::colvec& r2, const double k0,
 				const double psi, const double alpha, const double w0,
 				const arma::cx_vec& epsilon, const arma::vec& thickness)
   {
@@ -150,7 +150,7 @@ arma::colvec integrand_gb_ml(const arma::colvec& rt, const arma::colvec& r2, con
 
 
 // [[Rcpp::export]]
-arma::colvec integrand_gb_layer(const arma::colvec& rt, const arma::colvec& r2, const double ki,
+arma::colvec cpp_integrand_gb_layer(const arma::colvec& rt, const arma::colvec& r2, const double ki,
 			  const double psi, const double alpha, const double w0,
 			  const double ni, const double no, const arma::cx_double nl, const double d)
   {
@@ -336,7 +336,7 @@ int fwrap(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *fv
   double d = params.thickness[1];
   double ki = params.k0 * ni;
 
-  res = integrand_gb_layer(xx, params.r2, ki, params.psi, params.alpha, params.w0, ni, no, nl, d);
+  res = cpp_integrand_gb_layer(xx, params.r2, ki, params.psi, params.alpha, params.w0, ni, no, nl, d);
 
   return 0;
 }
@@ -349,7 +349,7 @@ int fwrap2(unsigned ndim, const double *x, void *fdata, unsigned fdim, double *f
   arma::colvec xx(2);
   xx[0] = x[0]; xx[1]=x[1];
 
-  res = integrand_gb_ml(xx, params.r2, params.k0, params.psi, params.alpha, params.w0, params.epsilon, params.thickness);
+  res = cpp_integrand_gb_ml(xx, params.r2, params.k0, params.psi, params.alpha, params.w0, params.epsilon, params.thickness);
 
   return 0;
 }

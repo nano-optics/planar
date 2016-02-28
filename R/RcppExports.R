@@ -17,12 +17,12 @@ cpp_recursive_fresnel <- function(k0, kx, epsilon, thickness, polarisation) {
     .Call('planar_cpp_recursive_fresnel', PACKAGE = 'planar', k0, kx, epsilon, thickness, polarisation)
 }
 
-integrand_gb_ml <- function(rt, r2, k0, psi, alpha, w0, epsilon, thickness) {
-    .Call('planar_integrand_gb_ml', PACKAGE = 'planar', rt, r2, k0, psi, alpha, w0, epsilon, thickness)
+cpp_integrand_gb_ml <- function(rt, r2, k0, psi, alpha, w0, epsilon, thickness) {
+    .Call('planar_cpp_integrand_gb_ml', PACKAGE = 'planar', rt, r2, k0, psi, alpha, w0, epsilon, thickness)
 }
 
-integrand_gb_layer <- function(rt, r2, ki, psi, alpha, w0, ni, no, nl, d) {
-    .Call('planar_integrand_gb_layer', PACKAGE = 'planar', rt, r2, ki, psi, alpha, w0, ni, no, nl, d)
+cpp_integrand_gb_layer <- function(rt, r2, ki, psi, alpha, w0, ni, no, nl, d) {
+    .Call('planar_cpp_integrand_gb_layer', PACKAGE = 'planar', rt, r2, ki, psi, alpha, w0, ni, no, nl, d)
 }
 
 cpp_field_gb_layer <- function(r2, k0, psi, alpha, w0, epsilon, thickness, maxEval, reqAbsError, tol, progress) {

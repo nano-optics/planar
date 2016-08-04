@@ -1,9 +1,19 @@
-Fresnel formulae
-========================================================
-<!-- 
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{fresnel}
--->
+---
+title: "Fresnel formulae"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "baptiste Auguié"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    fig_width: 7
+    fig_height: 4
+    fig_caption: true
+vignette: >
+  %\VignetteIndexEntry{fresnel}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
 
 ## Single interface
 

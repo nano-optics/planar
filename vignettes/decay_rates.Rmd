@@ -1,9 +1,19 @@
-Decay rates of a dipole near a planar multilayer stack
-========================================================
-<!-- 
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{decay_rates}
--->
+---
+title: "Decay rates of a dipole near a planar multilayer stack"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "baptiste Auguié"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    fig_width: 7
+    fig_height: 4
+    fig_caption: true
+vignette: >
+  %\VignetteIndexEntry{decay_rates}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
 
 Following (Le Ru, Etchegoin, p. 571), and (Novotny, Hecht pp. 335--360), the enhancement factor for the total decay rate for a dipole perpendicular to the interface is
 

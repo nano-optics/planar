@@ -1,9 +1,21 @@
-Near-field profile under gaussian-beam illumination
-========================================================
-<!-- 
-%\VignetteIndexEntry{gaussian beam}
-%\VignetteEngine{knitr::knitr}
--->
+---
+title: "Near-field profile under gaussian-beam illumination"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "baptiste Auguié"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    fig_width: 7
+    fig_height: 4
+    fig_caption: true
+vignette: >
+  %\VignetteIndexEntry{gaussian beam}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+
 ```{r demo, message=FALSE, echo=FALSE}
 library(knitr)
 

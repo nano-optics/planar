@@ -19,15 +19,17 @@ vignette: >
 ```{r demo, message=FALSE, echo=FALSE}
 library(knitr)
 
-opts_chunk$set(cache=TRUE, cache.path="gaussian/",
+opts_chunk$set(cache=TRUE, 
                warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
 
 library(planar)
 library(ggplot2)
 library(grid)
 library(plyr)
-
 ```
+
+## Theory
+
 We consider a planar interface, possibly with multiple layers, illuminated by a gaussian beam from an incident medium ($i$). We seek to calculate the near-field profile in the outer medium ($o$).
 
 ### Description of the incident beam
@@ -106,42 +108,11 @@ k_{iy1} &=k_i \rho\sin\theta\\
 $$
 In practice, and to reduce the computation time, the range of integration for $\rho$ is restricted to $[0,  6/(k_i w_0)]$; this cutoff value for $\rho$ was chosen such that the corresponding weight factor $e^{ -\frac{w_0^2}{4}k_i^2\rho^2}$ in the integrand is reduced by a factor $\exp(-3^2)\sim 10^{-4}$  compared to the central ray.
 
-### Numerical implementation and code considerations
+## Numerical implementation and code considerations
 
-The code is split into 2 main functions,
+The code is split into 2 main functions. `integrand_gb_layer()` is the integrand, that calculates the transmitted electric field at a point r2(x,y,z) given a value of $rt = (\rho, \theta)$, and the parameters of the system. The complex electric field is reshaped into a 6-vector with real components (interlaced) suitable for 2D adaptive numerical quadrature (routine \texttt{hcubature}). The integration routine is called sequentially for $N$ points r2 in the function `field_gb_layer()`, returning a $N\times 3$ complex matrix of electric fields. If points in r2 lie before the interface (negative z), the electric field is calculated as the sum of the reflected and incident fields. It should be noted, however, that points lying inside the multilayer structure ($0<z<d_{\mathrm{max}}$) will not return the correct electric field, which cannot be (easily) inferred from the Fresnel coefficients alone. To compute the electric field at every point in space, a transfer matrix method can be used instead. This was implemented in the functions `integrand_gb_ml` and `field_gb_ml`, calling `multilayer_field` for the transfer matrix calculation, at the expense of a computional time ($\sim 1.5$ times slower).
 
-```
-colvec integrand_gb_layer(const colvec& rt, 
-                          const colvec& r2, 
-                          const double ki, 
-                          const double psi, 
-                          const double alpha, 
-                          const double w0, 
-                          const double ni, 
-                          const double no, 
-                          const cx_double nl, 
-                          const double d)
-```
-
-is the integrand, that calculates the transmitted electric field at a point r2(x,y,z) given a value of $rt = (\rho, \theta)$, and the parameters of the system. The complex electric field is reshaped into a 6-vector with real components (interlaced) suitable for 2D adaptive numerical quadrature (routine \texttt{hcubature}). The integration routine is called sequentially for $N$ points r2 in the function
-
-```
-cx_mat field_gb_layer(const mat& r2, 
-                      const double k0, 
-                      const double psi, 
-                      const double alpha, 
-                      const double w0, 
-                      const cx_vec& epsilon, 
-                      const vec& thickness, 
-                      const int maxEval, 
-                      const double reqAbsError, 
-                      const double tol, 
-                      bool progress)
-```
-
-returning a $N\times 3$ complex matrix of electric fields. If points in r2 lie before the interface (negative z), the electric field is calculated as the sum of the reflected and incident fields. It should be noted, however, that points lying inside the multilayer structure ($0<z<d_{\mathrm{max}}$) will not return the correct electric field, which cannot be (easily) inferred from the Fresnel coefficients alone. To compute the electric field at every point in space, a transfer matrix method can be used instead. This was implemented in the functions `integrand_gb_ml` and `field_gb_ml`, calling `multilayer_field` for the transfer matrix calculation, at the expense of a computional time ($\sim 1.5$ times slower).
-
-### Validation of the results
+## Validation of the results
 
 Surprisingly few results are available in the literature. We can first check that the limit of large beam waist agrees with the simpler case of plane-wave illumination.
 
@@ -241,6 +212,93 @@ ggplot(all, aes(x/1000, field))+ facet_grid(d~., scales="free")+
   theme()
 ```
 
+## Examples
+
+The calculation can produce near-field maps.
+
+```{r map}
+w0 <- 2000
+xyz <- as.matrix(expand.grid(x=seq(-3*w0, 5*w0, length=50), 
+                             y=seq(-3*w0, 3*w0, length=50),
+                             z=51))
+res <- gaussian_near_field_ml(xyz, epsilon=struct$epsilon,
+                              wavelength=struct$wavelength, 
+                              thickness=struct$thickness,
+                              w0=w0, alpha=spp, maxEval=600)
+
+m <- data.frame(xyz, field=res)
+
+  ggplot(m, aes(x, y, fill=field))+
+  geom_raster(interpolate=TRUE) +
+  scale_x_continuous(expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0)) +
+  labs(x=expression("x /nm"), fill=expression("|E|"^2), 
+       y=expression("y /nm")) +
+  coord_fixed()
+```
+We can also visualise the field pattern along the depth of the sample. At the optimum incidence angle for SPP excitation, the colour scale is stretched by the strong field enhancement in the region immediately above the metal layer. For more visually-interesting plot, we consider the less optimal coupling at 43 degrees of incidence, and a relatively narrow beam. 
+
+```{r map2}
 
 
+simulation_bottom <- function(w0=1e4, angle=0,
+                              wavelength=632.8,
+                              epsilon=c(1.5^2, epsAg(wavelength)$epsilon, 1.0^2),
+                              thickness = c(0, 50,0)){
+  angle <- angle*pi/180
+  
+  xyz <- as.matrix(expand.grid(x=seq(-2*w0-10*wavelength*sin(angle),
+                                     2*w0+50*wavelength, length=100), 
+                               y=0,
+                               z=seq(-15*wavelength, 2*wavelength, length=100)))
+  
+  res <- gaussian_near_field_ml(xyz, wavelength=wavelength,
+                              epsilon=unlist(epsilon), thickness=thickness,
+                              w0=w0, alpha=angle, maxEval=500)
+  
+  data.frame(xyz, field=res)
+}
 
+
+simulation_top <- function(w0=1e4, angle=0,
+                       wavelength=632.8,
+                       epsilon=c(1.5^2, epsAg(wavelength)$epsilon, 1.0^2),
+                       thickness = c(0, 50,0)){
+  angle <- angle*pi/180
+  
+  xyz <- as.matrix(expand.grid(x=seq(-2*w0,
+                                     2*w0+50*wavelength, length=100), 
+                               y=0,
+                               z=seq(0, wavelength, length=100)))
+  
+  res <- gaussian_near_field_ml(xyz, wavelength=wavelength,
+                              epsilon=unlist(epsilon), thickness=thickness,
+                              w0=w0, alpha=angle, maxEval=500)
+
+  
+  
+  data.frame(xyz, field=res)
+}
+
+params <- expand.grid(w0=2000,
+                      angle=43)
+
+
+bottom <- mdply(params, simulation_bottom, .progress="none")
+top <- mdply(params, simulation_top, .progress="none")
+
+both <- rbind(bottom, top)
+
+ggplot(top, aes(x, z, fill=field))+
+  # facet_grid(angle~w0, scales="free")+
+  geom_raster(data = top, interpolate=TRUE) +
+  geom_raster(data = bottom, interpolate=TRUE) +
+  scale_x_continuous(expand=c(0,0))+
+  scale_y_continuous(expand=c(0,0)) +
+  labs(x=expression("x /nm"), fill=expression("|E|"^2),
+       y=expression("z /nm")) +
+  coord_equal()
+
+```
+
+We see a sizable reflection in the incident medium, showing horizontal bands of interference in the region where the incident and reflected fields overlap. Excitation of SPPs yields a localised field profile above the metal layer, but shifted from the center of the incident beam. As SPPs propagate for several microns, the region of enhanced field is stretched in the (positive) x direction.

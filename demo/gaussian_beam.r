@@ -41,7 +41,7 @@ qplot(results$angle*180/pi, enhancement, geom="line")+
 xyz <- as.matrix(expand.grid(x=c(0, 5000, 10000), y=0, 
                              z=seq(-100, 500, length=100)))
 
-res <- gaussian_near_field_ml(xyz, epsilon=struct$epsilon,
+res <- gaussian_near_field_layer(xyz, epsilon=struct$epsilon,
                               wavelength=struct$wavelength, 
                               thickness=struct$thickness,
                               w0=5e3, alpha=spp, maxEval=500)

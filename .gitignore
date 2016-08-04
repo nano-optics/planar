@@ -8,8 +8,6 @@ inst/wiki/*.md
 inst/wiki/*.html
 inst/wiki/gaussian/
 inst/tmp/old/
-vignettes/gaussian/
-vignettes/figure/
 
 
 *.gz
@@ -24,3 +22,6 @@ inst/tmp/testdipole.r
 vignettes/gaussian.md
 vignettes/gaussian.html
 .Rproj.user
+
+vignettes/gaussian_cache
+vignettes/gaussian_files

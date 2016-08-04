@@ -4,6 +4,7 @@ Title: Multilayer Optics
 LinkingTo: Rcpp, RcppArmadillo
 Type: Package
 URL: https://github.com/baptiste/planar
+BugReports: https://github.com/baptiste/planar/issues
 LazyLoad: yes
 Authors@R: c(person("Baptiste", "Auguie", email = "baptiste.auguie@gmail.com",
     role = c("aut", "cre"), comment = "Some functions ported from the original

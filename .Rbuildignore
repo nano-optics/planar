@@ -3,7 +3,7 @@
 .travis.yml
 travis-tool.sh
 inst/tmp/
-inst/tests/
+inst/testing/
 inst/checks/
 inst/wiki/
 inst/animation/

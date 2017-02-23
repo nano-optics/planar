@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • planar</title>
+<title>Near-field profile under gaussian-beam illumination • planar</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -54,17 +54,15 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1></h1>
+      <h1>Near-field profile under gaussian-beam illumination</h1>
+                        <h4 class="author">baptiste Auguié</h4>
             
+            <h4 class="date">24 February, 2017</h4>
           </div>
 
     
     
 <div class="contents">
-<div id="near-field-profile-under-gaussian-beam-illumination" class="section level2">
-<h2 class="hasAnchor">
-<html><body><a href="#near-field-profile-under-gaussian-beam-illumination" class="anchor"> </a></body></html>Near-field profile under gaussian-beam illumination</h2>
-<p><em>baptiste Auguié – 23 February, 2017</em></p>
 <p>Using the angular spectrum decomposition of a gaussian beam in a bundle of plane waves, the near-field profile is calculated on the transmitted side of a thin metal film illuminated under total internal reflection.</p>
 <p>First, we model the structure with plane-wave illumination, and find the angle corresponding to maximum field enhancement (coupling to SPPs in the Kretschmann configuration).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">struct &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">wavelength=</span><span class="fl">632.8</span>,
@@ -100,7 +98,6 @@ xyz &lt;-<span class="st"> </span><span class="kw">data.frame</span>(xyz, <span 
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="kw">expression</span>(<span class="st">"z /nm"</span>), <span class="dt">y=</span><span class="kw">expression</span>(<span class="kw">log</span>(<span class="st">"|E|"</span>^<span class="dv">2</span>)), 
        <span class="dt">colour=</span><span class="kw">expression</span>(<span class="st">"x /nm"</span>)) </code></pre></div>
 <p><img src="gaussianbeam/depth-1.png" width="672"> We observe that the field decays exponentially away from the gold/dielectric interface (<span class="math inline">\(z&gt;50\)</span>nm) with the same characteristic distance across the beam profile. The discontinuity at <span class="math inline">\(z=100\)</span>nm occurs because of the transition between two dielectrics with slightly different refractive index (1.1 and 1.0, respectively).</p>
-</div>
 <div id="coupling-to-spps" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#coupling-to-spps" class="anchor"> </a></body></html>Coupling to SPPs</h2>
@@ -163,8 +160,7 @@ m &lt;-<span class="st"> </span><span class="kw">data.frame</span>(xyz, <span cl
         <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#near-field-profile-under-gaussian-beam-illumination">Near-field profile under gaussian-beam illumination</a></li>
-      <li><a href="#coupling-to-spps">Coupling to SPPs</a></li>
+<li><a href="#coupling-to-spps">Coupling to SPPs</a></li>
       <li><a href="#d-map">2D map</a></li>
       </ul>
 </div>

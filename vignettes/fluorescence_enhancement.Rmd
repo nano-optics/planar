@@ -1,5 +1,19 @@
-## Fluorescence enhancement vs distance in the Kretschmann configuration
-_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+---
+title: "Fluorescence enhancement vs distance in the Kretschmann configuration"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "baptiste Auguié"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    fig_width: 7
+    fig_height: 4
+    fig_caption: true
+vignette: >
+  %\VignetteIndexEntry{fluorescence_enhancement}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
 
 ```{r demo, message=FALSE, echo=FALSE}
 knitr::read_demo("fluorescence_enhancement", package="planar")

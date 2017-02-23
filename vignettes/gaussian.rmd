@@ -1,5 +1,5 @@
 ---
-title: "Near-field profile under gaussian-beam illumination"
+title: "Gaussian-beam illumination: theory"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: "baptiste Auguié"
 output:
@@ -10,7 +10,7 @@ output:
     fig_height: 4
     fig_caption: true
 vignette: >
-  %\VignetteIndexEntry{gaussian beam}
+  %\VignetteIndexEntry{gaussian beam theory}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---

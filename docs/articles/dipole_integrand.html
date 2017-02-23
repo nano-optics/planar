@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • planar</title>
+<title>Visualisation of the power loss as a function of in-plane wavevector for a dipole near a thin metal film • planar</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -54,17 +54,15 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1></h1>
+      <h1>Visualisation of the power loss as a function of in-plane wavevector for a dipole near a thin metal film</h1>
+                        <h4 class="author">baptiste Auguié</h4>
             
+            <h4 class="date">24 February, 2017</h4>
           </div>
 
     
     
 <div class="contents">
-<div id="visualisation-of-the-power-loss-as-a-function-of-in-plane-wavevector-for-a-dipole-near-a-thin-metal-film" class="section level2">
-<h2 class="hasAnchor">
-<html><body><a href="#visualisation-of-the-power-loss-as-a-function-of-in-plane-wavevector-for-a-dipole-near-a-thin-metal-film" class="anchor"> </a></body></html>Visualisation of the power loss as a function of in-plane wavevector for a dipole near a thin metal film</h2>
-<p><em>baptiste Auguié – 23 February, 2017</em></p>
 <p>A dipole near a thin silver film can excite SPPs (on either side of the film, if sufficiently thin), resulting in a strong increase of the total decay rate. The calculation of Mtot requires an integral over the full spectrum of plane waves – propagating (q&lt;1) and evanescent (q&gt;1). Here we visualise the integrand as a function of wavelength and q.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">integrand &lt;-<span class="st"> </span>function(<span class="dt">d=</span><span class="dv">1</span>, q, <span class="dt">material=</span>epsAg, <span class="dt">wavelength=</span><span class="dv">500</span>,...){
   mat &lt;-<span class="st"> </span><span class="kw">material</span>(wavelength)
@@ -105,16 +103,9 @@ dimage &lt;-<span class="st"> </span><span class="kw">integrand</span>(<span cla
 <p><img src="dipoleintegrand/setup-2.png" width="960"></p>
 <p>At very large q, the system is well-described by quasi-static image dipole interaction with a slow decay. This results in a time-consuming integration for Mtot, unless special care is taken to transform the integrand; in <code><a href="../reference/dipole.html">dipole()</a></code>, the following transformation is used, <span class="math display">\[\int_a^\infty f(x)dx = \int_0^1 f(a + t/(1-t)). 1 / (1-t)^2 dt\]</span></p>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#visualisation-of-the-power-loss-as-a-function-of-in-plane-wavevector-for-a-dipole-near-a-thin-metal-film">Visualisation of the power loss as a function of in-plane wavevector for a dipole near a thin metal film</a></li>
-      </ul>
-</div>
       </div>
 
 </div>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • planar</title>
+<title>Reflectivity of a Bragg stack with varying number of layers • planar</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -54,20 +54,16 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1></h1>
+      <h1>Reflectivity of a Bragg stack with varying number of layers</h1>
+                        <h4 class="author">baptiste Auguié</h4>
             
+            <h4 class="date">24 February, 2017</h4>
           </div>
 
     
     
 <div class="contents">
-<div id="reflectivity-of-a-bragg-stack-with-varying-number-of-layers" class="section level2">
-<h2 class="hasAnchor">
-<html><body><a href="#reflectivity-of-a-bragg-stack-with-varying-number-of-layers" class="anchor"> </a></body></html>Reflectivity of a Bragg stack with varying number of layers</h2>
-<p><em>baptiste Auguié – 23 February, 2017</em></p>
 <p>Reproducing Fig. 6.6, p. 188 of Mac Leod’s Thin Film Optical Filters. The structure is a stack of <span class="math inline">\(\lambda/4\)</span> layers of alternating indices <span class="math inline">\(n_H\)</span> (high) and <span class="math inline">\(n_L\)</span> (low) on a glass substrate.</p>
-<pre><code>## Want to understand how all the pieces fit together? Buy the
-## ggplot2 book: http://ggplot2.org/book/</code></pre>
 <div id="setting-up" class="section level4">
 <h4 class="hasAnchor">
 <html><body><a href="#setting-up" class="anchor"> </a></body></html>Setting up</h4>
@@ -104,16 +100,9 @@ all$angle.d &lt;-<span class="st"> </span><span class="dv">180</span>/pi*all$ang
 <p>With increasing number of layers, the reflectivity stop-band becomes stronger, with a more rectangular transfer function. Side-bands also develop accordingly, however, with higher and higher frequency. The position of the stopband shifts with incident angle, as the projection of the k-vector determines the resonance condition.</p>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#reflectivity-of-a-bragg-stack-with-varying-number-of-layers">Reflectivity of a Bragg stack with varying number of layers</a></li>
-      </ul>
-</div>
       </div>
 
 </div>

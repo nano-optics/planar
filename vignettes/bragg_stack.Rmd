@@ -1,5 +1,19 @@
-## Reflectivity of a Bragg stack with varying number of layers
-_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+---
+title: "Reflectivity of a Bragg stack with varying number of layers"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "baptiste Auguié"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    fig_width: 7
+    fig_height: 4
+    fig_caption: true
+vignette: >
+  %\VignetteIndexEntry{braggstack}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
 
 ```{r demo, message=FALSE, echo=FALSE}
 knitr::read_demo("bragg_stack", package="planar")

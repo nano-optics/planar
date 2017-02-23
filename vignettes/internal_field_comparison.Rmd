@@ -1,5 +1,20 @@
-## Consistency check between modulus of E squared and LFIEFs
-_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+---
+title: "Consistency check between modulus of E squared and LFIEFs"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "baptiste Auguié"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    fig_width: 7
+    fig_height: 4
+    fig_caption: true
+vignette: >
+  %\VignetteIndexEntry{internal field comparison}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
 ```{r demo, message=FALSE, echo=FALSE}
 knitr::read_demo("internal_field_comparison", package="planar")
 ```

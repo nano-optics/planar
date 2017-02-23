@@ -10,7 +10,7 @@ output:
     fig_height: 4
     fig_caption: true
 vignette: >
-  %\VignetteIndexEntry{decay_rates}
+  %\VignetteIndexEntry{decay_rates_theo}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---

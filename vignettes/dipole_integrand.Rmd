@@ -1,5 +1,20 @@
-## Visualisation of the power loss as a function of in-plane wavevector for a dipole near a thin metal film
-_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+---
+title: "Visualisation of the power loss as a function of in-plane wavevector for a dipole near a thin metal film"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "baptiste Auguié"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    fig_width: 7
+    fig_height: 4
+    fig_caption: true
+vignette: >
+  %\VignetteIndexEntry{dipole_integrand}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
 ```{r demo, message=FALSE, echo=FALSE}
 knitr::read_demo("dipole_integrand", package="planar")
 ```

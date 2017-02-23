@@ -1,5 +1,20 @@
-## Local field enhancement factors for a dipole near or inside a multilayer
-_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+---
+title: "Local field enhancement factors for a dipole near or inside a multilayer"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "baptiste Auguié"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+    fig_width: 7
+    fig_height: 4
+    fig_caption: true
+vignette: >
+  %\VignetteIndexEntry{field_multilayer}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
 ```{r demo, message=FALSE, echo=FALSE}
 knitr::read_demo("field_multilayer", package="planar")
 ```

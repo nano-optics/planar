@@ -1,0 +1,18 @@
+## Consistency of results between algorithms
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+```{r demo, message=FALSE, echo=FALSE}
+knitr::read_demo("RTA_consistency", package="planar")
+```
+
+Two algorithms are available to calculate the reflection, transmission and absorption characteristics of a multilayer. Here we check the consistency of the results, using both the R and c++ implementations.
+
+```{r load, echo=FALSE,results='hide'}
+```
+
+#### Setting up
+
+```{r setup, results='hide'}
+```
+Simulation of the optical response of a thin gold film sandwiched between glass and water, with incidence at 20 degrees.
+```{r simulation}
+```

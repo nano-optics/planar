@@ -1,0 +1,22 @@
+## Fluorescence enhancement vs distance in the Kretschmann configuration
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+
+```{r demo, message=FALSE, echo=FALSE}
+knitr::read_demo("fluorescence_enhancement", package="planar")
+```
+Molecules in the vicinity of the metal surface experience a higher local field due to the excitation of SPPs, but also a possible quenching of the fluorescence emission as the non-radiative decay rate increases dramatically at short distances. Here we look at the relative contributions of the two effects as a function of distance and incident angle.
+
+```{r load, echo=FALSE,results='hide', message=FALSE}
+```
+
+#### Setting up
+
+```{r setup, results='hide'}
+```
+
+The net enhancement factor (or quenching) of the fluorescence is a relatively smooth function of the distance to the metal interface. For separations shorter than about 10 nanometres, the non-radiative decay rate enhancement dominates Mtot and a strong quenching is observed. A broad maximum is observed at a distance of about 20 nm. 
+
+Qualitatively similar results are obtained at other angles of incidence, but with a decrease of intensity for $M_{ex}$ and $F = M_{ex} \cdot M_{fluo} / M_{tot}$ as we depart from the optimal coupling of incident light to SPPs. The optimal angle of excitation is 53 degrees, but at the Raman-shifted wavelenth of fluorescence the emission peaks at about 52.3 degrees, which we will consider fixed for the collection (a more throrough calculation would consider the full solid angle defined by the collection optics).
+
+```{r angles, fig.width=10}
+```

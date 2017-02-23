@@ -1,0 +1,23 @@
+## Dispersion of surface plasmon-polaritons
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+```{r demo, message=FALSE, echo=FALSE}
+knitr::read_demo("SPP_dispersion", package="planar")
+```
+
+SPPs are dispersive waves -- their excitation energy varies with the angle of incidence, or, more generally, the in-plane projection of the incident wavevector. We can directly observe this dispersion curve in the reflectivity calculated in the Kretschmann configuration.
+
+```{r load, echo=FALSE,results='hide'}
+```
+
+### Kretschmann configuration
+
+```{r kretschmann}
+```
+
+### Dispersion curve of coupled-SPPs on a thin free standing metal film
+
+Free propagating light cannot couple directly to SPPs, due to the momentum mismatch (SPPs are outside of the light cone). However, a dipole emitter located in the proximity of a metal film may couple via its near-field to evanescent SPPs. Here we plot the squared modulus of the Fresnel reflection coefficient for such a configuration. The values become much greater than 1 when SPPs are excited, because we are approaching a pole in the complex Fresnel coefficient. These values do not contradict the conservation of energy because we are dealing with evanescent waves carrying no energy across the boundary.
+In the case of a thin film, two SPP modes propagating on either side hybridize and result in two modes (symmetric and antisymmetric charge distributions) with a different energy (long-range SPP vs short-range SPP).
+
+```{r coupled}
+```

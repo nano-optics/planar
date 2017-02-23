@@ -1,0 +1,29 @@
+## Dipole radiation patterns
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+```{r demo, message=FALSE, echo=FALSE}
+knitr::read_demo("LFIEF_patterns", package="planar")
+```
+Applying optical reciprocity to the problem of dipolar emission near a planar interface, we can obtain the radiation pattern (intensity vs angle) by modelling the near-field at the dipole location for plane-wave illumination at a range of incident angles.
+
+```{r load, echo=FALSE,results='hide'}
+```
+
+```{r setup, results='hide'}
+```
+
+### Dipole in a vacuum
+
+We first confirm that the dipolar emission in a vacuum follows the expected `sin^2` pattern. We define a dummy simulation (no actual interface),
+
+```{r dummy, fig.show='hold', fig.width=5,fig.height=5}
+```
+
+### Dipole near a thin gold film (Kretschmann configuration)
+
+In the Kretschmann configuration, molecules situated on the air side will radiate predominantly in a narrow cone of angles, associated with the excitation of surface plasmon-polaritons (SPPs) radiating into the glass substrate. By reciprocity, the field enhancement experienced by a dipole near the metal layer is also obtained for a narrow range of angles where conservation of in-plane momentum between the incident light and the SPPs is satisfied.
+
+```{r kretschmann, fig.width=11}
+```
+
+
+

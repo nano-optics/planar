@@ -1,0 +1,23 @@
+## Reflectivity of a Bragg stack with varying number of layers
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+
+```{r demo, message=FALSE, echo=FALSE}
+knitr::read_demo("bragg_stack", package="planar")
+```
+Reproducing Fig. 6.6, p. 188 of Mac Leod's Thin Film Optical Filters. The structure is a stack of $\lambda/4$ layers of alternating indices $n_H$ (high) and $n_L$ (low) on a glass substrate. 
+
+```{r setup, echo=FALSE,results='hide'}
+```
+
+#### Setting up
+
+We first define a function that generates the structure (list) describing the multilayer stack, and pass it to the function that calculates the optical response.
+
+```{r stack, results='hide'}
+```
+With this function, we can simulate the optical response for a number of parameters using the convenient syntax of the plyr package (equivalent to for loops over sets of parameters). Here we compare stacks with increasing number of layers, and various incident angles. 
+
+```{r simulation}
+```
+
+With increasing number of layers, the reflectivity stop-band becomes stronger, with a more rectangular transfer function. Side-bands also develop accordingly, however, with higher and higher frequency. The position of the stopband shifts with incident angle, as the projection of the k-vector determines the resonance condition.

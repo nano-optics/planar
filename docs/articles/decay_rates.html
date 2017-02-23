@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Decay rates of a dipole near a planar multilayer stack • planar</title>
+<title> • planar</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -54,39 +54,72 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Decay rates of a dipole near a planar multilayer stack</h1>
-                        <h4 class="author">baptiste Auguié</h4>
+      <h1></h1>
             
-            <h4 class="date">22 February, 2017</h4>
           </div>
 
     
     
 <div class="contents">
-<p>Following (Le Ru, Etchegoin, p. 571), and (Novotny, Hecht pp. 335–360), the enhancement factor for the total decay rate for a dipole perpendicular to the interface is</p>
-<p><span class="math display">\[
-  M^\perp_\text{tot} = 1 + \frac 3 2 \int_0^\infty \Re\left\{ \frac{q^3}{\sqrt{1 - q^2}} r^p (q) \exp\left(2 i k_1 d\sqrt{1 - q^2} \right)\right\}\text{d}q 
-\]</span></p>
-<p>The integrand diverges as <span class="math inline">\(q\to 1\)</span>, it is therefore advantageous to perform the substitution <span class="math inline">\(u:=\sqrt{1 - q^2}\)</span>. In order to maintain a real path of integration, the integral is first split into a radiative region (<span class="math inline">\(0\leq q\leq 1\)</span>, <span class="math inline">\(u:=\sqrt{1 - q^2}\geq 0\)</span>), and an evanescent region (<span class="math inline">\(1\leq q\leq \infty\)</span>, <span class="math inline">\(-i u:=\sqrt{q^2 - 1}\geq 0\)</span>). After some algebraic manipulation, we obtain, <span class="math display">\[
-  M^\perp_\text{tot} = 1 + \frac 3 2 \left(I_1 + I_2\right)
-\]</span> where <span class="math display">\[
-  \begin{split}
-I_1 + I_2 =&amp; \int_0^1 \left[1 - u^2\right]\cdot\Re\left\{ r^p (\sqrt{1 - u^2}) \exp\left(2 id k_1 u\right)\right\}\text{d}u \\ &amp; +\int_0^\infty \left[1 + u^2\right]\cdot\exp\left(-2d k_1  u\right)\cdot\Im\left\{ r^p (\sqrt{1 + u^2}) \right\}\text{d}u 
-  \end{split}
-\]</span> Similarly, for the parallel dipole <span class="math display">\[
-  M^\parallel_\text{tot} = 1 + \frac 3 4 \int_0^\infty \Re\left\{ \left[ \frac{r^s(q)}{\sqrt{1 - q^2}} - r^p (q) \sqrt{1 - q^2}\right] \cdot q\cdot\exp\left(2 i k_1 d\sqrt{1 - q^2} \right)\right\}\text{d}q  \label{eq:Mstot1}
-\]</span> which can be rewritten as, <span class="math display">\[
-  M^\parallel_\text{tot} = 1 + \frac 3 4 \left(I^\parallel_1 + I^\parallel_2\right)
-\]</span> where <span class="math display">\[
-  \begin{split}
-I^\parallel_1 + I^\parallel_2 =&amp; \int_0^1 \Re\left\{\left[r^s (\sqrt{1 - u^2})  - u^2\cdot r^p (\sqrt{1 - u^2}) \right] \exp\left(2 id k_1 u\right)\right\}\text{d}u \\ &amp; 
-+\int_0^\infty \exp\left(-2d k_1  u\right)\cdot \Im\left\{r^s (\sqrt{1 + u^2}) + u^2\cdot r^p (\sqrt{1 + u^2}) \right\}\text{d}u 
-  \end{split}
-\]</span></p>
+<div id="total-and-radiative-decay-rate-modifications-for-a-dipole-near-a-semi-infinite-metal-interface" class="section level2">
+<h2 class="hasAnchor">
+<html><body><a href="#total-and-radiative-decay-rate-modifications-for-a-dipole-near-a-semi-infinite-metal-interface" class="anchor"> </a></body></html>Total and radiative decay rate modifications for a dipole near a semi-infinite metal interface</h2>
+<p><em>baptiste Auguié – 23 February, 2017</em></p>
+<p>A dipole is placed near a semi-infinite air/metal interface with orientation either parallel or perpendicular to the interface.</p>
+<div id="setting-up" class="section level4">
+<h4 class="hasAnchor">
+<html><body><a href="#setting-up" class="anchor"> </a></body></html>Setting up</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wvl &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">200</span>, <span class="dv">1000</span>, <span class="dt">by =</span> <span class="dv">2</span>)
+silver &lt;-<span class="st"> </span><span class="kw">epsAg</span>(wvl)
+gold &lt;-<span class="st"> </span><span class="kw">epsAu</span>(wvl)
+
+distance &lt;-<span class="st"> </span>function(<span class="dt">d =</span> <span class="dv">1</span>, <span class="dt">material =</span> <span class="st">"silver"</span>, ...) {
+    
+    material &lt;-<span class="st"> </span><span class="kw">get</span>(material)
+    
+    dl &lt;-<span class="st"> </span><span class="kw"><a href="../reference/dipole.html">dipole</a></span>(<span class="dt">d =</span> d, <span class="dt">wavelength =</span> material$wavelength, <span class="dt">epsilon =</span> <span class="kw">list</span>(<span class="dt">incident =</span> <span class="dv">1</span>^<span class="dv">2</span>, 
+        material$epsilon), <span class="dt">thickness =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">Nquadrature1 =</span> <span class="dv">1000</span>, <span class="dt">Nquadrature2 =</span> <span class="dv">5000</span>, 
+        <span class="dt">GL =</span> <span class="ot">FALSE</span>, <span class="dt">Nquadrature3 =</span> <span class="dv">5000</span>, <span class="dt">qcut =</span> <span class="ot">NULL</span>, <span class="dt">rel.err =</span> <span class="fl">0.001</span>, <span class="dt">show.messages =</span> <span class="ot">FALSE</span>)
+    
+    <span class="kw">message</span>(<span class="kw">attr</span>(dl, <span class="st">"comment"</span>))
+    
+    m &lt;-<span class="st"> </span><span class="kw">melt</span>(dl, <span class="dt">id =</span> <span class="st">"wavelength"</span>)
+    
+    m$orientation &lt;-<span class="st"> </span>m$variable
+    
+    <span class="kw">levels</span>(m$orientation) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">perpendicular =</span> <span class="st">"Mtot.perp"</span>, <span class="dt">perpendicular =</span> <span class="st">"Mrad.perp"</span>, 
+        <span class="dt">parallel =</span> <span class="st">"Mtot.par"</span>, <span class="dt">parallel =</span> <span class="st">"Mrad.par"</span>)
+    
+    <span class="kw">levels</span>(m$variable) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">Mtot =</span> <span class="st">"Mtot.perp"</span>, <span class="dt">Mtot =</span> <span class="st">"Mtot.par"</span>, <span class="dt">Mrad =</span> <span class="st">"Mrad.perp"</span>, 
+        <span class="dt">Mrad =</span> <span class="st">"Mrad.par"</span>)
+    <span class="kw">invisible</span>(m)
+}</code></pre></div>
+<p>Reproducing Fig. 6.1, p. 304 from Principles of Surface-Enhanced Raman Spectroscopy.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">params &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">d =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>), <span class="dt">material =</span> <span class="kw">c</span>(<span class="st">"silver"</span>, <span class="st">"gold"</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+all &lt;-<span class="st"> </span><span class="kw">mdply</span>(params, distance)</code></pre></div>
+<pre><code>## relative integration errors were: 4.737e-05 for I1,  1.445e-03 for I2,  3.957e-01 for I3,  4.746e-04 for I4; with 195, 1455, 285, 165 respective function evaluations.</code></pre>
+<pre><code>## relative integration errors were: 2.144e-05 for I1,  1.397e-03 for I2,  3.314e-04 for I3,  5.414e-04 for I4; with 225, 1455, 225, 165 respective function evaluations.</code></pre>
+<pre><code>## relative integration errors were: 2.004e-05 for I1,  1.338e-03 for I2,  3.813e-05 for I3,  6.288e-04 for I4; with 225, 1455, 195, 165 respective function evaluations.</code></pre>
+<pre><code>## relative integration errors were: 1.124e-04 for I1,  1.079e-03 for I2,  4.955e-01 for I3,  6.125e-06 for I4; with 45, 495, 285, 75 respective function evaluations.</code></pre>
+<pre><code>## relative integration errors were: 1.115e-04 for I1,  1.068e-03 for I2,  5.417e-03 for I3,  6.078e-06 for I4; with 45, 495, 225, 75 respective function evaluations.</code></pre>
+<pre><code>## relative integration errors were: 1.104e-04 for I1,  1.055e-03 for I2,  5.094e-03 for I3,  6.020e-06 for I4; with 45, 495, 195, 75 respective function evaluations.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(all, <span class="kw">aes</span>(wavelength, value, <span class="dt">colour =</span> <span class="kw">factor</span>(d), <span class="dt">linetype =</span> orientation)) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">facet_grid</span>(variable ~<span class="st"> </span>material, <span class="dt">scales =</span> <span class="st">"free_y"</span>) +<span class="st"> </span><span class="kw">geom_path</span>() +<span class="st"> </span><span class="kw">labs</span>(<span class="dt">colour =</span> <span class="st">"distance /nm"</span>, 
+    <span class="dt">y =</span> <span class="st">"EM enhancement factor"</span>, <span class="dt">x =</span> <span class="st">"wavelength /nm"</span>) +<span class="st"> </span><span class="kw">scale_y_log10</span>()</code></pre></div>
+<p><img src="decayrates/simulation-1.png" width="960"></p>
+<p>The total decay rates peak at the wavelength of excitation of planar SPPs (<span class="math inline">\(\varepsilon=-1\)</span>) at the interface, they represent a non-radiative loss channel. The radiative decay rate in the upper medium has a trough at the wavelength where <span class="math inline">\(\varepsilon=0\)</span> (<span class="math inline">\(D=0\)</span> in the metal, by continuity <span class="math inline">\(En=0\)</span> above the interface), therefore by virtue of reciprocity the perpendicular dipole will not emit.</p>
+</div>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#total-and-radiative-decay-rate-modifications-for-a-dipole-near-a-semi-infinite-metal-interface">Total and radiative decay rate modifications for a dipole near a semi-infinite metal interface</a></li>
+      </ul>
+</div>
       </div>
 
 </div>

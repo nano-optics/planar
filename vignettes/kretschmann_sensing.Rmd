@@ -1,0 +1,35 @@
+## Sensing in the Kretschmann configuration
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+```{r demo, message=FALSE, echo=FALSE}
+knitr::read_demo("kretschmann_sensing", package="planar")
+```
+The Kretschmann configuration is commonly used for _sensing applications_: the sharp resonance associated with the excitation of SPPs at the metal/dielectric interface is strongly sensitive about the refractive index of the dielectric medium. 
+Furthermore, because SPPs are associated with a exponential decay of the electric field in the surrounding medium, the technique provides a surface-sensitive, sub-wavelength, probe.
+
+```{r load, echo=FALSE,results='hide'}
+```
+
+#### Setting up
+
+```{r setup, results='hide'}
+```
+
+We define a function to model our system with the parameters of interest: a semi-infinite incident medium (glass), a 50nm gold film, a thin layer of varying thickness and refractive index, and a semi-infinite dielectric medium of varying refractive index.
+
+```{r simulation}
+```
+
+### Variation of the bulk medium
+
+```{r loop, fig.width=12}
+```
+
+
+### Local sensitivity
+
+We now look at the effect of changing the refractive index of a thin layer, of varying thickness.
+
+
+```{r variation}
+```
+For an optical thickness approaching $\lambda / 2$, a new reflectivity dip appears, that is associated with the excitation of a guided mode. It is sharper than the standard SPP mode, because the modal field is mostly located in the dielectric layer.

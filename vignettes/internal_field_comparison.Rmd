@@ -1,0 +1,16 @@
+## Consistency check between modulus of E squared and LFIEFs
+_baptiste Auguié -- `r format(Sys.time(), "%d %B, %Y")`_
+```{r demo, message=FALSE, echo=FALSE}
+knitr::read_demo("internal_field_comparison", package="planar")
+```
+
+The internal electric field can be calculated with two different codes; here we check that the results are consistent.
+
+```{r load, echo=FALSE,results='hide'}
+```
+
+```{r setup, results='hide'}
+```
+Simulation of the optical response of a thin gold film deposited onto a Bragg mirror, with incidence at 5 degrees and p-polarisation. The sum of $M_{par}$ and $M_{perp}$ gives $\left|\mathbf{E}\right|^2$
+```{r simulation}
+```

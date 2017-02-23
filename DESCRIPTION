@@ -9,7 +9,7 @@ LazyLoad: yes
 Authors@R: c(person("Baptiste", "Auguie", email = "baptiste.auguie@gmail.com",
     role = c("aut", "cre"), comment = "Some functions ported from the original
     Matlab SPLAC code by E.C. Le Ru and P. G. Etchegoin"), person("Steven",
-    "Johnson", role = c("aut", "cph"), comment = "C code for the cubature
+    "Johnson", role = c("cph"), comment = "C code for the cubature
     library"))
 License: GPL-3
 Description: Solves the electromagnetic problem of reflection and transmission

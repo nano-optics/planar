@@ -3,19 +3,67 @@ templates:
     bootswatch: lumen
 
 reference:
-  - title: alpha
-    desc:  Polarisability
+  - title: Analytic
+    desc:  analytic models
     contents:
-    - starts_with("alpha_")
-    - init_site
-  - title: cluster
-    desc:  Cluster
+    - dbr_analytic
+  - title: Helpers
+    desc:  misc. helper functions
     contents:
-    - starts_with("cluster_")
-    - init_site
-  - title: spectrum
-    desc:  Spectrum
+    - combine_layer
+    - transmission
+    - epsilon_label
+    - epsilon_dispersion
+    - classify
+    - modify_levels
+    - raman_shift
+    - palette_dbr
+    - palette_tamm
+    - palette_tamm_porous
+  - title: Gaussian
+    desc:  Gaussian-beam related functions
     contents:
-    - starts_with("spectrum_")
-    - init_site
-    
+    - collection_ml
+    - gaussian_near_field_layer
+    - gaussian_near_field_ml
+  - title: Dipole
+    desc:  Dipole-related functions
+    contents:
+    - integrand_mtot
+    - dipole_direct
+    - integrand_rad
+    - integrand_nr1
+    - integrand_nr2
+    - integrand_nr3
+    - dipole
+  - title: Far field
+    desc:  FF multilayer related functions
+    contents:
+    - simulate_ff
+    - multilayer
+    - multilayercpp
+    - multilayerfull
+    - recursive_fresnel
+    - recursive_fresnelcpp
+  - title: Near field
+    desc:  NF multilayer related functions
+    contents:
+    - simulate_nf
+    - lfief
+    - internal_field
+  - title: Stacks
+    desc:  Defining multilayer stacks
+    contents:
+    - invert_stack
+    - layer_stack
+    - embed_stack
+    - dbr_stack
+    - tamm_stack
+    - tamm_stack_ir
+    - tamm_stack_porous
+    - rev.stack
+    - c.stack
+    - print.stack
+    - plot.stack
+    - fortify.stack
+    - autoplot.stack

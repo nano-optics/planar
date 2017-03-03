@@ -57,7 +57,7 @@
       <h1>Fresnel formulae</h1>
                         <h4 class="author">baptiste Auguié</h4>
             
-            <h4 class="date">24 February, 2017</h4>
+            <h4 class="date">04 March, 2017</h4>
           </div>
 
     
@@ -113,7 +113,7 @@ t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}},\qquad r_{12}^s=\frac{\m
 <p>We can summarize the two continuity relations in the following system,</p>
 <p><span class="math display">\[\left\{
 \begin{aligned}
-1 - rho &amp;=\tau\\
+1 - \rho &amp;=\tau\\
 (1 + \rho) \frac{k_{z1}}{\varepsilon_1}&amp;=\frac{k_{z2}}{\varepsilon_2}\tau
 \end{aligned}\right.
 \]</span> Solving for <span class="math inline">\(\rho\)</span> and <span class="math inline">\(\tau\)</span> yields the result, <span class="math display">\[
@@ -122,8 +122,8 @@ t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}},\qquad r_{12}^s=\frac{\m
 \]</span></p>
 <p>To summarize, for a single interface from 1 to 2 with normal along the <span class="math inline">\(z\)</span> direction, the Fresnel coefficients read, <span class="math display">\[
     \begin{aligned}
-    \rho_{12}^p&amp;=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&amp;{}&amp; r_{12}^s&amp;=\frac{\mu_2 k_{z1}-\mu_1k_{z2}}{\mu_2 k_{z1}+\mu_1k_{z2}}\\
-    \tau_{12}^p&amp;=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&amp;{}&amp; t_{12}^s&amp;=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}}.
+    \rho_{12}^p&amp;=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&amp;{}&amp; r_{12}^s=\frac{\mu_2 k_{z1}-\mu_1k_{z2}}{\mu_2 k_{z1}+\mu_1k_{z2}}\\
+    \tau_{12}^p&amp;=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&amp;{}&amp; t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}}.
     \end{aligned}
 \]</span></p>
 <p>Note that, <span class="math display">\[
@@ -138,11 +138,11 @@ t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}},\qquad r_{12}^s=\frac{\m
 <html><body><a href="#reflectivity-of-a-layer" class="anchor"> </a></body></html>Reflectivity of a layer</h2>
 <p>From the viewpoint of ray optics, a thin layer will support an infinite number of internal reflections (absorption and irregularities will however reduce the intensity in a physical situation). The infinite series of reflected orders can be expressed in the form a geometric sum, leading to a closed form formula as shown below.</p>
 <div class="figure">
-<img src="stack.png" alt="Schematic of reflection and transmission by a multilayer stack. A few reflected orders are noted A',B’, C' andD’ for the first film."><p class="caption">Schematic of reflection and transmission by a multilayer stack. A few reflected orders are noted <code>A',</code>B’, <code>C' and</code>D’ for the first film.</p>
+<img src="stack.png" alt="Schematic of reflection and transmission by a multilayer stack. A few reflected orders are noted A, B, C and D for the first film."><p class="caption">Schematic of reflection and transmission by a multilayer stack. A few reflected orders are noted <code>A</code>, <code>B</code>, <code>C</code> and <code>D</code> for the first film.</p>
 </div>
-<p>An incident plane wave with amplitude <span class="math inline">\(A\)</span> impinges on the first interface. It can be reflected, <span class="math inline">\(B=r_{01}A\)</span>, or transmitted. The total response of the slab can be obtained by following each order of reflection inside the slab (<code>C',</code>D’, ).</p>
-<p>Upon transmission at the first interface, the wave amplitude is <span class="math inline">\(t_{01}A\)</span>. Application of Fermat’s principle yields a phase change <span class="math inline">\(\Delta \phi= k_{z1}d\)</span> when the wave hits the second interface. The reflection coefficient at this interface is <span class="math inline">\(r_{12}\)</span>. The partial wave reflected from this path, noted `C’, is therefore <span class="math inline">\(C=t_{10}t_{01}r_{12}\exp(2i k_{z1}d)A\)</span>.</p>
-<p>Similarly, in `D’, <span class="math display">\[
+<p>An incident plane wave with amplitude <span class="math inline">\(A\)</span> impinges on the first interface. It can be reflected, <span class="math inline">\(B=r_{01}A\)</span>, or transmitted. The total response of the slab can be obtained by following each order of reflection inside the slab (<code>C</code>, <code>D</code>, <span class="math inline">\(\dots\)</span>).</p>
+<p>Upon transmission at the first interface, the wave amplitude is <span class="math inline">\(t_{01}A\)</span>. Application of Fermat’s principle yields a phase change <span class="math inline">\(\Delta \phi= k_{z1}d\)</span> when the wave hits the second interface. The reflection coefficient at this interface is <span class="math inline">\(r_{12}\)</span>. The partial wave reflected from this path, noted <code>C</code>, is therefore <span class="math inline">\(C=t_{10}t_{01}r_{12}\exp(2i k_{z1}d)A\)</span>.</p>
+<p>Similarly, in <code>D</code>, <span class="math display">\[
     D=t_{10}t_{01}r_{10}r_{12}^2\exp(4i k_{z1}d)A
     \]</span> And, for the <span class="math inline">\({j^\text{th}}\)</span> partial wave, <span class="math display">\[
     t_{10}t_{01}r_{12}^{j}r_{10}^{{j-1}}\exp(2i {j}k_{z1}d)A
@@ -167,7 +167,7 @@ t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}},\qquad r_{12}^s=\frac{\m
 <div id="reflectivity-of-a-multilayer-structure" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#reflectivity-of-a-multilayer-structure" class="anchor"> </a></body></html>Reflectivity of a multilayer structure</h2>
-<p>When N layers are stacked together, the reflection coefficient of the structure can be found by applying recursively the preceding formula for a single layer. This amounts to considering one of the reflection coefficients to be the effective reflection accounting for all the layers behind. Let us consider explicitly the case of a 3 layers system. The procedure is as follows,</p>
+<p>When N layers are stacked together, the reflection coefficient of the structure can be found by applying recursively the preceding formula for a single layer. This amounts to considering one of the reflection coefficients to be the effective reflection accounting for all the layers behind. Let us consider explicitly the case of a 3 layer system. The procedure is as follows,</p>
 <ul>
 <li>Compute and store for later use all single-interface coefficients, namely <span class="math inline">\(r_{01}\)</span>, <span class="math inline">\(r_{12}\)</span>, <span class="math inline">\(r_{23}\)</span>, <span class="math inline">\(r_{34}\)</span>
 </li>

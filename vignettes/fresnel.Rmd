@@ -90,7 +90,7 @@ We can summarize the two continuity relations in the following system,
 
 $$\left\{
 \begin{aligned}
-1 - rho &=\tau\\
+1 - \rho &=\tau\\
 (1 + \rho) \frac{k_{z1}}{\varepsilon_1}&=\frac{k_{z2}}{\varepsilon_2}\tau
 \end{aligned}\right.
 $$
@@ -103,8 +103,8 @@ $$
 To summarize, for a single interface from 1 to 2 with normal along the $z$ direction, the Fresnel coefficients read,
 $$
 	\begin{aligned}
-	\rho_{12}^p&=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& r_{12}^s&=\frac{\mu_2 k_{z1}-\mu_1k_{z2}}{\mu_2 k_{z1}+\mu_1k_{z2}}\\
-	\tau_{12}^p&=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& t_{12}^s&=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}}.
+	\rho_{12}^p&=\frac{\varepsilon_2 k_{z1}-\varepsilon_1k_{z2}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& r_{12}^s=\frac{\mu_2 k_{z1}-\mu_1k_{z2}}{\mu_2 k_{z1}+\mu_1k_{z2}}\\
+	\tau_{12}^p&=\frac{2\varepsilon_2 k_{z1}}{\varepsilon_2 k_{z1}+\varepsilon_1k_{z2}},&{}& t_{12}^s=\frac{2\mu_2 k_{z1}}{\mu_2 k_{z1}+\mu_1k_{z2}}.
 	\end{aligned}
 $$
 
@@ -122,13 +122,13 @@ and we can verify that, indeed, $R+T=1$ for a single interface.
 
 From the viewpoint of ray optics, a thin layer will support an infinite number of internal reflections (absorption and irregularities will however reduce the intensity in a physical situation). The infinite series of reflected orders can be expressed in the form a geometric sum, leading to a closed form formula as shown below.
 
-![Schematic of reflection and transmission by a multilayer stack. A few reflected orders are noted `A', `B', `C' and `D' for the first film.](stack.png)
+![Schematic of reflection and transmission by a multilayer stack. A few reflected orders are noted `A`, `B`, `C` and `D` for the first film.](stack.png)
 
-An incident plane wave with amplitude $A$ impinges on the first interface. It can be reflected, $B=r_{01}A$, or transmitted. The total response of the slab can be obtained by following each order of reflection inside the slab (`C', `D', \dots).
+An incident plane wave with amplitude $A$ impinges on the first interface. It can be reflected, $B=r_{01}A$, or transmitted. The total response of the slab can be obtained by following each order of reflection inside the slab (`C`, `D`, $\dots$).
 
-Upon transmission at the first interface, the wave amplitude is $t_{01}A$. Application of Fermat's principle yields a phase change $\Delta \phi= k_{z1}d$ when the wave hits the second interface. The reflection coefficient at this interface is $r_{12}$. The partial wave reflected from this path, noted `C', is therefore $C=t_{10}t_{01}r_{12}\exp(2i k_{z1}d)A$.
+Upon transmission at the first interface, the wave amplitude is $t_{01}A$. Application of Fermat's principle yields a phase change $\Delta \phi= k_{z1}d$ when the wave hits the second interface. The reflection coefficient at this interface is $r_{12}$. The partial wave reflected from this path, noted `C`, is therefore $C=t_{10}t_{01}r_{12}\exp(2i k_{z1}d)A$.
 
-Similarly, in `D', \[
+Similarly, in `D`, \[
 	D=t_{10}t_{01}r_{10}r_{12}^2\exp(4i k_{z1}d)A
 	\]
 And, for the ${j^\text{th}}$ partial wave,
@@ -167,7 +167,7 @@ $$
 
 ## Reflectivity of a multilayer structure
 
-When N layers are stacked together, the reflection coefficient of the structure can be found by applying recursively the preceding formula for a single layer. This amounts to considering one of the reflection coefficients to be the effective reflection accounting for all the layers behind. Let us consider explicitly the case of a 3 layers system. The procedure is as follows,
+When N layers are stacked together, the reflection coefficient of the structure can be found by applying recursively the preceding formula for a single layer. This amounts to considering one of the reflection coefficients to be the effective reflection accounting for all the layers behind. Let us consider explicitly the case of a 3 layer system. The procedure is as follows,
 
 * Compute and store for later use all single-interface coefficients, namely $r_{01}$, $r_{12}$, $r_{23}$, $r_{34}$
 * Combine the previous coefficients to compute the reflectivity of the last layer, i.e. $r_{24} = \frac{r_{23}+r_{34}\exp(2i k_{z3}d_3)}{1+r_{23}r_{34}\exp(2i k_{z3}d_3)}$. This value can be stored in a temporary variable $r_{\text{tmp}}$

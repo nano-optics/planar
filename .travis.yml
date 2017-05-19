@@ -1,32 +1,20 @@
-# Sample .travis.yml for R projects.
-#
-# See the r-travis repo and its wiki 
-#   https://github.com/craigcitro/r-travis/wiki
+# https://docs.travis-ci.com/user/languages/r/
 
-language: c
+language: r
+sudo: false
+cache: packages
+r:
+  - release
+  - devel
 
-env:
-  global:
-    - R_BUILD_ARGS="--no-build-vignettes --no-manual"
-    - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+repos:
+  CRAN: https://cloud.r-project.org
+  ropensci: http://packages.ropensci.org
 
-before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - ./travis-tool.sh bootstrap
-
-install:
-  - ./travis-tool.sh install_r RcppArmadillo Rcpp dielectric statmod cubature reshape2 plyr ggplot2 Hmisc gridExtra lattice knitr testthat
-
-script: 
-  - ./travis-tool.sh run_tests
-
-after_script:
-  - ./travis-tool.sh dump_logs
+r_github_packages:
+  - baptiste/dielectric
 
 notifications:
   email:
     on_success: change
     on_failure: change
-
-

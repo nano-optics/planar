@@ -36,5 +36,6 @@ Suggests:
     gridExtra,
     lattice,
     knitr,
+    rmarkdown,
     testthat
 RoxygenNote: 5.0.1.9000

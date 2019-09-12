@@ -97,12 +97,14 @@ res <- gaussian_near_field_ml(xyz, epsilon=struct$epsilon,
 
 m <- data.frame(xyz, field=res)
 
-  ggplot(m, aes(x/1e3, y/1e3, fill=field))+
+p <-   ggplot(m, aes(x/1e3, y/1e3, fill=field))+
   geom_raster(interpolate=TRUE) +
   scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(expand=c(0,0)) +
   labs(x=expression("x /nm"), fill=expression("|E|"^2), 
        y=expression("y /nm")) +
-  coord_fixed()
+  coord_fixed() + theme_minimal()
 
+library(rayshader)
 
+plot_gg(p)

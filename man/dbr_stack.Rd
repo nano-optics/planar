@@ -33,12 +33,12 @@ DBR stack structure
 \details{
 periodic structure of dielectric layers
 }
-\author{
-baptiste Auguie
-}
 \seealso{
 Other stack user_level: \code{\link{embed_stack}},
   \code{\link{layer_stack}}, \code{\link{tamm_stack_ir}},
   \code{\link{tamm_stack_porous}}, \code{\link{tamm_stack}}
 }
-
+\author{
+baptiste Auguie
+}
+\concept{stack user_level}

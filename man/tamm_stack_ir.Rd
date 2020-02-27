@@ -51,12 +51,12 @@ DBR-metal stack structure
 \details{
 periodic structure of dielectric layers against metal film
 }
-\author{
-baptiste Auguie
-}
 \seealso{
 Other stack user_level: \code{\link{dbr_stack}},
   \code{\link{embed_stack}}, \code{\link{layer_stack}},
   \code{\link{tamm_stack_porous}}, \code{\link{tamm_stack}}
 }
-
+\author{
+baptiste Auguie
+}
+\concept{stack user_level}

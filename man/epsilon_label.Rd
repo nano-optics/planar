@@ -4,7 +4,8 @@
 \alias{epsilon_label}
 \title{epsilon_label}
 \usage{
-epsilon_label(epsilon = list(3.5, 1, 3, 1, "epsAu", 3, 3.5), names = NULL)
+epsilon_label(epsilon = list(3.5, 1, 3, 1, "epsAu", 3, 3.5),
+  names = NULL)
 }
 \arguments{
 \item{epsilon}{list of real or complex values}
@@ -23,4 +24,4 @@ characterise the layers of a structure with unique labels for metals and dielect
 \author{
 baptiste Auguie
 }
-
+\concept{user_level conversion utility}

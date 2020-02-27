@@ -36,10 +36,10 @@ periodic structure of dielectric layers
 \note{
 issue at lambda0/2 needs investigating
 }
-\author{
-baptiste Auguie
-}
 \references{
 Amir and Vukusic, 2013, arXiv:1209.3776v2
 }
-
+\author{
+baptiste Auguie
+}
+\concept{dbr user_level}

@@ -83,7 +83,7 @@ p <- ggplot(m, aes(x/1e3, z/1e3, fill=field))+
   theme()
 
 p
-library(rayshader)
-
-plot_gg(p)
+# library(rayshader)
+# 
+# plot_gg(p)
 

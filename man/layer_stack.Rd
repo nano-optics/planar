@@ -22,12 +22,12 @@ Single-layer stack structure
 \details{
 returns a stack describing a single layer
 }
-\author{
-baptiste Auguie
-}
 \seealso{
 Other stack user_level: \code{\link{dbr_stack}},
   \code{\link{embed_stack}}, \code{\link{tamm_stack_ir}},
   \code{\link{tamm_stack_porous}}, \code{\link{tamm_stack}}
 }
-
+\author{
+baptiste Auguie
+}
+\concept{stack user_level}

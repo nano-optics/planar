@@ -17,12 +17,12 @@ factor
 \description{
 relabel factors
 }
-\author{
-Baptiste Auguie
-}
 \seealso{
 Other helping_functions: \code{\link{classify}},
   \code{\link{internal_field}}, \code{\link{invert_stack}},
   \code{\link{lfief}}
 }
-
+\author{
+Baptiste Auguie
+}
+\concept{helping_functions}

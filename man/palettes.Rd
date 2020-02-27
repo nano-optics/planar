@@ -17,4 +17,3 @@ Custom palette for Tamm stacks
 
 Alternative palette for Tamm stacks
 }
-

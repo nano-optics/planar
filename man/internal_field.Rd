@@ -4,9 +4,9 @@
 \alias{internal_field}
 \title{internal_field}
 \usage{
-internal_field(wavelength = 500, angle = 0, psi = 0, thickness = c(0,
-  20, 140, 20, 0), dmax = 200, res = 1000, epsilon = c(1^2, -12, 1.38^2,
-  -12, 1.46^2), field = FALSE, ...)
+internal_field(wavelength = 500, angle = 0, psi = 0,
+  thickness = c(0, 20, 140, 20, 0), dmax = 200, res = 1000,
+  epsilon = c(1^2, -12, 1.38^2, -12, 1.46^2), field = FALSE, ...)
 }
 \arguments{
 \item{wavelength}{wavelength}
@@ -36,9 +36,6 @@ Internal field in a ML stack
 \details{
 returns the electric field as a function of distance inside and outside of the structure
 }
-\author{
-baptiste Auguie
-}
 \references{
 Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
 
@@ -49,4 +46,7 @@ Other helping_functions: \code{\link{classify}},
   \code{\link{invert_stack}}, \code{\link{lfief}},
   \code{\link{modify_levels}}
 }
-
+\author{
+baptiste Auguie
+}
+\concept{helping_functions}

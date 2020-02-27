@@ -24,12 +24,12 @@ relabel factors
 \details{
 Wide to long format data.frame with new factor variable(s) describing the original columns
 }
-\author{
-Baptiste Auguie
-}
 \seealso{
 Other helping_functions: \code{\link{internal_field}},
   \code{\link{invert_stack}}, \code{\link{lfief}},
   \code{\link{modify_levels}}
 }
-
+\author{
+Baptiste Auguie
+}
+\concept{helping_functions}

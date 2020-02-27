@@ -10,7 +10,7 @@ output:
     fig_height: 4
     fig_caption: true
 vignette: >
-  %\VignetteIndexEntry{fluorescence_enhancement}
+  %\VignetteIndexEntry{gaussian beam}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---

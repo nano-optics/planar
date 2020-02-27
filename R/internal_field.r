@@ -94,9 +94,10 @@ internal_field <- function(wavelength=500, angle=0, psi=0,
                    MoreArgs=list(by=stepsize))
   id <- rep(seq_along(probes), sapply(probes, length))
   d <- unlist(probes)
-  E <- cpp_multilayer_field(k0, k0*sin(angle)*n1, unlist(epsilon),  
-                          thickness, d, psi)$E
-  
+  fields <- cpp_multilayer_field(k0, k0*sin(angle)*n1, unlist(epsilon),  
+                          thickness, d, psi)
+  E <- fields$E
+  H <- fields$H
   ll = as.list(unique(id))
   names(ll) = epsilon_label(epsilon)
   material <- factor(id)
@@ -104,6 +105,7 @@ internal_field <- function(wavelength=500, angle=0, psi=0,
   
   if(field) {
     result <- data.frame(x = d, Ex = E[1,], Ey=E[2,], Ez=E[3,], 
+                         Hx = H[1,], Hy=H[2,], Hz=H[3,], 
                          id=id, material=material)
   } else
   {

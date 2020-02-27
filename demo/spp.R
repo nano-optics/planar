@@ -50,9 +50,9 @@ p
 # ggsave('spp.png', p, width=10, height=5, dpi=300)
 
 
-library(rayshader)
-
-plot_gg(p)
+# library(rayshader)
+# 
+# plot_gg(p)
 
 # render_movie('test.mp4')
 

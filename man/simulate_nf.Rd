@@ -36,11 +36,11 @@ simultate the internal field of a multilayer stack
 \details{
 wrapper around multilayer_field for a stack structure
 }
-\author{
-Baptiste Auguie
-}
 \seealso{
 Other helping_functions user_level stack: \code{\link{rev.stack}},
   \code{\link{simulate_ff}}
 }
-
+\author{
+Baptiste Auguie
+}
+\concept{helping_functions user_level stack}

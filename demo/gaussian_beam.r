@@ -2,7 +2,7 @@
 ## ----load, echo=FALSE,results='hide'-----------------------------------------
 library(knitr)
 library(ggplot2)
-library(rgl)
+# library(rgl)
 knit_hooks$set(rgl = function(before, options, envir) {
   # if a device was opened before this chunk, close it
   if (before && rgl.cur() > 0) rgl.close()
@@ -105,6 +105,6 @@ p <-   ggplot(m, aes(x/1e3, y/1e3, fill=field))+
        y=expression("y /nm")) +
   coord_fixed() + theme_minimal()
 
-library(rayshader)
-
-plot_gg(p)
+# library(rayshader)
+# 
+# plot_gg(p)

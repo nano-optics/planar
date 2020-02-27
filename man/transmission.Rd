@@ -25,4 +25,3 @@ transmission loss through a prism
 \author{
 baptiste Auguie
 }
-

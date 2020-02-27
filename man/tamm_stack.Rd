@@ -7,8 +7,8 @@
 tamm_stack(lambda0 = 630, n1 = 1.28, n2 = 1.72, d1 = lambda0/4/n1,
   d2 = lambda0/4/n2, N = 2 * pairs, pairs = 4, dx1 = 0, dx2 = 0,
   dm = 50, metal = "epsAu", position = c("after", "before"),
-  incidence = c("left", "right"), nleft = 1.5, nright = 1, dleft = 200,
-  dright = 200, ...)
+  incidence = c("left", "right"), nleft = 1.5, nright = 1,
+  dleft = 200, dright = 200, ...)
 }
 \arguments{
 \item{lambda0}{central wavelength of the stopband}
@@ -56,13 +56,13 @@ DBR-metal stack structure
 \details{
 periodic structure of dielectric layers against metal film
 }
-\author{
-baptiste Auguie
-}
 \seealso{
 Other stack user_level: \code{\link{dbr_stack}},
   \code{\link{embed_stack}}, \code{\link{layer_stack}},
   \code{\link{tamm_stack_ir}},
   \code{\link{tamm_stack_porous}}
 }
-
+\author{
+baptiste Auguie
+}
+\concept{stack user_level}

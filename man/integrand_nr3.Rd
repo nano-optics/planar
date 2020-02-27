@@ -4,8 +4,8 @@
 \alias{integrand_nr3}
 \title{integrand_nr3}
 \usage{
-integrand_nr3(d = 10, u, ucut, wavelength, epsilon = list(incident = 1.5^2,
-  1^2), thickness = c(0, 0), GL = FALSE)
+integrand_nr3(d = 10, u, ucut, wavelength, epsilon = list(incident =
+  1.5^2, 1^2), thickness = c(0, 0), GL = FALSE)
 }
 \arguments{
 \item{d}{distance in nm}
@@ -29,12 +29,12 @@ Dipole decay rates near a multilayer interface
 Integrand of the dipole decay rates near a multilayer interface. Transformed part III
 from u=ucut to infinity
 }
-\author{
-baptiste Auguie
-}
 \seealso{
 Other integrands dipole: \code{\link{integrand_mtot}},
   \code{\link{integrand_nr1}}, \code{\link{integrand_nr2}},
   \code{\link{integrand_rad}}
 }
-
+\author{
+baptiste Auguie
+}
+\concept{integrands dipole}

@@ -5,8 +5,9 @@
 \title{multilayer}
 \usage{
 multilayer(wavelength = 2 * pi/k0, k0 = 2 * pi/wavelength,
-  angle = asin(q), q = sin(angle), epsilon = list(incident = 1.5^2, 1.33),
-  thickness = c(0, 0), polarisation = c("p", "s"), d = 1, dout = d, ...)
+  angle = asin(q), q = sin(angle), epsilon = list(incident = 1.5^2,
+  1.33), thickness = c(0, 0), polarisation = c("p", "s"), d = 1,
+  dout = d, ...)
 }
 \arguments{
 \item{wavelength}{[vector] wavelength in nm}
@@ -38,11 +39,10 @@ Multilayer Fresnel coefficients
 \details{
 solves the EM problem of a multilayered interface
 }
-\author{
-baptiste Auguie
-}
 \references{
 Principles of surface-enhanced Raman spectroscopy and related plasmonic effects.
 Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 }
-
+\author{
+baptiste Auguie
+}

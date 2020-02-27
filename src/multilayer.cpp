@@ -357,6 +357,7 @@ Rcpp::List cpp_multilayer_field(const double k0,
 
   // field at distances z
   arma::cx_mat Einternal(3, z.n_elem);
+  arma::cx_mat Hinternal(3, z.n_elem);
   arma::colvec interfaces = cumsum(thickness);
   int position=0; // test in which layer we are
 
@@ -385,6 +386,13 @@ Rcpp::List cpp_multilayer_field(const double k0,
     Einternal(0,jj) = cos(psi)*(EixE1(position)  * exp(I*d*kiz(position)) + EpixE1(position)  * exp(-I*d*kiz(position)));
     Einternal(1,jj) = sin(psi)*(EiyE1y(position) * exp(I*d*kiz(position)) + EpiyE1y(position) * exp(-I*d*kiz(position)));
     Einternal(2,jj) = cos(psi)*(EizE1(position)  * exp(I*d*kiz(position)) + EpizE1(position)  * exp(-I*d*kiz(position)));
+
+    // note: normalise the field components to the incident field projection along s- and p-polarisations
+    // p-pol corresponds to psi=0, s-pol to psi=pi/2
+		// HiyH1y HpiyH1y HixH1 HizH1 HpizH1 HpixH1
+    Hinternal(0,jj) = cos(psi)*(HixH1(position)  * exp(I*d*kiz(position)) + HpixH1(position)  * exp(-I*d*kiz(position)));
+    Hinternal(1,jj) = sin(psi)*(HiyH1y(position) * exp(I*d*kiz(position)) + HpiyH1y(position) * exp(-I*d*kiz(position)));
+    Hinternal(2,jj) = cos(psi)*(HizH1(position)  * exp(I*d*kiz(position)) + HpizH1(position)  * exp(-I*d*kiz(position)));
   }
 
    return List::create(
@@ -392,6 +400,7 @@ Rcpp::List cpp_multilayer_field(const double k0,
 		       _["rp"]  = rp,
 		       _["ts"]  = ts,
 		       _["tp"]  = tp,
-		       _["E"]  = Einternal ) ;
+		       _["E"]  = Einternal ,
+		       _["H"]  = Hinternal ) ;
 
 }

@@ -42,4 +42,3 @@ Integration is performed over the solid angle defined by omega
 \author{
 Baptiste Auguie
 }
-

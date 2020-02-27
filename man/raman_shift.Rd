@@ -23,4 +23,3 @@ converts Raman shift to wavelength
 \author{
 Baptiste Auguie
 }
-

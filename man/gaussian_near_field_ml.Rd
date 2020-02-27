@@ -5,9 +5,9 @@
 \title{gaussian_near_field_ml}
 \usage{
 gaussian_near_field_ml(xyz, wavelength = 632.8, alpha = 15 * pi/180,
-  psi = 0, w0 = 10000, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1^2,
-  1^2), thickness = c(0, 50, 10, 0), maxEval = 3000, reqAbsError = 0,
-  tol = 1e-04, progress = FALSE, field = FALSE)
+  psi = 0, w0 = 10000, epsilon = c(1.5^2, epsAg(wavelength)$epsilon,
+  1^2, 1^2), thickness = c(0, 50, 10, 0), maxEval = 3000,
+  reqAbsError = 0, tol = 1e-04, progress = FALSE, field = FALSE)
 }
 \arguments{
 \item{xyz}{position matrix}
@@ -43,10 +43,10 @@ Electric field of a gaussian beam close to a planar interface
 \details{
 Integration is performed over a spectrum of incident plane waves using integrand_gb2
 }
-\author{
-Baptiste Auguie
-}
 \seealso{
 Other gaussian_beam: \code{\link{gaussian_near_field_layer}}
 }
-
+\author{
+Baptiste Auguie
+}
+\concept{gaussian_beam}

@@ -4,8 +4,8 @@
 \alias{integrand_mtot}
 \title{integrand_mtot}
 \usage{
-integrand_mtot(d = 10, q, wavelength, epsilon = list(incident = 1.5^2, 1^2),
-  thickness = c(0, 0))
+integrand_mtot(d = 10, q, wavelength, epsilon = list(incident = 1.5^2,
+  1^2), thickness = c(0, 0))
 }
 \arguments{
 \item{d}{distance in nm}
@@ -24,12 +24,12 @@ Total decay rate of a dipole near a multilayer interface
 \details{
 Integrand without transformation of variables
 }
-\author{
-baptiste Auguie
-}
 \seealso{
 Other integrands dipole: \code{\link{integrand_nr1}},
   \code{\link{integrand_nr2}}, \code{\link{integrand_nr3}},
   \code{\link{integrand_rad}}
 }
-
+\author{
+baptiste Auguie
+}
+\concept{integrands dipole}

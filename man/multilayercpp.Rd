@@ -5,8 +5,8 @@
 \title{multilayercpp}
 \usage{
 multilayercpp(wavelength = 2 * pi/k0, k0 = 2 * pi/wavelength,
-  angle = asin(q), q = sin(angle), epsilon = list(incident = 1.5^2, 1.33),
-  thickness = c(0, 0), ...)
+  angle = asin(q), q = sin(angle), epsilon = list(incident = 1.5^2,
+  1.33), thickness = c(0, 0), ...)
 }
 \arguments{
 \item{wavelength}{[vector] wavelength in nm}
@@ -39,4 +39,3 @@ demo(package="planar")
 \author{
 baptiste Auguie
 }
-

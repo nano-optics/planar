@@ -18,12 +18,12 @@ invert the description of a multilayer to simulate the opposite direction of inc
 \details{
 inverts list of epsilon and thickness of layers
 }
-\author{
-Baptiste Auguie
-}
 \seealso{
 Other helping_functions: \code{\link{classify}},
   \code{\link{internal_field}}, \code{\link{lfief}},
   \code{\link{modify_levels}}
 }
-
+\author{
+Baptiste Auguie
+}
+\concept{helping_functions}

@@ -2,12 +2,7 @@
 ## ----load, echo=FALSE,results='hide'-----------------------------------------
 library(knitr)
 library(ggplot2)
-# library(rgl)
-knit_hooks$set(rgl = function(before, options, envir) {
-  # if a device was opened before this chunk, close it
-  if (before && rgl.cur() > 0) rgl.close()
-  hook_rgl(before, options, envir)
-})
+
 opts_chunk$set(fig.path="gaussianbeam/", cache=TRUE, cache.path="gaussian/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
 library(ggplot2)
@@ -105,6 +100,4 @@ p <-   ggplot(m, aes(x/1e3, y/1e3, fill=field))+
        y=expression("y /nm")) +
   coord_fixed() + theme_minimal()
 
-# library(rayshader)
-# 
-# plot_gg(p)
+p

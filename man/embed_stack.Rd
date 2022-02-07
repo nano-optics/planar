@@ -4,8 +4,7 @@
 \alias{embed_stack}
 \title{embed_stack}
 \usage{
-embed_stack(s, nleft = 1, nright = 1, dleft = 200, dright = 200,
-  ...)
+embed_stack(s, nleft = 1, nright = 1, dleft = 200, dright = 200, ...)
 }
 \arguments{
 \item{s}{stack (finite structure)}
@@ -30,9 +29,12 @@ Embed stack structure
 embeds a stack in semi-infinite media
 }
 \seealso{
-Other stack user_level: \code{\link{dbr_stack}},
-  \code{\link{layer_stack}}, \code{\link{tamm_stack_ir}},
-  \code{\link{tamm_stack_porous}}, \code{\link{tamm_stack}}
+Other stack user_level: 
+\code{\link{dbr_stack}()},
+\code{\link{layer_stack}()},
+\code{\link{tamm_stack_ir}()},
+\code{\link{tamm_stack_porous}()},
+\code{\link{tamm_stack}()}
 }
 \author{
 baptiste Auguie

@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // integrand_collection
 double integrand_collection(const arma::colvec& rt, const arma::colvec& r2, const double k0, const double psi, const arma::cx_vec& epsilon, const arma::vec& thickness);
 RcppExport SEXP _planar_integrand_collection(SEXP rtSEXP, SEXP r2SEXP, SEXP k0SEXP, SEXP psiSEXP, SEXP epsilonSEXP, SEXP thicknessSEXP) {

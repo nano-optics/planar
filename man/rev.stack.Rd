@@ -19,8 +19,9 @@ invert the description of a multilayer to simulate the opposite direction of inc
 inverts list of epsilon and thickness of layers
 }
 \seealso{
-Other helping_functions user_level stack: \code{\link{simulate_ff}},
-  \code{\link{simulate_nf}}
+Other helping_functions user_level stack: 
+\code{\link{simulate_ff}()},
+\code{\link{simulate_nf}()}
 }
 \author{
 Baptiste Auguie

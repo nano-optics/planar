@@ -4,8 +4,11 @@
 \alias{epsilon_dispersion}
 \title{epsilon_dispersion}
 \usage{
-epsilon_dispersion(epsilon, wavelength = seq(400, 1000),
-  envir = parent.frame())
+epsilon_dispersion(
+  epsilon,
+  wavelength = seq(400, 1000),
+  envir = parent.frame()
+)
 }
 \arguments{
 \item{epsilon}{list of real or complex values}

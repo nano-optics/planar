@@ -4,10 +4,18 @@
 \alias{collection_ml}
 \title{collection_ml}
 \usage{
-collection_ml(xyz, wavelength = 632.8, omega = c(40, 50) * pi/180,
-  psi = 0, epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1^2, 1^2),
-  thickness = c(0, 50, 10, 0), maxEval = 3000, reqAbsError = 0,
-  tol = 1e-04, progress = FALSE)
+collection_ml(
+  xyz,
+  wavelength = 632.8,
+  omega = c(40, 50) * pi/180,
+  psi = 0,
+  epsilon = c(1.5^2, epsAg(wavelength)$epsilon, 1^2, 1^2),
+  thickness = c(0, 50, 10, 0),
+  maxEval = 3000,
+  reqAbsError = 0,
+  tol = 1e-04,
+  progress = FALSE
+)
 }
 \arguments{
 \item{xyz}{position matrix}

@@ -18,9 +18,11 @@ factor
 relabel factors
 }
 \seealso{
-Other helping_functions: \code{\link{classify}},
-  \code{\link{internal_field}}, \code{\link{invert_stack}},
-  \code{\link{lfief}}
+Other helping_functions: 
+\code{\link{classify}()},
+\code{\link{internal_field}()},
+\code{\link{invert_stack}()},
+\code{\link{lfief}()}
 }
 \author{
 Baptiste Auguie

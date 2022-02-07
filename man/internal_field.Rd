@@ -4,9 +4,17 @@
 \alias{internal_field}
 \title{internal_field}
 \usage{
-internal_field(wavelength = 500, angle = 0, psi = 0,
-  thickness = c(0, 20, 140, 20, 0), dmax = 200, res = 1000,
-  epsilon = c(1^2, -12, 1.38^2, -12, 1.46^2), field = FALSE, ...)
+internal_field(
+  wavelength = 500,
+  angle = 0,
+  psi = 0,
+  thickness = c(0, 20, 140, 20, 0),
+  dmax = 200,
+  res = 1000,
+  epsilon = c(1^2, -12, 1.38^2, -12, 1.46^2),
+  field = FALSE,
+  ...
+)
 }
 \arguments{
 \item{wavelength}{wavelength}
@@ -42,9 +50,11 @@ Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
 Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 }
 \seealso{
-Other helping_functions: \code{\link{classify}},
-  \code{\link{invert_stack}}, \code{\link{lfief}},
-  \code{\link{modify_levels}}
+Other helping_functions: 
+\code{\link{classify}()},
+\code{\link{invert_stack}()},
+\code{\link{lfief}()},
+\code{\link{modify_levels}()}
 }
 \author{
 baptiste Auguie

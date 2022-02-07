@@ -4,8 +4,14 @@
 \alias{simulate_ff}
 \title{simulate_ff}
 \usage{
-simulate_ff(..., s = NULL, fun = tamm_stack, wavelength = seq(400,
-  1000), angle = 0, polarisation = c("p", "s"))
+simulate_ff(
+  ...,
+  s = NULL,
+  fun = tamm_stack,
+  wavelength = seq(400, 1000),
+  angle = 0,
+  polarisation = c("p", "s")
+)
 }
 \arguments{
 \item{...}{further arguments passed to fun}
@@ -30,8 +36,9 @@ simultate the far-field response of a multilayer stack
 wrapper around recursive_fresnelcpp for a stack structure
 }
 \seealso{
-Other helping_functions user_level stack: \code{\link{rev.stack}},
-  \code{\link{simulate_nf}}
+Other helping_functions user_level stack: 
+\code{\link{rev.stack}()},
+\code{\link{simulate_nf}()}
 }
 \author{
 Baptiste Auguie

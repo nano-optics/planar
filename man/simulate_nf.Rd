@@ -4,9 +4,17 @@
 \alias{simulate_nf}
 \title{simulate_nf}
 \usage{
-simulate_nf(..., s = NULL, fun = tamm_stack, wavelength = 630,
-  angle = 0, polarisation = c("p", "s"), dmax = 0, res = 10000,
-  field = FALSE)
+simulate_nf(
+  ...,
+  s = NULL,
+  fun = tamm_stack,
+  wavelength = 630,
+  angle = 0,
+  polarisation = c("p", "s"),
+  dmax = 0,
+  res = 10000,
+  field = FALSE
+)
 }
 \arguments{
 \item{...}{further arguments passed to fun}
@@ -37,8 +45,9 @@ simultate the internal field of a multilayer stack
 wrapper around multilayer_field for a stack structure
 }
 \seealso{
-Other helping_functions user_level stack: \code{\link{rev.stack}},
-  \code{\link{simulate_ff}}
+Other helping_functions user_level stack: 
+\code{\link{rev.stack}()},
+\code{\link{simulate_ff}()}
 }
 \author{
 Baptiste Auguie

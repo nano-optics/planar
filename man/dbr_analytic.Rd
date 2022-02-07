@@ -4,8 +4,16 @@
 \alias{dbr_analytic}
 \title{dbr_analytic}
 \usage{
-dbr_analytic(wavelength, lambda0, n1, n2, nleft, d1 = lambda0/4/n1,
-  d2 = lambda0/4/n2, ...)
+dbr_analytic(
+  wavelength,
+  lambda0,
+  n1,
+  n2,
+  nleft,
+  d1 = lambda0/4/n1,
+  d2 = lambda0/4/n2,
+  ...
+)
 }
 \arguments{
 \item{wavelength}{in nm}

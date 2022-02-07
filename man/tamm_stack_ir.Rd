@@ -4,10 +4,24 @@
 \alias{tamm_stack_ir}
 \title{tamm_stack_ir}
 \usage{
-tamm_stack_ir(lambda0 = 950, n1 = 3, n2 = 3.7, d1 = lambda0/4/n1,
-  d2 = lambda0/4/n2, N = 2 * pairs, pairs = 4, dx1 = 0, dx2 = 0,
-  dm = 50, metal = "epsAu", position = "after", incidence = "left",
-  nleft = n2, nright = 1, ...)
+tamm_stack_ir(
+  lambda0 = 950,
+  n1 = 3,
+  n2 = 3.7,
+  d1 = lambda0/4/n1,
+  d2 = lambda0/4/n2,
+  N = 2 * pairs,
+  pairs = 4,
+  dx1 = 0,
+  dx2 = 0,
+  dm = 50,
+  metal = "epsAu",
+  position = "after",
+  incidence = "left",
+  nleft = n2,
+  nright = 1,
+  ...
+)
 }
 \arguments{
 \item{lambda0}{central wavelength of the stopband}
@@ -52,9 +66,12 @@ DBR-metal stack structure
 periodic structure of dielectric layers against metal film
 }
 \seealso{
-Other stack user_level: \code{\link{dbr_stack}},
-  \code{\link{embed_stack}}, \code{\link{layer_stack}},
-  \code{\link{tamm_stack_porous}}, \code{\link{tamm_stack}}
+Other stack user_level: 
+\code{\link{dbr_stack}()},
+\code{\link{embed_stack}()},
+\code{\link{layer_stack}()},
+\code{\link{tamm_stack_porous}()},
+\code{\link{tamm_stack}()}
 }
 \author{
 baptiste Auguie

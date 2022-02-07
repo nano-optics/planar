@@ -1,20 +1,19 @@
 Package: planar
-Maintainer: Baptiste Auguie <baptiste.auguie@gmail.com>
 Title: Multilayer Optics
+Authors@R: c(person("Baptiste", "Auguié",
+    email = "baptiste.auguie@vuw.ac.nz",
+    role = c("aut", "cre"), comment = c(ORCID="0000-0002-2749-5715", "Some functions ported from the original Matlab SPLAC code by E.C. Le Ru and P. G. Etchegoin")), person("Steven", "Johnson", role = c("cph"), comment = "C code for the cubature library"))
 LinkingTo: Rcpp, RcppArmadillo
 Type: Package
-URL: https://github.com/plasmonics/planar
-BugReports: https://github.com/plasmonics/planar/issues
+URL: https://github.com/nano-optics/planar
+BugReports: https://github.com/nano-optics/planar/issues
 LazyLoad: yes
-Authors@R: c(person("Baptiste", "Auguie", email = "baptiste.auguie@gmail.com",
-    role = c("aut", "cre"), comment = c(ORCID="0000-0002-2749-5715", "Some functions ported from the original Matlab SPLAC code by E.C. Le Ru and P. G. Etchegoin")), person("Steven", "Johnson", role = c("cph"), comment = "C code for the cubature
-    library"))
-License: GPL-3
+License: Mozilla Public License Version 2.0
 Description: Solves the electromagnetic problem of reflection and transmission
     at a planar multilayer interface. Also computed are the decay rates and emission
     profile for a dipolar emitter.
 SystemRequirements: GNU make
-Version: 1.6.1
+Version: 1.7.0
 Encoding: UTF-8
 VignetteBuilder: knitr
 LazyData: true
@@ -37,4 +36,4 @@ Suggests:
     knitr,
     rmarkdown,
     testthat
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.2

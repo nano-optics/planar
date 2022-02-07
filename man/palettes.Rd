@@ -6,7 +6,13 @@
 \alias{palette_tamm}
 \alias{palette_tamm_porous}
 \title{Colour palettes for multilayer stacks}
-\format{Colour palette (vectors of colours)}
+\format{
+Colour palette (vectors of colours)
+
+Colour palette (vectors of colours)
+
+Colour palette (vectors of colours)
+}
 \source{
 See RColorBrewer package
 }

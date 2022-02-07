@@ -116,7 +116,7 @@ The code is split into 2 main functions. `integrand_gb_layer()` is the integrand
 
 Surprisingly few results are available in the literature. We can first check that the limit of large beam waist agrees with the simpler case of plane-wave illumination.
 
-```{r pw, message=FALSE, echo=FALSE, fig.cap="Evolution of the near-field profile as a function of beam waist. The electric field is calculated at a fixed distance of 1nm from the metal surface. The (average) incident angle is kept constant, corresponding to the condition of optimum coupling for plane-wave illumination."}
+```{r pw, message=FALSE, eval=FALSE, echo=FALSE, fig.cap="Evolution of the near-field profile as a function of beam waist. The electric field is calculated at a fixed distance of 1nm from the metal surface. The (average) incident angle is kept constant, corresponding to the condition of optimum coupling for plane-wave illumination."}
 struct <- list(wavelength=632.8,
                thickness=c(0,50,0),
                epsilon=c(1.5^2, epsAu(632.8)$epsilon, 1.0^2))
@@ -161,7 +161,7 @@ ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
 
 A similar calculation was also performed by Weeber et al. (Phys Rev B 83, 115433 (2011)), though they used a simplified 1D parametrisation of the gaussian beam, thus neglecting saggital ("off-axis") rays. Because SPPs are only excited with TM-polarised light, however, their influence on the results is minimal. Below we reproduce the beam-shift discussed in their work.
 
-```{r weeber, echo=FALSE, fig.cap="Simulation of the electric field in the Kretschmann-Raether configuration. A gold layer (n=0.180 + 5.12i) surrounded by glass (n=1.52) and air is illuminated with TM-polarised light from the glass side. The electric field is calculated as a function of position along the interface (x) at a distance of 50nm (top panel) and 100nm (bottom panel) from the interface. The dotted curves correspond to the same simulation without a gold film."}
+```{r weeber, eval=FALSE, echo=FALSE, fig.cap="Simulation of the electric field in the Kretschmann-Raether configuration. A gold layer (n=0.180 + 5.12i) surrounded by glass (n=1.52) and air is illuminated with TM-polarised light from the glass side. The electric field is calculated as a function of position along the interface (x) at a distance of 50nm (top panel) and 100nm (bottom panel) from the interface. The dotted curves correspond to the same simulation without a gold film."}
 
 simulation <- function(d, probe=50, w0=10e3) {
   
@@ -179,7 +179,7 @@ simulation <- function(d, probe=50, w0=10e3) {
   
   res <- gaussian_near_field_layer(xyz, wavelength=s$wavelength,
                                 epsilon=unlist(s$epsilon), thickness=s$thickness,
-                                w0=w0, alpha=spp, maxEval=5000)
+                                w0=w0, alpha=spp, maxEval=500)
   data.frame(xyz, field=res/max(res))
 }
 
@@ -217,6 +217,21 @@ ggplot(all, aes(x/1000, field))+ facet_grid(d~., scales="free")+
 The calculation can produce near-field maps.
 
 ```{r map}
+
+struct <- list(wavelength=632.8,
+               thickness=c(0,50,0),
+               epsilon=c(1.5^2, epsAu(632.8)$epsilon, 1.0^2))
+
+## first, check the plane wave result
+pw <- multilayer(epsilon=as.list(struct$epsilon),
+                 wavelength=struct$wavelength, thickness=struct$thickness, d=1,
+                 angle=seq(0, pi/2, length=2e3), polarisation='p')
+
+enhancement <- pw$Mr.perp[[2]] + pw$Mr.par[[2]]
+maxi <- max(enhancement, na.rm=T)
+spp <- pw$angle[which.max(enhancement)]
+
+
 w0 <- 2000
 xyz <- as.matrix(expand.grid(x=seq(-3*w0, 5*w0, length=50), 
                              y=seq(-3*w0, 3*w0, length=50),
@@ -224,12 +239,13 @@ xyz <- as.matrix(expand.grid(x=seq(-3*w0, 5*w0, length=50),
 res <- gaussian_near_field_ml(xyz, epsilon=struct$epsilon,
                               wavelength=struct$wavelength, 
                               thickness=struct$thickness,
-                              w0=w0, alpha=spp, maxEval=600)
+                              w0=w0, alpha=spp, maxEval=200)
 
 m <- data.frame(xyz, field=res)
 
   ggplot(m, aes(x, y, fill=field))+
   geom_raster(interpolate=TRUE) +
+  scale_fill_viridis_c() +
   scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(expand=c(0,0)) +
   labs(x=expression("x /nm"), fill=expression("|E|"^2), 
@@ -238,7 +254,7 @@ m <- data.frame(xyz, field=res)
 ```
 We can also visualise the field pattern along the depth of the sample. At the optimum incidence angle for SPP excitation, the colour scale is stretched by the strong field enhancement in the region immediately above the metal layer. For more visually-interesting plot, we consider the less optimal coupling at 43 degrees of incidence, and a relatively narrow beam. 
 
-```{r map2}
+```{r map2, eval=TRUE}
 
 
 simulation_bottom <- function(w0=1e4, angle=0,
@@ -254,7 +270,7 @@ simulation_bottom <- function(w0=1e4, angle=0,
   
   res <- gaussian_near_field_ml(xyz, wavelength=wavelength,
                               epsilon=unlist(epsilon), thickness=thickness,
-                              w0=w0, alpha=angle, maxEval=500)
+                              w0=w0, alpha=angle, maxEval=200)
   
   data.frame(xyz, field=res)
 }
@@ -273,7 +289,7 @@ simulation_top <- function(w0=1e4, angle=0,
   
   res <- gaussian_near_field_ml(xyz, wavelength=wavelength,
                               epsilon=unlist(epsilon), thickness=thickness,
-                              w0=w0, alpha=angle, maxEval=500)
+                              w0=w0, alpha=angle, maxEval=200)
 
   
   
@@ -293,6 +309,7 @@ ggplot(top, aes(x, z, fill=field))+
   # facet_grid(angle~w0, scales="free")+
   geom_raster(data = top, interpolate=TRUE) +
   geom_raster(data = bottom, interpolate=TRUE) +
+  scale_fill_viridis_c() +
   scale_x_continuous(expand=c(0,0))+
   scale_y_continuous(expand=c(0,0)) +
   labs(x=expression("x /nm"), fill=expression("|E|"^2),

@@ -5,10 +5,18 @@
 \alias{field_profile}
 \title{lfief}
 \usage{
-lfief(wavelength = 500, angle = 0, polarisation = "p",
-  thickness = c(0, 20, 140, 20, 0), dmax = 200, res = 1000,
-  res2 = res/10, epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2),
-  displacement = FALSE, ...)
+lfief(
+  wavelength = 500,
+  angle = 0,
+  polarisation = "p",
+  thickness = c(0, 20, 140, 20, 0),
+  dmax = 200,
+  res = 1000,
+  res2 = res/10,
+  epsilon = list(1^2, -12, 1.38^2, -12, 1.46^2),
+  displacement = FALSE,
+  ...
+)
 }
 \arguments{
 \item{wavelength}{wavelength}
@@ -46,9 +54,11 @@ Principles of surface-enhanced Raman spectroscopy and related plasmonic effects
 Eric C. Le Ru and Pablo G. Etchegoin, published by Elsevier, Amsterdam (2009).
 }
 \seealso{
-Other helping_functions: \code{\link{classify}},
-  \code{\link{internal_field}}, \code{\link{invert_stack}},
-  \code{\link{modify_levels}}
+Other helping_functions: 
+\code{\link{classify}()},
+\code{\link{internal_field}()},
+\code{\link{invert_stack}()},
+\code{\link{modify_levels}()}
 }
 \author{
 baptiste Auguie

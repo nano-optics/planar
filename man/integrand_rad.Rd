@@ -4,8 +4,14 @@
 \alias{integrand_rad}
 \title{integrand_rad}
 \usage{
-integrand_rad(d = 10, angle, wavelength, epsilon = list(incident =
-  1.5^2, 1^2), thickness = c(0, 0), GL = FALSE)
+integrand_rad(
+  d = 10,
+  angle,
+  wavelength,
+  epsilon = list(incident = 1.5^2, 1^2),
+  thickness = c(0, 0),
+  GL = FALSE
+)
 }
 \arguments{
 \item{d}{distance in nm}
@@ -27,9 +33,11 @@ Dipole decay rates near a multilayer interface
 Integrand of the radiative dipole decay rates near a multilayer interface.
 }
 \seealso{
-Other integrands dipole: \code{\link{integrand_mtot}},
-  \code{\link{integrand_nr1}}, \code{\link{integrand_nr2}},
-  \code{\link{integrand_nr3}}
+Other integrands dipole: 
+\code{\link{integrand_mtot}()},
+\code{\link{integrand_nr1}()},
+\code{\link{integrand_nr2}()},
+\code{\link{integrand_nr3}()}
 }
 \author{
 baptiste Auguie

@@ -18,6 +18,7 @@ vignette: >
 ```{r demo, message=FALSE, echo=FALSE}
 knitr::read_demo("gaussian_beam", package="planar")
 ```
+
 Using the angular spectrum decomposition of a gaussian beam in a bundle of plane waves, the near-field profile is calculated on the transmitted side of a thin metal film illuminated under total internal reflection.
 
 ```{r load, echo=FALSE,results='hide'}
@@ -30,10 +31,12 @@ First, we model the structure with plane-wave illumination, and find the angle c
 
 ```{r pw}
 ```
+
 ## Depth profile
 
 ```{r depth}
 ```
+
 We observe that the field decays exponentially away from the gold/dielectric interface ($z>50$nm) with the same characteristic distance across the beam profile. The discontinuity at $z=100$nm occurs because of the transition between two dielectrics with slightly different refractive index (1.1 and 1.0, respectively).
 
 ## Coupling to SPPs

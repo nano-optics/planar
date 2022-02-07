@@ -3,7 +3,7 @@
 library(knitr)
 library(ggplot2)
 opts_chunk$set(fig.path="kretschmannreflectivity/", fig.width=10,
-               warning=FALSE,error=FALSE,message=FALSE,tidy=TRUE)
+               warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 library(RColorBrewer)

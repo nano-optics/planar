@@ -4,12 +4,7 @@ knitr::read_demo("gaussian_beam", package="planar")
 ## ----load, echo=FALSE,results='hide'------------------------------------------
 library(knitr)
 library(ggplot2)
-# library(rgl)
-knit_hooks$set(rgl = function(before, options, envir) {
-  # if a device was opened before this chunk, close it
-  if (before && rgl.cur() > 0) rgl.close()
-  hook_rgl(before, options, envir)
-})
+
 opts_chunk$set(fig.path="gaussianbeam/", cache=TRUE, cache.path="gaussian/",
                warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
 library(ggplot2)
@@ -81,29 +76,4 @@ ggplot(all, aes(x/w0/1000, field, group=w0, colour=factor(w0)))+
   coord_cartesian(xlim=c(-5,5)) + theme_minimal()+
   guides(colour=guide_legend(reverse=TRUE)) +
   theme(panel.background=element_rect(fill=NA))
-
-## ----map----------------------------------------------------------------------
-w0 <- 2000
-xyz <- as.matrix(expand.grid(x=seq(-3*w0, 5*w0, length=50), 
-                             y=seq(-3*w0, 3*w0, length=50),
-                             z=51))
-res <- gaussian_near_field_ml(xyz, epsilon=struct$epsilon,
-                              wavelength=struct$wavelength, 
-                              thickness=struct$thickness,
-                              w0=w0, alpha=spp, maxEval=600)
-
-m <- data.frame(xyz, field=res)
-
-p <-   ggplot(m, aes(x/1e3, y/1e3, fill=field))+
-  geom_raster(interpolate=TRUE) +
-  scale_x_continuous(expand=c(0,0))+
-  scale_y_continuous(expand=c(0,0)) +
-  labs(x=expression("x /nm"), fill=expression("|E|"^2), 
-       y=expression("y /nm")) +
-  coord_fixed() + theme_minimal()
-
-p
-# library(rayshader)
-# 
-# plot_gg(p)
 

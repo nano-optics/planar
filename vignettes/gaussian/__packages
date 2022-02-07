@@ -1,7 +1,5 @@
-base
-knitr
-ggplot2
-rgl
 dielectric
 planar
+knitr
+ggplot2
 plyr

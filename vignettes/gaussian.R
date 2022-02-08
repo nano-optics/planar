@@ -2,7 +2,7 @@
 library(knitr)
 
 opts_chunk$set(cache=TRUE, 
-               warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
+               warning=FALSE,error=FALSE,message=FALSE)
 
 library(planar)
 library(ggplot2)

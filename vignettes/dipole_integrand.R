@@ -10,7 +10,7 @@ library(ggplot2)
 require(reshape2)
 require(plyr)
 opts_chunk$set(fig.path="dipoleintegrand/", 
-               warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
+               warning=FALSE,error=FALSE,message=FALSE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 

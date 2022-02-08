@@ -5,7 +5,7 @@ knitr::read_demo("kretschmann_sensing", package="planar")
 library(knitr)
 library(ggplot2)
 opts_chunk$set(fig.path="kretschmannsensing/",
-               warning=FALSE,error=FALSE,message=FALSE,tidy=FALSE)
+               warning=FALSE,error=FALSE,message=FALSE)
 library(ggplot2)
 theme_set(theme_minimal() + theme(panel.border=element_rect(fill=NA)))
 
